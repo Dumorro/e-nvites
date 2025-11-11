@@ -1,0 +1,62 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --background: #f6f6f6;
+  --foreground: #07364f;
+  --equinor-red: #d81e3a;
+  --equinor-navy: #07364f;
+  --equinor-blue: #0084C9;
+  --card-bg: #ffffff;
+}
+
+body {
+  color: var(--foreground);
+  background: var(--background);
+  font-family: Arial, Helvetica, sans-serif;
+}
+
+@layer utilities {
+  .text-balance {
+    text-wrap: balance;
+  }
+}
+
+/* Custom styles */
+.btn {
+  @apply px-6 py-3 font-semibold transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-offset-2 rounded-md;
+}
+
+.btn-primary {
+  @apply bg-equinor-red text-white hover:opacity-90 focus:ring-equinor-red shadow-md;
+}
+
+.btn-secondary {
+  @apply bg-equinor-navy text-white hover:opacity-90 focus:ring-equinor-navy shadow-md;
+}
+
+.btn-outline {
+  @apply border-2 border-gray-300 text-gray-700 hover:bg-gray-50 focus:ring-gray-500 rounded-md;
+}
+
+.card {
+  @apply bg-white p-7 rounded-md;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.15);
+}
+
+.badge {
+  @apply inline-flex items-center px-3 py-1 text-sm font-medium;
+}
+
+.badge-pending {
+  @apply bg-yellow-100 text-yellow-800;
+}
+
+.badge-confirmed {
+  @apply bg-green-100 text-green-800;
+}
+
+.badge-declined {
+  @apply bg-red-100 text-red-800;
+}
