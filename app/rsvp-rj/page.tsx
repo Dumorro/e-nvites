@@ -30,7 +30,7 @@ export default function RSVPRioPage() {
         },
         body: JSON.stringify({
           email: email.trim(),
-          eventSlug: 'festa-confraternizacao-rj-2024'
+          eventId: 1
         }),
       })
 

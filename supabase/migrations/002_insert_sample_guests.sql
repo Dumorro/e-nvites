@@ -12,7 +12,7 @@
 
 INSERT INTO guests (name, email, phone, social_event, event_id, status) VALUES
   -- Confirmados RJ
-  ('João Silva', 'joao.silva@email.com', '5521987654321', 'Festa de Confraternização RJ 2024', 1, 'confirmed'),
+  ('Glicia Gonçalves ', 'joao.silva@email.com', '5521987654321', 'Festa de Confraternização RJ 2024', 1, 'confirmed'),
   ('Maria Santos', 'maria.santos@email.com', '5521998765432', 'Festa de Confraternização RJ 2024', 1, 'confirmed'),
   ('Pedro Oliveira', 'pedro.oliveira@email.com', '5521976543210', 'Festa de Confraternização RJ 2024', 1, 'confirmed'),
   ('Ana Costa', 'ana.costa@email.com', '5521965432109', 'Festa de Confraternização RJ 2024', 1, 'confirmed'),

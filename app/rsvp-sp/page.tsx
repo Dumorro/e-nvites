@@ -30,7 +30,7 @@ export default function RSVPSaoPauloPage() {
         },
         body: JSON.stringify({
           email: email.trim(),
-          eventSlug: 'festa-confraternizacao-sp-2024'
+          eventId: 2
         }),
       })
 

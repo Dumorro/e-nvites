@@ -5,9 +5,9 @@ import { supabase } from '@/lib/supabase'
 export async function POST(request: NextRequest) {
   try {
     const body = await request.json()
-    const { email, eventSlug } = body
+    const { email, eventId } = body
 
-    if (!email || !eventSlug) {
+    if (!email || !eventId) {
       return NextResponse.json(
         { error: 'Email e evento são obrigatórios' },
         { status: 400 }
@@ -17,11 +17,11 @@ export async function POST(request: NextRequest) {
     // Normalize email
     const normalizedEmail = email.toLowerCase().trim()
 
-    // First, get the event ID from the slug
+    // First, get the event details
     const { data: event, error: eventError } = await supabase
       .from('events')
       .select('id, name, location')
-      .eq('slug', eventSlug)
+      .eq('id', eventId)
       .eq('is_active', true)
       .single()
 
@@ -38,7 +38,7 @@ export async function POST(request: NextRequest) {
       .from('guests')
       .select('*')
       .eq('email', normalizedEmail)
-      .eq('event_id', event.id)
+      .eq('event_id', eventId)
       .single()
 
     if (guestError || !guest) {
