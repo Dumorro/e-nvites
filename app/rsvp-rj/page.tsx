@@ -29,7 +29,7 @@ export default function RSVPRioPage() {
           'Content-Type': 'application/json',
         },
         body: JSON.stringify({
-          email: email.trim(),
+          email: email.trim().toLowerCase(),
           eventId: 1
         }),
       })
