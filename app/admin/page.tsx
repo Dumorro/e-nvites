@@ -292,37 +292,25 @@ export default function AdminPage() {
        </div>
       </div>
 
-      <div className="bg-white rounded-md shadow-sm p-6 border-l-4 border-equinor-red">
+      <div className="bg-white rounded-md shadow-sm p-6 border-l-4 border-green-500">
        <div className="flex items-center justify-between">
         <div>
          <p className="text-sm text-gray-600 mb-1">Confirmados</p>
-         <p className="text-3xl font-bold text-equinor-red">{stats.confirmed}</p>
+         <p className="text-3xl font-bold text-green-600">{stats.confirmed}</p>
         </div>
-        <div className="w-12 h-12 bg-equinor-red/10 flex items-center justify-center">
-         <span className="text-2xl">✓</span>
-        </div>
-       </div>
-      </div>
-
-      <div className="bg-white rounded-md shadow-sm p-6 border-l-4 border-gray-400">
-       <div className="flex items-center justify-between">
-        <div>
-         <p className="text-sm text-gray-600 mb-1">Recusados</p>
-         <p className="text-3xl font-bold text-gray-600">{stats.declined}</p>
-        </div>
-        <div className="w-12 h-12 bg-gray-100 flex items-center justify-center">
-         <span className="text-2xl">✗</span>
+        <div className="w-12 h-12 bg-green-500 flex items-center justify-center rounded-md">
+         <span className="text-2xl text-white">✓</span>
         </div>
        </div>
       </div>
 
-      <div className="bg-white rounded-md shadow-sm p-6 border-l-4 border-equinor-blue">
+      <div className="bg-white rounded-md shadow-sm p-6 border-l-4 border-yellow-400">
        <div className="flex items-center justify-between">
         <div>
          <p className="text-sm text-gray-600 mb-1">Pendentes</p>
-         <p className="text-3xl font-bold text-equinor-blue">{stats.pending}</p>
+         <p className="text-3xl font-bold text-yellow-600">{stats.pending}</p>
         </div>
-        <div className="w-12 h-12 bg-equinor-blue/10 flex items-center justify-center">
+        <div className="w-12 h-12 bg-yellow-400 flex items-center justify-center rounded-md">
          <span className="text-2xl">⏳</span>
         </div>
        </div>
@@ -358,7 +346,6 @@ export default function AdminPage() {
        >
         <option value="all">Todos</option>
         <option value="confirmed">Confirmados</option>
-        <option value="declined">Recusados</option>
         <option value="pending">Pendentes</option>
        </select>
       </div>
