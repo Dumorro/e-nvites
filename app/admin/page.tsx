@@ -140,12 +140,6 @@ export default function AdminPage() {
   sessionStorage.removeItem('adminPassword')
  }
 
- const copyInviteLink = (guid: string) => {
-  const url = `${window.location.origin}/?guid=${guid}`
-  navigator.clipboard.writeText(url)
-  alert('Link copiado para a área de transferência!')
- }
-
  const formatDate = (dateString: string) => {
   return new Date(dateString).toLocaleDateString('pt-BR', {
    day: '2-digit',
@@ -463,9 +457,6 @@ export default function AdminPage() {
           <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
            Última Atualização
           </th>
-          <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-           Ações
-          </th>
          </tr>
         </thead>
         <tbody className="bg-white divide-y divide-gray-200">
@@ -507,14 +498,6 @@ export default function AdminPage() {
            </td>
            <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
             {formatDate(guest.updated_at)}
-           </td>
-           <td className="px-6 py-4 whitespace-nowrap text-sm">
-            <button
-             onClick={() => copyInviteLink(guest.guid)}
-             className="text-blue-600 hover:text-blue-800 font-medium"
-            >
-             📋 Copiar Link
-            </button>
            </td>
           </tr>
          ))}
