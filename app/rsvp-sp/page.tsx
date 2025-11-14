@@ -67,7 +67,7 @@ export default function RSVPSaoPauloPage() {
             <div className="p-8 text-center" style={{ backgroundColor: '#243746' }}>
               <div className="bg-white rounded-lg p-4 inline-block mb-6 shadow-md">
                 <Image
-                  src="/images/equinor-logo.png"
+                  src="/images/equinor-logo2.png"
                   alt="Equinor"
                   width={180}
                   height={70}
