@@ -2,16 +2,26 @@
 
 import { useEffect, useState } from 'react'
 
+interface Event {
+ id: number
+ name: string
+ slug: string
+ template_name: string
+ event_date: string | null
+ location: string | null
+}
+
 interface Guest {
  id: number
  guid: string
  name: string
  email: string | null
  phone: string | null
- social_event: string | null
+ event_id: number | null
  status: 'pending' | 'confirmed' | 'declined'
  created_at: string
  updated_at: string
+ event?: Event | null
 }
 
 interface Stats {
@@ -28,10 +38,12 @@ export default function AdminPage() {
  const [stats, setStats] = useState<Stats | null>(null)
  const [loading, setLoading] = useState(false)
  const [statusFilter, setStatusFilter] = useState<string>('all')
- const [socialEventFilter, setSocialEventFilter] = useState<string>('all')
+ const [eventIdFilter, setEventIdFilter] = useState<string>('all')
  const [searchQuery, setSearchQuery] = useState('')
  const [error, setError] = useState<string | null>(null)
- const [availableSocialEvents, setAvailableSocialEvents] = useState<string[]>([])
+ const [availableEvents, setAvailableEvents] = useState<Event[]>([])
+ const [currentPage, setCurrentPage] = useState(1)
+ const [itemsPerPage, setItemsPerPage] = useState(20)
 
  const handleLogin = (e: React.FormEvent) => {
   e.preventDefault()
@@ -53,9 +65,26 @@ export default function AdminPage() {
 
  useEffect(() => {
   if (authenticated) {
+   setCurrentPage(1) // Reset to first page when filters change
    fetchGuests()
   }
- }, [statusFilter, socialEventFilter, searchQuery, authenticated])
+ }, [statusFilter, eventIdFilter, searchQuery, authenticated])
+
+ // Calculate pagination
+ const totalPages = Math.ceil(guests.length / itemsPerPage)
+ const startIndex = (currentPage - 1) * itemsPerPage
+ const endIndex = startIndex + itemsPerPage
+ const paginatedGuests = guests.slice(startIndex, endIndex)
+
+ const handlePageChange = (page: number) => {
+  setCurrentPage(page)
+  window.scrollTo({ top: 0, behavior: 'smooth' })
+ }
+
+ const handleItemsPerPageChange = (value: number) => {
+  setItemsPerPage(value)
+  setCurrentPage(1) // Reset to first page
+ }
 
  const fetchGuests = async () => {
   try {
@@ -66,8 +95,8 @@ export default function AdminPage() {
    if (statusFilter !== 'all') {
     params.append('status', statusFilter)
    }
-   if (socialEventFilter !== 'all') {
-    params.append('social_event', socialEventFilter)
+   if (eventIdFilter !== 'all') {
+    params.append('event_id', eventIdFilter)
    }
    if (searchQuery) {
     params.append('search', searchQuery)
@@ -94,8 +123,8 @@ export default function AdminPage() {
 
    setGuests(data.guests)
    setStats(data.stats)
-   if (data.socialEvents) {
-    setAvailableSocialEvents(data.socialEvents)
+   if (data.events) {
+    setAvailableEvents(data.events)
    }
   } catch (err) {
    console.error('Error fetching guests:', err)
@@ -135,6 +164,54 @@ export default function AdminPage() {
    return `+${cleaned.slice(0, 2)} (${cleaned.slice(2, 4)}) ${cleaned.slice(4, 9)}-${cleaned.slice(9)}`
   }
   return phone
+ }
+
+ const exportToCSV = () => {
+  // Create CSV content from filtered guests
+  const headers = ['Nome', 'Email', 'Telefone', 'Evento', 'Local', 'Status', 'Data Criação', 'Última Atualização']
+  const csvRows = [headers.join(',')]
+
+  guests.forEach((guest) => {
+   const eventName = guest.event?.name || ''
+   const eventLocation = guest.event?.location || ''
+
+   const row = [
+    `"${guest.name}"`,
+    `"${guest.email || ''}"`,
+    `"${formatPhone(guest.phone)}"`,
+    `"${eventName}"`,
+    `"${eventLocation}"`,
+    guest.status === 'confirmed' ? 'Confirmado' : guest.status === 'declined' ? 'Recusado' : 'Pendente',
+    `"${formatDate(guest.created_at)}"`,
+    `"${formatDate(guest.updated_at)}"`
+   ]
+   csvRows.push(row.join(','))
+  })
+
+  const csvContent = csvRows.join('\n')
+  const blob = new Blob(['\uFEFF' + csvContent], { type: 'text/csv;charset=utf-8;' })
+  const link = document.createElement('a')
+  const url = URL.createObjectURL(blob)
+
+  // Generate filename with current date and filters
+  const date = new Date().toISOString().split('T')[0]
+  let filename = `convidados_${date}`
+  if (statusFilter !== 'all') filename += `_${statusFilter}`
+  if (eventIdFilter !== 'all') {
+   const selectedEvent = availableEvents.find(e => e.id.toString() === eventIdFilter)
+   if (selectedEvent) {
+    filename += `_${selectedEvent.slug}`
+   }
+  }
+  if (searchQuery) filename += `_busca`
+  filename += '.csv'
+
+  link.setAttribute('href', url)
+  link.setAttribute('download', filename)
+  link.style.visibility = 'hidden'
+  document.body.appendChild(link)
+  link.click()
+  document.body.removeChild(link)
  }
 
  // Login Screen
@@ -261,7 +338,7 @@ export default function AdminPage() {
 
     {/* Filters */}
     <div className="bg-white rounded-md shadow-sm p-6 mb-6">
-     <div className="flex flex-col sm:flex-row gap-4">
+     <div className="flex flex-col sm:flex-row gap-4 mb-4">
       <div className="flex-1">
        <label htmlFor="search" className="block text-sm font-medium text-gray-700 mb-2">
         Buscar por nome
@@ -292,23 +369,56 @@ export default function AdminPage() {
        </select>
       </div>
       <div className="sm:w-64">
-       <label htmlFor="socialEvent" className="block text-sm font-medium text-gray-700 mb-2">
+       <label htmlFor="eventFilter" className="block text-sm font-medium text-gray-700 mb-2">
         Filtrar por evento
        </label>
        <select
-        id="socialEvent"
-        value={socialEventFilter}
-        onChange={(e) => setSocialEventFilter(e.target.value)}
+        id="eventFilter"
+        value={eventIdFilter}
+        onChange={(e) => setEventIdFilter(e.target.value)}
         className="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-transparent"
        >
         <option value="all">Todos os eventos</option>
-        {availableSocialEvents.map((event) => (
-         <option key={event} value={event}>
-          {event}
+        {availableEvents.map((event) => (
+         <option key={event.id} value={event.id.toString()}>
+          {event.name} - {event.location}
          </option>
         ))}
        </select>
       </div>
+     </div>
+
+     {/* Export Button and Items Per Page */}
+     <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 pt-4 border-t border-gray-200">
+      <div className="flex items-center gap-4">
+       <p className="text-sm text-gray-600">
+        {guests.length} {guests.length === 1 ? 'convidado encontrado' : 'convidados encontrados'}
+       </p>
+       <div className="flex items-center gap-2">
+        <label htmlFor="itemsPerPage" className="text-sm text-gray-600">
+         Mostrar:
+        </label>
+        <select
+         id="itemsPerPage"
+         value={itemsPerPage}
+         onChange={(e) => handleItemsPerPageChange(Number(e.target.value))}
+         className="px-3 py-1 border border-gray-300 rounded-md text-sm focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+        >
+         <option value={20}>20</option>
+         <option value={50}>50</option>
+         <option value={100}>100</option>
+        </select>
+        <span className="text-sm text-gray-600">por página</span>
+       </div>
+      </div>
+      <button
+       onClick={exportToCSV}
+       disabled={guests.length === 0}
+       className="btn bg-green-600 text-white hover:bg-green-700 disabled:opacity-50 disabled:cursor-not-allowed flex items-center gap-2"
+      >
+       <span>📥</span>
+       <span>Exportar CSV</span>
+      </button>
      </div>
     </div>
 
@@ -359,7 +469,7 @@ export default function AdminPage() {
          </tr>
         </thead>
         <tbody className="bg-white divide-y divide-gray-200">
-         {guests.map((guest) => (
+         {paginatedGuests.map((guest) => (
           <tr key={guest.id} className="hover:bg-gray-50">
            <td className="px-6 py-4 whitespace-nowrap">
             <div className="text-sm font-medium text-gray-900">
@@ -378,8 +488,11 @@ export default function AdminPage() {
            </td>
            <td className="px-6 py-4 whitespace-nowrap">
             <div className="text-sm text-gray-900">
-             {guest.social_event || '-'}
+             {guest.event?.name || '-'}
             </div>
+            {guest.event?.location && (
+             <div className="text-xs text-gray-500">{guest.event.location}</div>
+            )}
            </td>
            <td className="px-6 py-4 whitespace-nowrap">
             {guest.status === 'confirmed' && (
@@ -407,6 +520,89 @@ export default function AdminPage() {
          ))}
         </tbody>
        </table>
+      </div>
+     )}
+
+     {/* Pagination Controls */}
+     {!loading && !error && guests.length > 0 && totalPages > 1 && (
+      <div className="px-6 py-4 border-t border-gray-200 bg-gray-50">
+       <div className="flex flex-col sm:flex-row justify-between items-center gap-4">
+        <div className="text-sm text-gray-600">
+         Mostrando {startIndex + 1} a {Math.min(endIndex, guests.length)} de {guests.length} registros
+        </div>
+        <div className="flex items-center gap-2">
+         <button
+          onClick={() => handlePageChange(currentPage - 1)}
+          disabled={currentPage === 1}
+          className="px-3 py-2 border border-gray-300 rounded-md text-sm font-medium text-gray-700 bg-white hover:bg-gray-50 disabled:opacity-50 disabled:cursor-not-allowed"
+         >
+          ← Anterior
+         </button>
+
+         <div className="flex items-center gap-1">
+          {/* First page */}
+          {currentPage > 3 && (
+           <>
+            <button
+             onClick={() => handlePageChange(1)}
+             className="px-3 py-2 border border-gray-300 rounded-md text-sm font-medium text-gray-700 bg-white hover:bg-gray-50"
+            >
+             1
+            </button>
+            {currentPage > 4 && (
+             <span className="px-2 text-gray-500">...</span>
+            )}
+           </>
+          )}
+
+          {/* Page numbers around current page */}
+          {Array.from({ length: totalPages }, (_, i) => i + 1)
+           .filter(page => {
+            return page === currentPage ||
+                   page === currentPage - 1 ||
+                   page === currentPage + 1 ||
+                   page === currentPage - 2 ||
+                   page === currentPage + 2
+           })
+           .map(page => (
+            <button
+             key={page}
+             onClick={() => handlePageChange(page)}
+             className={`px-3 py-2 border rounded-md text-sm font-medium ${
+              page === currentPage
+               ? 'bg-equinor-navy text-white border-equinor-navy'
+               : 'border-gray-300 text-gray-700 bg-white hover:bg-gray-50'
+             }`}
+            >
+             {page}
+            </button>
+           ))}
+
+          {/* Last page */}
+          {currentPage < totalPages - 2 && (
+           <>
+            {currentPage < totalPages - 3 && (
+             <span className="px-2 text-gray-500">...</span>
+            )}
+            <button
+             onClick={() => handlePageChange(totalPages)}
+             className="px-3 py-2 border border-gray-300 rounded-md text-sm font-medium text-gray-700 bg-white hover:bg-gray-50"
+            >
+             {totalPages}
+            </button>
+           </>
+          )}
+         </div>
+
+         <button
+          onClick={() => handlePageChange(currentPage + 1)}
+          disabled={currentPage === totalPages}
+          className="px-3 py-2 border border-gray-300 rounded-md text-sm font-medium text-gray-700 bg-white hover:bg-gray-50 disabled:opacity-50 disabled:cursor-not-allowed"
+         >
+          Próxima →
+         </button>
+        </div>
+       </div>
       </div>
      )}
     </div>

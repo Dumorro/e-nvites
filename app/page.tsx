@@ -1,8 +1,19 @@
 'use client'
 
-import { useEffect, useState } from 'react'
+import { useEffect, useState, Suspense } from 'react'
 import { useSearchParams } from 'next/navigation'
 import Image from 'next/image'
+
+interface Event {
+  id: number
+  name: string
+  location: string | null
+  event_date: string | null
+  template_name: string
+  welcome_message: string
+  event_details: string | null
+  show_qr_code: boolean
+}
 
 interface Guest {
   id: number
@@ -10,13 +21,14 @@ interface Guest {
   name: string
   email: string | null
   phone: string | null
-  social_event: string | null
+  event_id: number | null
   status: 'pending' | 'confirmed' | 'declined'
   created_at: string
   updated_at: string
+  event?: Event | null
 }
 
-export default function RSVPPage() {
+function RSVPContent() {
   const searchParams = useSearchParams()
   const guid = searchParams.get('guid')
 
@@ -133,63 +145,72 @@ export default function RSVPPage() {
   }
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-equinor-bg p-5 relative overflow-hidden">
-      {/* Background Pattern - Mantido conforme solicitado */}
-      <div className="absolute inset-0 opacity-20">
-        <div className="absolute top-0 left-0 w-64 h-64 bg-equinor-cyan rounded-full mix-blend-multiply filter blur-xl animate-pulse"></div>
-        <div className="absolute bottom-0 right-0 w-64 h-64 bg-equinor-orange rounded-full mix-blend-multiply filter blur-xl animate-pulse animation-delay-2000"></div>
-        <div className="absolute top-1/2 left-1/2 w-64 h-64 bg-equinor-pink rounded-full mix-blend-multiply filter blur-xl animate-pulse animation-delay-4000"></div>
-      </div>
+    <div className="min-h-screen flex items-center justify-center p-4 bg-equinor-bg">
+      <div className="w-full max-w-2xl">
+        {/* Success Message */}
+        {successMessage && (
+          <div className="mb-4 p-4 bg-green-500 text-white rounded-lg shadow-lg text-center animate-fade-in">
+            <p className="font-semibold">✓ {successMessage}</p>
+          </div>
+        )}
 
-      <div className="card max-w-5xl w-full relative z-10">
-        <div className="w-full relative rounded bg-gradient-to-br from-orange-400 via-pink-500 to-purple-600 p-1">
-          <div className="bg-white p-8 rounded">
-            {/* Success Message */}
-            {successMessage && (
-              <div className="mb-6 p-3 bg-equinor-red/10 border-l-4 border-equinor-red rounded">
-                <p className="text-equinor-red font-semibold text-sm">
-                  ✓ {successMessage}
-                </p>
-              </div>
-            )}
-
-            <div className="text-center mb-6">
-              <div className="mb-6">
-                <Image
-                  src="/images/equinor-logo.png"
-                  alt="Equinor"
-                  width={180}
-                  height={70}
-                  className="mx-auto"
-                  priority
-                />
-              </div>
-              <h1 className="text-2xl font-bold text-equinor-navy mb-3">
-                Você foi convidado!
-              </h1>
-              {guest.social_event && (
-                <h2 className="text-xl text-equinor-red font-bold mb-4">
-                  {guest.social_event}
-                </h2>
-              )}
+        {/* Main Card */}
+        <div className="bg-white rounded-lg shadow-2xl overflow-hidden border-t-8 border-equinor-red">
+          {/* Header with Logo and Event Info */}
+          <div className="bg-equinor-navy p-8 text-center">
+            <div className="bg-white rounded-lg p-4 inline-block mb-6 shadow-md">
+              <Image
+                src="/images/equinor-logo.png"
+                alt="Equinor"
+                width={180}
+                height={70}
+                className="mx-auto"
+                priority
+              />
             </div>
+            <h1 className="text-3xl font-bold text-white mb-3 leading-tight">
+              {guest.event?.welcome_message || 'A Equinor tem a honra de convidá-lo(a)'}
+            </h1>
+            {guest.event?.name && (
+              <h2 className="text-2xl text-white font-bold mb-2 border-t-2 border-white/30 pt-4 mt-4">
+                {guest.event.name}
+              </h2>
+            )}
+            {guest.event?.location && (
+              <p className="text-white/90 text-lg mt-3 font-medium">
+                📍 {guest.event.location}
+              </p>
+            )}
+            {guest.event?.event_date && (
+              <p className="text-white/80 text-sm mt-2">
+                📅 {new Date(guest.event.event_date).toLocaleDateString('pt-BR', {
+                  weekday: 'long',
+                  year: 'numeric',
+                  month: 'long',
+                  day: 'numeric',
+                })}
+              </p>
+            )}
+          </div>
 
-            {/* Guest Info */}
-            <div className="mb-6 pb-6 border-b">
-              <h3 className="text-lg font-bold text-equinor-red mb-3 text-center">
+          {/* Guest Info */}
+          <div className="p-8 bg-white">
+            <div className="text-center mb-8 pb-6 border-b-2 border-gray-100">
+              <p className="text-sm text-gray-500 uppercase tracking-wide mb-2">Convidado(a)</p>
+              <h3 className="text-3xl font-bold text-equinor-navy mb-4">
                 {guest.name}
               </h3>
 
               {(guest.email || guest.phone) && (
-                <div className="space-y-2 text-sm text-equinor-navy max-w-md mx-auto">
+                <div className="space-y-2 text-gray-600">
                   {guest.email && (
-                    <p className="flex items-center gap-2 justify-center">
+                    <p className="flex items-center gap-2 justify-center text-sm">
                       <span>📧</span>
                       <span>{guest.email}</span>
                     </p>
                   )}
                   {guest.phone && (
-                    <p className="flex items-center gap-2 justify-center">
+                    <p className="flex items-center gap-2 justify-center text-sm">
                       <span>📱</span>
                       <span>{formatPhone(guest.phone)}</span>
                     </p>
@@ -198,55 +219,96 @@ export default function RSVPPage() {
               )}
             </div>
 
-            {/* Status */}
-            <div className="mb-6 text-center">
-              <p className="text-xs text-gray-500 mb-2">Status:</p>
+            {/* Status Badge */}
+            <div className="text-center mb-6">
               {guest.status === 'confirmed' && (
-                <span className="inline-block px-3 py-1 bg-green-100 text-green-800 text-sm font-medium rounded">
-                  ✓ Confirmado
-                </span>
+                <div className="inline-block">
+                  <span className="inline-block px-8 py-3 bg-green-500 text-white text-lg font-bold rounded-lg shadow-lg">
+                    ✓ Presença Confirmada
+                  </span>
+                  <p className="text-sm text-gray-500 mt-2">Aguardamos você!</p>
+                </div>
               )}
               {guest.status === 'declined' && (
-                <span className="inline-block px-3 py-1 bg-red-100 text-red-800 text-sm font-medium rounded">
-                  ✗ Recusado
-                </span>
+                <div className="inline-block">
+                  <span className="inline-block px-8 py-3 bg-gray-500 text-white text-lg font-bold rounded-lg shadow-lg">
+                    Presença Recusada
+                  </span>
+                  <p className="text-sm text-gray-500 mt-2">Obrigado por avisar</p>
+                </div>
               )}
               {guest.status === 'pending' && (
-                <span className="inline-block px-3 py-1 bg-yellow-100 text-yellow-800 text-sm font-medium rounded">
-                  ⏳ Pendente
-                </span>
+                <div className="inline-block">
+                  <span className="inline-block px-8 py-3 bg-yellow-500 text-white text-lg font-bold rounded-lg shadow-lg">
+                    ⏳ Aguardando Confirmação
+                  </span>
+                </div>
               )}
             </div>
 
-            {/* Footer Note */}
-            <div className="mt-6 p-4 bg-gray-50 rounded text-center">
-              <p className="text-sm text-gray-600 mb-2">Convite Individual</p>
-              <p className="text-xs text-gray-500">Apresente este convite na recepção do evento</p>
-              <p className="text-xs text-gray-500 mt-3 pt-3 border-t border-gray-200">
-                Você pode alterar sua resposta a qualquer momento.
+            {/* Action Buttons - SUBSTITUINDO O ESPAÇO DO QR CODE */}
+            <div className="bg-gray-50 border-4 border-equinor-navy/20 rounded-xl p-8 mb-6 shadow-inner">
+              <p className="text-center text-equinor-navy mb-6 font-bold text-lg uppercase tracking-wide">
+                Confirme sua Presença
+              </p>
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <button
+                  onClick={() => handleRSVP('confirmed')}
+                  disabled={submitting || guest.status === 'confirmed'}
+                  className="py-5 px-8 bg-green-600 hover:bg-green-700 text-white text-lg font-bold rounded-xl shadow-xl transition-all duration-200 transform hover:scale-105 hover:shadow-2xl disabled:opacity-50 disabled:cursor-not-allowed disabled:transform-none border-4 border-green-700"
+                >
+                  {submitting ? (
+                    <span>⏳ Processando...</span>
+                  ) : (
+                    <>
+                      <span className="block text-2xl mb-1">✓</span>
+                      <span>Confirmar Presença</span>
+                    </>
+                  )}
+                </button>
+                <button
+                  onClick={() => handleRSVP('declined')}
+                  disabled={submitting || guest.status === 'declined'}
+                  className="py-5 px-8 bg-gray-600 hover:bg-gray-700 text-white text-lg font-bold rounded-xl shadow-xl transition-all duration-200 transform hover:scale-105 hover:shadow-2xl disabled:opacity-50 disabled:cursor-not-allowed disabled:transform-none border-4 border-gray-700"
+                >
+                  {submitting ? (
+                    <span>⏳ Processando...</span>
+                  ) : (
+                    <>
+                      <span className="block text-2xl mb-1">✗</span>
+                      <span>Não Poderei Ir</span>
+                    </>
+                  )}
+                </button>
+              </div>
+            </div>
+
+            {/* Footer Info */}
+            <div className="text-center text-sm text-gray-600 space-y-3 bg-gray-50 p-6 rounded-lg">
+              <p className="font-semibold text-equinor-navy">Este convite é pessoal e intransferível</p>
+              <p className="text-xs">Favor apresentar este convite na recepção do evento</p>
+              <p className="text-xs text-gray-400 mt-4 pt-4 border-t border-gray-200 italic">
+                Você pode alterar sua resposta a qualquer momento acessando este link novamente
               </p>
             </div>
           </div>
         </div>
-
-        {/* Action Buttons - Movidos para baixo */}
-        <div className="flex flex-col sm:flex-row gap-4 mt-6 pt-6 border-t">
-          <button
-            onClick={() => handleRSVP('confirmed')}
-            disabled={submitting || guest.status === 'confirmed'}
-            className="btn btn-primary flex-1 disabled:opacity-50 disabled:cursor-not-allowed"
-          >
-            {submitting ? 'Processando...' : 'Confirmar Presença'}
-          </button>
-          <button
-            onClick={() => handleRSVP('declined')}
-            disabled={submitting || guest.status === 'declined'}
-            className="btn btn-outline flex-1 disabled:opacity-50 disabled:cursor-not-allowed"
-          >
-            {submitting ? 'Processando...' : 'Recusar Presença'}
-          </button>
-        </div>
       </div>
     </div>
+  )
+}
+
+export default function RSVPPage() {
+  return (
+    <Suspense fallback={
+      <div className="min-h-screen flex items-center justify-center bg-equinor-bg">
+        <div className="card max-w-md w-full mx-4 text-center">
+          <div className="animate-spin h-12 w-12 border-b-4 border-equinor-red mx-auto"></div>
+          <p className="mt-4 text-equinor-navy font-semibold">Carregando convite...</p>
+        </div>
+      </div>
+    }>
+      <RSVPContent />
+    </Suspense>
   )
 }

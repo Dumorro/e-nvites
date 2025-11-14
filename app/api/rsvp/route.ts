@@ -16,7 +16,7 @@ export async function GET(request: NextRequest) {
 
     const { data, error } = await supabase
       .from('guests')
-      .select('*')
+      .select('*, event:events(*)')
       .eq('guid', guid)
       .single()
 
@@ -64,7 +64,7 @@ export async function POST(request: NextRequest) {
       .from('guests')
       .update({ status })
       .eq('guid', guid)
-      .select()
+      .select('*, event:events(*)')
       .single()
 
     if (error) {

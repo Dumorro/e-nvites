@@ -16,12 +16,12 @@ export async function GET(request: NextRequest) {
 
     const searchParams = request.nextUrl.searchParams
     const statusFilter = searchParams.get('status')
-    const socialEventFilter = searchParams.get('social_event')
+    const eventIdFilter = searchParams.get('event_id')
     const searchQuery = searchParams.get('search')
 
     let query = supabase
       .from('guests')
-      .select('*')
+      .select('*, event:events(*)')
       .order('created_at', { ascending: false })
 
     // Apply status filter if provided
@@ -29,9 +29,9 @@ export async function GET(request: NextRequest) {
       query = query.eq('status', statusFilter)
     }
 
-    // Apply social_event filter if provided
-    if (socialEventFilter) {
-      query = query.eq('social_event', socialEventFilter)
+    // Apply event_id filter if provided
+    if (eventIdFilter && eventIdFilter !== 'all') {
+      query = query.eq('event_id', parseInt(eventIdFilter))
     }
 
     // Apply search filter if provided
@@ -53,13 +53,23 @@ export async function GET(request: NextRequest) {
       pending: data.filter(g => g.status === 'pending').length,
     }
 
-    // Extract unique social events
-    const socialEvents = [...new Set(data.map(g => g.social_event).filter(Boolean))] as string[]
+    // Fetch all active events from database
+    const { data: eventsData, error: eventsError } = await supabase
+      .from('events')
+      .select('id, name, slug, template_name, event_date, location')
+      .eq('is_active', true)
+      .order('event_date', { ascending: true })
+
+    if (eventsError) {
+      console.error('Error fetching events:', eventsError)
+    }
+
+    const events = eventsData || []
 
     return NextResponse.json({
       guests: data,
       stats,
-      socialEvents
+      events
     })
   } catch (error) {
     console.error('Error fetching guests:', error)
