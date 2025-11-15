@@ -40,10 +40,8 @@ export default function RSVPRioPage() {
         return
       }
 
-      setSuccess(true)
-      setGuestName(data.guest.name)
-      // Redirecionar para página de confirmação
-      window.location.href = `/confirm-rj?email=${encodeURIComponent(email.trim().toLowerCase())}`
+      // Redirecionar para página de confirmação com guid
+      window.location.href = `/confirm-rj?guid=${data.guestGuid}`
     } catch (err) {
       console.error('Error:', err)
       setError('Erro ao conectar com o servidor. Por favor, tente novamente.')

@@ -73,13 +73,7 @@ export async function POST(request: NextRequest) {
     return NextResponse.json({
       success: true,
       message: 'Presença confirmada com sucesso!',
-      guest: {
-        ...updatedGuest,
-        event: {
-          name: event.name,
-          location: event.location
-        }
-      }
+      guestGuid: updatedGuest.guid
     })
   } catch (error) {
     console.error('Error confirming RSVP:', error)

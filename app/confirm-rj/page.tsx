@@ -9,15 +9,53 @@ function ConfirmRioContent() {
   const [error, setError] = useState<string | null>(null)
   const [success, setSuccess] = useState(false)
   const [guestName, setGuestName] = useState<string | null>(null)
+  const [guestGuid, setGuestGuid] = useState<string | null>(null)
   const searchParams = useSearchParams()
 
   useEffect(() => {
-    const emailParam = searchParams.get('email')
-    if (emailParam) {
-      setEmail(emailParam)
-      handleAutoSubmit(emailParam)
+    const guidParam = searchParams.get('guid')
+    console.log('[Confirm RJ] GUID from URL:', guidParam)
+    if (guidParam) {
+      fetchGuestData(guidParam)
     }
   }, [searchParams])
+
+  const fetchGuestData = async (guid: string) => {
+    try {
+      setLoading(true)
+      setError(null)
+
+      console.log('[Confirm RJ] Fetching guest data for GUID:', guid)
+      const response = await fetch(`/api/rsvp/guest?guid=${guid}`)
+      const data = await response.json()
+
+      console.log('[Confirm RJ] API response:', { status: response.status, data })
+
+      if (!response.ok) {
+        console.error('[Confirm RJ] API error:', data.error)
+        setError(data.error || 'Erro ao buscar dados do convidado')
+        return
+      }
+
+      console.log('[Confirm RJ] Guest data received:', data.guest)
+
+      // Validate that guest belongs to event 1 (Rio)
+      if (data.guest.event_id !== 1) {
+        setError('Este convidado não está registrado para o evento do Rio de Janeiro')
+        return
+      }
+
+      setSuccess(true)
+      setGuestName(data.guest.name)
+      setEmail(data.guest.email)
+      setGuestGuid(guid)
+    } catch (err) {
+      console.error('[Confirm RJ] Error:', err)
+      setError('Erro ao conectar com o servidor. Por favor, tente novamente.')
+    } finally {
+      setLoading(false)
+    }
+  }
 
   const handleAutoSubmit = async (emailValue: string) => {
     if (!emailValue.trim()) {
@@ -48,8 +86,8 @@ function ConfirmRioContent() {
         return
       }
 
-      setSuccess(true)
-      setGuestName(data.guest.name)
+      // Redirect to confirmation page with guest GUID
+      window.location.href = `/confirm-rj?guid=${data.guestGuid}`
     } catch (err) {
       console.error('Error:', err)
       setError('Erro ao conectar com o servidor. Por favor, tente novamente.')
@@ -64,7 +102,9 @@ function ConfirmRioContent() {
   }
 
   const handleAccessInvite = () => {
-    window.location.href = `/rsvp-rj?email=${encodeURIComponent(email)}`
+    if (guestGuid) {
+      window.location.href = `/rsvp-rj?guid=${guestGuid}`
+    }
   }
 
   if (loading) {
