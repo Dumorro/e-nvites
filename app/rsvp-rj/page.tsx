@@ -295,7 +295,7 @@ export default function RSVPRioPage() {
               <div className="event-details" style={{ marginTop: '30px' }}>
                 <p><strong>Data/Date:</strong> 15 de Dezembro de 2025 | December 15, 2025</p>
                 <p><strong>Horário/Time:</strong> 18h30 | 6:30 PM</p>
-                <p><strong>Local/Venue:</strong> Museu do Amanhã – Praça Mauá 5 - Centro, Rio de Janeiro</p>
+                <p><strong>Local/Venue:</strong> MAR- Museu de Arte do Rio – Praça Mauá 5 - Centro, Rio de Janeiro</p>
               </div>
             </div>
           </>
@@ -314,7 +314,7 @@ export default function RSVPRioPage() {
             <div className="event-details">
               <p><strong>Data/Date:</strong> 15 de Dezembro de 2025 | December 15, 2025</p>
               <p><strong>Horário/Time:</strong> 18h30 | 6:30 PM</p>
-              <p><strong>Local/Venue:</strong> Museu do Amanhã – Praça Mauá 5 - Centro, Rio de Janeiro</p>
+              <p><strong>Local/Venue:</strong> MAR- Museu de Arte do Rio – Praça Mauá 5 - Centro, Rio de Janeiro</p>
             </div>
 
             <div className="form-section">
