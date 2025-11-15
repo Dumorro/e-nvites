@@ -1,9 +1,9 @@
 'use client'
 
-import { useState, useEffect } from 'react'
+import { useState, useEffect, Suspense } from 'react'
 import { useSearchParams } from 'next/navigation'
 
-export default function ConfirmSaoPauloPage() {
+function ConfirmSaoPauloContent() {
   const [email, setEmail] = useState('')
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState<string | null>(null)
@@ -387,7 +387,7 @@ export default function ConfirmSaoPauloPage() {
 
         <div className="content">
           <div className="logo">
-            <img src="https://imgs.search.brave.com/j-0shxIq5kA7QLTU7I5umIa9EBkFoYWfJdlwf5aEVyY/rs:fit:860:0:0:0/g:ce/aHR0cHM6Ly9sb2dv/ZGl4LmNvbS9sb2dv/Lzg3NTY4MC5wbmc" alt="Equinor Logo" />
+            <img src="/images/equinor-logo.png" alt="Equinor Logo" />
           </div>
 
           <div className="title">Celebração do 1º Óleo de Bacalhau</div>
@@ -417,5 +417,31 @@ export default function ConfirmSaoPauloPage() {
         <div className="footer-bar"></div>
       </div>
     </>
+  )
+}
+
+export default function ConfirmSaoPauloPage() {
+  return (
+    <Suspense fallback={
+      <>
+        <style jsx global>{`
+          body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+            background: linear-gradient(135deg, #f5f5f5 0%, #e8e8e8 100%);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            padding: 20px;
+            color: #333;
+          }
+        `}</style>
+        <div style={{ textAlign: 'center' }}>
+          <p>Carregando...</p>
+        </div>
+      </>
+    }>
+      <ConfirmSaoPauloContent />
+    </Suspense>
   )
 }

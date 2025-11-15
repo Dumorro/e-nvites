@@ -284,7 +284,7 @@ export default function RSVPRioPage() {
         {success ? (
           <>
             <div className="header">
-              <img src="https://imgs.search.brave.com/j-0shxIq5kA7QLTU7I5umIa9EBkFoYWfJdlwf5aEVyY/rs:fit:860:0:0:0/g:ce/aHR0cHM6Ly9sb2dv/ZGl4LmNvbS9sb2dv/Lzg3NTY4MC5wbmc" alt="Equinor Logo" className="logo" />
+              <img src="/images/equinor-logo.png" alt="Equinor Logo" className="logo" />
             </div>
             <div className="success-container">
               <div className="checkmark">✓</div>
@@ -304,7 +304,7 @@ export default function RSVPRioPage() {
         ) : (
           <>
             <div className="header">
-              <img src="https://imgs.search.brave.com/j-0shxIq5kA7QLTU7I5umIa9EBkFoYWfJdlwf5aEVyY/rs:fit:860:0:0:0/g:ce/aHR0cHM6Ly9sb2dv/ZGl4LmNvbS9sb2dv/Lzg3NTY4MC5wbmc" alt="Equinor Logo" className="logo" />
+              <img src="/images/equinor-logo.png" alt="Equinor Logo" className="logo" />
             </div>
 
             <div className="invitation-text">
