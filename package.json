@@ -9,7 +9,9 @@
     "lint": "next lint",
     "check-pdfs": "npx tsx scripts/check-pdf-files.ts",
     "generate-qr-codes": "npx tsx scripts/generate-qr-codes.ts",
-    "generate-qr-codes:sequential": "npx tsx scripts/generate-qr-codes.ts --sequential"
+    "generate-qr-codes:sequential": "npx tsx scripts/generate-qr-codes.ts --sequential",
+    "import-guests-sp": "node scripts/import-guests-sp.js",
+    "import-guests-rj": "node scripts/import-guests-rj.js"
   },
   "dependencies": {
     "@react-email/components": "^1.0.1",

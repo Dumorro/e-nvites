@@ -1,0 +1,1602 @@
+[
+  {
+    "qrcode": "21001",
+    "name": "Fredrik Opedal",
+    "email": "fope@equinor.com",
+    "phone": null,
+    "guid": "c84d3de1-2e5c-4814-97df-e00cdcc6e132",
+    "event_id": 1
+  },
+  {
+    "qrcode": "21002",
+    "name": "Trond Stokka Meling",
+    "email": "tsmeling@equinor.com",
+    "phone": null,
+    "guid": "11998d70-0d9c-4368-8e32-202fb3db17de",
+    "event_id": 1
+  },
+  {
+    "qrcode": "21003",
+    "name": "Elysio Nogueira",
+    "email": "enogu@equinor.com",
+    "phone": null,
+    "guid": "02186f8d-4a9d-4129-a0e5-9a4dad566934",
+    "event_id": 1
+  },
+  {
+    "qrcode": "21004",
+    "name": "Priscila dos Santos Pena Vila",
+    "email": "ppena@equinor.com",
+    "phone": null,
+    "guid": "a9188763-9397-4bff-b0d5-90a6651cd4fb",
+    "event_id": 1
+  },
+  {
+    "qrcode": "21005",
+    "name": "Boje Tveraaen",
+    "email": "bojt@equinor.com",
+    "phone": null,
+    "guid": "800e343c-0ef9-48cf-ae18-002bc37a3253",
+    "event_id": 1
+  },
+  {
+    "qrcode": "21006",
+    "name": "Terje Klungland",
+    "email": "tklu@equinor.com",
+    "phone": null,
+    "guid": "96a72f95-59b5-4bc5-8223-536b59b12483",
+    "event_id": 1
+  },
+  {
+    "qrcode": "21007",
+    "name": "Diogo Sandy",
+    "email": "disan@equinor.com",
+    "phone": null,
+    "guid": "572f874c-eeaa-4ecf-b6af-5c726920a7d3",
+    "event_id": 1
+  },
+  {
+    "qrcode": "21008",
+    "name": "Felipe do Carmo",
+    "email": "fdoc@equinor.com",
+    "phone": null,
+    "guid": "6491cfb6-f587-4ba4-9eb2-c1bdff243fda",
+    "event_id": 1
+  },
+  {
+    "qrcode": "21009",
+    "name": "Erik Amdal",
+    "email": "eamd@equinor.com",
+    "phone": null,
+    "guid": "93314d7a-86da-4a95-9b13-90b99d5c1a98",
+    "event_id": 1
+  },
+  {
+    "qrcode": "21010",
+    "name": "Bernardo de Sousa Borges",
+    "email": "berbo@equinor.com",
+    "phone": null,
+    "guid": "d71cff62-5c4c-42f9-b155-7c0e83d06889",
+    "event_id": 1
+  },
+  {
+    "qrcode": "21011",
+    "name": "Ticiana Riboldi Verdecanna",
+    "email": "ticv@equinor.com",
+    "phone": null,
+    "guid": "a58032dc-fdb1-498c-a7a9-4800e28e85c8",
+    "event_id": 1
+  },
+  {
+    "qrcode": "21012",
+    "name": "Carly Koval Reilly",
+    "email": "cakr@equinor.com",
+    "phone": null,
+    "guid": "b9245723-5e74-4c6e-b737-d9ddecae94ab",
+    "event_id": 1
+  },
+  {
+    "qrcode": "21013",
+    "name": "Trygve Eide",
+    "email": "trye@equinor.com",
+    "phone": null,
+    "guid": "02b910f7-74ca-4441-b5b0-50f0f1f63e42",
+    "event_id": 1
+  },
+  {
+    "qrcode": "21014",
+    "name": "Therese Waage Bjørkmann",
+    "email": "thew@equinor.com",
+    "phone": null,
+    "guid": "1277ddba-3127-46d0-9171-8b05ae1529e9",
+    "event_id": 1
+  },
+  {
+    "qrcode": "21015",
+    "name": "Gabriela Poly Alt",
+    "email": "gapo@equinor.com",
+    "phone": null,
+    "guid": "2d0802ce-d2fe-4d42-824b-28797554ffd4",
+    "event_id": 1
+  },
+  {
+    "qrcode": "21016",
+    "name": "Cassia Paes",
+    "email": "croc@equinor.com",
+    "phone": null,
+    "guid": "2d56ab1a-9d0f-47cb-adba-0338171a3d51",
+    "event_id": 1
+  },
+  {
+    "qrcode": "21017",
+    "name": "Lucas Breda Teixeira",
+    "email": "lbred@equinor.com",
+    "phone": null,
+    "guid": "ed951539-99ee-4d3c-ad4b-4ed8391a72f5",
+    "event_id": 1
+  },
+  {
+    "qrcode": "21018",
+    "name": "Vinicius Carvalho",
+    "email": "vinc@equinor.com",
+    "phone": null,
+    "guid": "590165f5-8440-4757-9948-d747098755f3",
+    "event_id": 1
+  },
+  {
+    "qrcode": "21019",
+    "name": "Leandro Coelho",
+    "email": "lcoe@equinor.com",
+    "phone": null,
+    "guid": "8bb5c05f-e2c8-45a0-8c06-625f097afaff",
+    "event_id": 1
+  },
+  {
+    "qrcode": "21020",
+    "name": "Camila Simao Bleser",
+    "email": "csb@equinor.com",
+    "phone": null,
+    "guid": "2dd33897-2c59-4626-a0e3-b78576285bb2",
+    "event_id": 1
+  },
+  {
+    "qrcode": "21021",
+    "name": "Hunter Farris",
+    "email": "jeanette.martinez@exxonmobil.com",
+    "phone": null,
+    "guid": "ff22e352-d755-419f-9fab-09afcc1f83ac",
+    "event_id": 1
+  },
+  {
+    "qrcode": "21022",
+    "name": "Terry Boles",
+    "email": "keisha.a.baltieri@exxonmobil.com",
+    "phone": null,
+    "guid": "53c55a3f-b475-4bde-9535-528f08c4b413",
+    "event_id": 1
+  },
+  {
+    "qrcode": "21023",
+    "name": "Alberto Ferrin",
+    "email": "rosane.z.costa@exxonmobil.com",
+    "phone": null,
+    "guid": "22b6c0f7-d6a5-45f1-9163-d2ca3bfd2ede",
+    "event_id": 1
+  },
+  {
+    "qrcode": "21024",
+    "name": "Megan Brooks",
+    "email": "megan.h.brooks@exxonmobil.com",
+    "phone": null,
+    "guid": "81ab0219-6500-4842-a335-3d151ea40f5d",
+    "event_id": 1
+  },
+  {
+    "qrcode": "21025",
+    "name": "Rachel Paez",
+    "email": "rachel.h.paez@exxonmobil.com",
+    "phone": null,
+    "guid": "d9996d31-274f-4dc9-a622-501713368cc5",
+    "event_id": 1
+  },
+  {
+    "qrcode": "21026",
+    "name": "Camila Borges",
+    "email": "camila.m.borges@exxonmobil.com",
+    "phone": null,
+    "guid": "d5704273-f4da-44f9-bcac-062a9c275ed2",
+    "event_id": 1
+  },
+  {
+    "qrcode": "21027",
+    "name": "Alan Cheyne",
+    "email": "alan.j.cheyne@exxonmobil.com",
+    "phone": null,
+    "guid": "87e98afd-5c32-4a09-9bcc-0d3814bda7c9",
+    "event_id": 1
+  },
+  {
+    "qrcode": "21028",
+    "name": "Denise Wagner",
+    "email": "denise.wagner@exxonmobil.com",
+    "phone": null,
+    "guid": "0f758860-8ced-44cf-8e51-b824deb3b2eb",
+    "event_id": 1
+  },
+  {
+    "qrcode": "21029",
+    "name": "Mauricio Nageishi",
+    "email": "mauricio.n.nageishi@exxonmobil.com",
+    "phone": null,
+    "guid": "fe86dd80-6e56-4e4e-9a5e-a69adce1c906",
+    "event_id": 1
+  },
+  {
+    "qrcode": "21030",
+    "name": "Deborah Kirsch",
+    "email": "deborah.k.kirsch@exxonmobil.com",
+    "phone": null,
+    "guid": "4102b467-b512-45a3-a784-badb62e9c497",
+    "event_id": 1
+  },
+  {
+    "qrcode": "21031",
+    "name": "Flavio Aranha",
+    "email": "flavio.b.aranha@exxonmobil.com",
+    "phone": null,
+    "guid": "cf7afd48-2325-4ce8-a97d-7fbe708a9521",
+    "event_id": 1
+  },
+  {
+    "qrcode": "21032",
+    "name": "Sandra Morais",
+    "email": "sandra.morais@exxonmobil.com",
+    "phone": null,
+    "guid": "a210d37f-e669-4c5c-b8cd-2b837b4fadbb",
+    "event_id": 1
+  },
+  {
+    "qrcode": "21033",
+    "name": "Valeria Rossi",
+    "email": "valeria.c.rossi@exxonmobil.com",
+    "phone": null,
+    "guid": "494e8b7c-b0ee-49d9-b69c-073936cf23df",
+    "event_id": 1
+  },
+  {
+    "qrcode": "21034",
+    "name": "Nuno Bastos",
+    "email": "nuno.bastos@galp.com",
+    "phone": null,
+    "guid": "d5d1de5e-b9b8-47d2-9c22-655355c599a7",
+    "event_id": 1
+  },
+  {
+    "qrcode": "21035",
+    "name": "Paula Pereira de Silva",
+    "email": "paula.pereira.silva@galp.com",
+    "phone": null,
+    "guid": "6122f898-50d9-4cc6-82b4-9bdd8edc6dfc",
+    "event_id": 1
+  },
+  {
+    "qrcode": "21036",
+    "name": "Mauro Coutinho",
+    "email": "mauro.coutinho@petrogalbrasil.com",
+    "phone": null,
+    "guid": "498c09d8-cb3b-4fcd-a329-3c574462de1d",
+    "event_id": 1
+  },
+  {
+    "qrcode": "21037",
+    "name": "Cristiane Rodrigues",
+    "email": "cristiane.coelho@galp.com",
+    "phone": null,
+    "guid": "3f2c2fc0-5e07-4154-a9eb-5ad4eca154c4",
+    "event_id": 1
+  },
+  {
+    "qrcode": "21038",
+    "name": "Yanxia Ding",
+    "email": "yanxia.ding@petrogalbrasil.com",
+    "phone": null,
+    "guid": "b7f87dfd-1034-407e-a87d-e3ae6285d380",
+    "event_id": 1
+  },
+  {
+    "qrcode": "21039",
+    "name": "Zhao Wenfang",
+    "email": "wenfang.zhao@petrogalbrasil.com",
+    "phone": null,
+    "guid": "c27512db-bea5-434d-b0df-ee1fcb0895b3",
+    "event_id": 1
+  },
+  {
+    "qrcode": "21040",
+    "name": "Luís Anjos",
+    "email": "luis.anjos@galp.com",
+    "phone": null,
+    "guid": "02c62ed6-b524-48b0-b6e2-e530f004ab92",
+    "event_id": 1
+  },
+  {
+    "qrcode": "21041",
+    "name": "Mário Ribeiro",
+    "email": "mario.luis.ribeiro@galp.com",
+    "phone": null,
+    "guid": "1f60f523-ec85-43f9-9e3d-f951e106fe45",
+    "event_id": 1
+  },
+  {
+    "qrcode": "21042",
+    "name": "Miguel Coimbra",
+    "email": "miguel.coimbra@galp.com",
+    "phone": null,
+    "guid": "eeed57a0-4c14-43fc-9faf-218b1ce54b5b",
+    "event_id": 1
+  },
+  {
+    "qrcode": "21043",
+    "name": "Miguel Palma",
+    "email": "miguel.palma@galp.com",
+    "phone": null,
+    "guid": "7c71e0bf-a6ee-4ef8-abb3-f9462df3cd6b",
+    "event_id": 1
+  },
+  {
+    "qrcode": "21044",
+    "name": "Frederico Pereira",
+    "email": "frederico.pereira@petrogalbrasil.com",
+    "phone": null,
+    "guid": "4f4217de-cb63-45e1-a0b0-55522f84c463",
+    "event_id": 1
+  },
+  {
+    "qrcode": "21045",
+    "name": "Luis Fernando Paroli Santos",
+    "email": "luis.paroli@ppsa.gov.br",
+    "phone": null,
+    "guid": "ed9c07ac-f449-4a3c-a9d3-a1470ed3b388",
+    "event_id": 1
+  },
+  {
+    "qrcode": "21046",
+    "name": "Sinésio Nicoleti",
+    "email": "sinesio.nicoleti@ppsa.gov.br",
+    "phone": null,
+    "guid": "552cffce-a6ab-4089-a6f7-e54fd49e2c66",
+    "event_id": 1
+  },
+  {
+    "qrcode": "21047",
+    "name": "Tabita Loureiro",
+    "email": "tabita.loureiro@ppsa.gov.br",
+    "phone": null,
+    "guid": "32be9f08-efb8-4555-8123-4e2634121054",
+    "event_id": 1
+  },
+  {
+    "qrcode": "21048",
+    "name": "Samir Awad",
+    "email": "samir.awad@ppsa.gov.br",
+    "phone": null,
+    "guid": "dd59b710-49ab-4f8c-bbd6-13623471f29e",
+    "event_id": 1
+  },
+  {
+    "qrcode": "21049",
+    "name": "Andréa Dunningham",
+    "email": "andrea.dunningham@ppsa.gov.br",
+    "phone": null,
+    "guid": "cfdb4cf0-f527-43dc-94dc-fb064c31c6fd",
+    "event_id": 1
+  },
+  {
+    "qrcode": "21050",
+    "name": "Katsuyuki Imaizumi",
+    "email": "Katsuyuki.Imaizumi@modec.com",
+    "phone": null,
+    "guid": "4a6e3013-9b76-4c65-b3cc-b1e66da878e6",
+    "event_id": 1
+  },
+  {
+    "qrcode": "21051",
+    "name": "Soichi Ide",
+    "email": "Soichi.Ide@modec.com",
+    "phone": null,
+    "guid": "16e9af43-c16f-4a00-a9e0-41138f898019",
+    "event_id": 1
+  },
+  {
+    "qrcode": "21052",
+    "name": "Eonio Rocha",
+    "email": "Eonio.Rocha@modec.com",
+    "phone": null,
+    "guid": "62e8a97c-28e6-4814-a053-aa688e01489d",
+    "event_id": 1
+  },
+  {
+    "qrcode": "21053",
+    "name": "Daniel Eller",
+    "email": "daniel.eller@modec.com",
+    "phone": null,
+    "guid": "d29b3c6c-3644-454b-8cd6-0849f2b58acc",
+    "event_id": 1
+  },
+  {
+    "qrcode": "21054",
+    "name": "Lula",
+    "email": "agendapr@presidencia.gov.br",
+    "phone": "(61) 3411-1216",
+    "guid": "03e92b1d-5f53-4c59-8084-2fc388cba420",
+    "event_id": 1
+  },
+  {
+    "qrcode": "21055",
+    "name": "Rui Costa",
+    "email": "mayara.santos@presidencia.gov.br",
+    "phone": "(61) 3411-1232/1096",
+    "guid": "d1c80c5a-9700-4f10-a783-a4d4316ecf70",
+    "event_id": 1
+  },
+  {
+    "qrcode": "21056",
+    "name": "Larissa Nunes",
+    "email": "larissa.nunes@presidencia.gov.br",
+    "phone": null,
+    "guid": "e08a3da1-9624-40dc-bfbc-b0e892b8b444",
+    "event_id": 1
+  },
+  {
+    "qrcode": "21057",
+    "name": "Maurício Muniz Barretto",
+    "email": "mauricio.muniz@presidencia.gov.br",
+    "phone": "(61) 3411-1212",
+    "guid": "5687daea-9eb7-47ff-950b-9948effe77de",
+    "event_id": 1
+  },
+  {
+    "qrcode": "21058",
+    "name": "Ricardo Buratini",
+    "email": "ricardo.buratini@presidencia.gov.br",
+    "phone": "(61) 3411-1023",
+    "guid": "647a1dd4-d265-4d20-acb2-dd2220233a1a",
+    "event_id": 1
+  },
+  {
+    "qrcode": "21059",
+    "name": "Volney Zanardi Júnior",
+    "email": "volney.zanardi@presidencia.gov.br",
+    "phone": "(61) 3411-1023",
+    "guid": "92f33742-aaef-4c2e-a997-971779049238",
+    "event_id": 1
+  },
+  {
+    "qrcode": "21060",
+    "name": "Maurício Baruchi",
+    "email": "mauricio.baruchi@presidencia.gov.br",
+    "phone": "(61) 3411-1023",
+    "guid": "99bdbc4b-04a5-4618-886b-5c173d0cce3a",
+    "event_id": 1
+  },
+  {
+    "qrcode": "21061",
+    "name": "Euler Lage",
+    "email": "euler.lage@presidencia.gov.br",
+    "phone": null,
+    "guid": "08c4dbb1-35e0-44f2-b75c-a09530667b97",
+    "event_id": 1
+  },
+  {
+    "qrcode": "21062",
+    "name": "Marcus Cavalcanti",
+    "email": "secretariosppi@presidencia.gov.br",
+    "phone": "(61) 3411-8564/8532",
+    "guid": "72b52f50-938c-4e10-9a0c-e5745e7191c6",
+    "event_id": 1
+  },
+  {
+    "qrcode": "21063",
+    "name": "Cecília Machado Cafezeiro",
+    "email": "cecilia.cafezeiro@presidencia.gov.br",
+    "phone": "(61) 3411-8564/8532",
+    "guid": "ea7d7301-150d-43a6-898e-df1284dcb859",
+    "event_id": 1
+  },
+  {
+    "qrcode": "21064",
+    "name": "João Henrique Lima do Nascimento",
+    "email": "j.nascimento@presidencia.gov.br",
+    "phone": "(61) 3411-8522",
+    "guid": "f57e0abe-2df3-4e98-9ef6-98da760a85a8",
+    "event_id": 1
+  },
+  {
+    "qrcode": "21065",
+    "name": "Cleyton Miranda Barros",
+    "email": "cleyton.barros@presidencia.gov.br",
+    "phone": "(61) 3411-8502",
+    "guid": "ca6e4cfa-9716-4a46-beb0-d8b6b49661dd",
+    "event_id": 1
+  },
+  {
+    "qrcode": "21066",
+    "name": "Régis Pinto",
+    "email": "regis.pinto@presidencia.gov.br",
+    "phone": "(61) 3411-8561",
+    "guid": "8a152164-7bef-4b23-9a18-c1295022b7db",
+    "event_id": 1
+  },
+  {
+    "qrcode": "21067",
+    "name": "Fernando Haddad",
+    "email": "gabinete.ministro@fazenda.gov.br",
+    "phone": "MF",
+    "guid": "ff7a8036-fe10-4bb2-ba6d-1dc21e21332f",
+    "event_id": 1
+  },
+  {
+    "qrcode": "21068",
+    "name": "Dario Durigan",
+    "email": "secretariaexecutiva@fazenda.gov.br",
+    "phone": null,
+    "guid": "8e7665e2-52e4-42e8-bc91-bcf245312312",
+    "event_id": 1
+  },
+  {
+    "qrcode": "21069",
+    "name": "Marcos Barbosa Pinto",
+    "email": "sre@fazenda.gov.br",
+    "phone": "(61) 3412-1818/2151/1992",
+    "guid": "1e6cc988-9654-4d00-ae71-0aeb5d624077",
+    "event_id": 1
+  },
+  {
+    "qrcode": "21070",
+    "name": "Gustavo Henrique",
+    "email": "gustavo.ferreira@fazenda.gov.br",
+    "phone": "MF",
+    "guid": "350760f7-ad84-4c90-95cf-444e9948a4cb",
+    "event_id": 1
+  },
+  {
+    "qrcode": "21071",
+    "name": "Robinson Sakiyama Barreirinhas",
+    "email": "agenda.receita@rfb.gov.br",
+    "phone": "(61) 3412-2707",
+    "guid": "0835c0f9-068e-4aca-b818-1d37eccba9de",
+    "event_id": 1
+  },
+  {
+    "qrcode": "21072",
+    "name": "Guilherme Mello",
+    "email": "spe.gabin@economia.gov.br",
+    "phone": "61 3412-2315",
+    "guid": "799f618e-e2a0-4b56-8e0d-8e734df64ebf",
+    "event_id": 1
+  },
+  {
+    "qrcode": "21073",
+    "name": "Alexandre Silveira",
+    "email": "gabinete@mme.gov.br",
+    "phone": "(061)2032-5401",
+    "guid": "a2b0499a-9853-4551-ae6e-4626b72012d5",
+    "event_id": 1
+  },
+  {
+    "qrcode": "21074",
+    "name": "Renato Cabral Dias Dutra",
+    "email": "snpgb@mme.gov.br",
+    "phone": "MME",
+    "guid": "26a1276b-34fc-4a7c-a914-5e316b9a3797",
+    "event_id": 1
+  },
+  {
+    "qrcode": "21075",
+    "name": "Carlos Agenor Onofre Cabral",
+    "email": "carlos.cabral@mme.gov.br",
+    "phone": "(61) 2032-5848",
+    "guid": "17ff1085-bd6b-4bce-9a96-49fcb5e64541",
+    "event_id": 1
+  },
+  {
+    "qrcode": "21076",
+    "name": "Fernando Matsumoto",
+    "email": "fernando.matsumoto@mme.gov.br",
+    "phone": "61 2032 5506",
+    "guid": "a5c17c96-0700-413c-b919-2ad0028c5059",
+    "event_id": 1
+  },
+  {
+    "qrcode": "21077",
+    "name": "Edie Andreeto Jr",
+    "email": "edie.junior@mme.gov.br",
+    "phone": "61 2032-5848",
+    "guid": "80414281-ec0f-4692-b35d-ab3f74cc29f3",
+    "event_id": 1
+  },
+  {
+    "qrcode": "21078",
+    "name": "Mauricio Abi Chahin",
+    "email": "mauricio.abi-chahin@mme.gov.br",
+    "phone": "61 2032 5506",
+    "guid": "fb539158-13de-490e-91ee-e7bc9db02503",
+    "event_id": 1
+  },
+  {
+    "qrcode": "21079",
+    "name": "Marcello Gomes Weydt",
+    "email": "dgn@mme.gov.br",
+    "phone": "MME",
+    "guid": "7e901a8b-8e65-4575-8197-f06958caa797",
+    "event_id": 1
+  },
+  {
+    "qrcode": "21080",
+    "name": "Maria Ceicilene Aragão Martins",
+    "email": "ceicilene.martins@mme.gov.br",
+    "phone": null,
+    "guid": "2088111d-8dd8-4c70-8cba-10c48c3ef03d",
+    "event_id": 1
+  },
+  {
+    "qrcode": "21081",
+    "name": "Mariana Cavadinha Costa da Silva",
+    "email": "mcavadinha@anp.gov.br",
+    "phone": "(21) 2112-8463",
+    "guid": "2886d7b6-cf65-4b77-ad8e-64082eca9e3d",
+    "event_id": 1
+  },
+  {
+    "qrcode": "21082",
+    "name": "Maíra Fortes Bonafé",
+    "email": "mbonafe@anp.gov.br",
+    "phone": "(21) 2112-8463",
+    "guid": "5f2cb04d-c741-49eb-9418-d68a201e511f",
+    "event_id": 1
+  },
+  {
+    "qrcode": "21083",
+    "name": "Artur Watt Neto",
+    "email": "awatt@anp.gov.br",
+    "phone": "(21) 2112-8101",
+    "guid": "ac2c8be1-512b-43ae-a6e4-ce9972c2a2af",
+    "event_id": 1
+  },
+  {
+    "qrcode": "21084",
+    "name": "Symone Christine de Santana Araújo",
+    "email": "diretoria1@anp.gov.br",
+    "phone": "(21) 2112-8160",
+    "guid": "c003fda4-2bc6-430f-9667-a6e6bac9a48f",
+    "event_id": 1
+  },
+  {
+    "qrcode": "21085",
+    "name": "Daniel Maia Vieira",
+    "email": "diretoria2@anp.gov.br",
+    "phone": "(21) 2112-8134",
+    "guid": "7f359a2d-b9d9-4815-a9f0-ba0483144f48",
+    "event_id": 1
+  },
+  {
+    "qrcode": "21086",
+    "name": "Fernando Moura",
+    "email": "diretoria3@anp.gov.br",
+    "phone": "(21) 2112-8144",
+    "guid": "37e393d1-d00a-4d72-bee2-09ca7ab50195",
+    "event_id": 1
+  },
+  {
+    "qrcode": "21087",
+    "name": "Pietro Mendes",
+    "email": "diretoria4@anp.gov.br",
+    "phone": "(21) 2112-8353",
+    "guid": "ef99ab9a-86d1-45bc-acc2-21aded375f5c",
+    "event_id": 1
+  },
+  {
+    "qrcode": "21088",
+    "name": "Thiago Ivanoski Teixeira",
+    "email": "presidencia@epe.gov.br",
+    "phone": "(21) 3512-3110/3512-3111",
+    "guid": "e5a9de69-d568-4886-885b-61433ebc33be",
+    "event_id": 1
+  },
+  {
+    "qrcode": "21089",
+    "name": "Heloisa Borges",
+    "email": "heloisa.esteves@epe.gov.br",
+    "phone": null,
+    "guid": "8d869f38-3d5d-40e8-91cb-605c423867a6",
+    "event_id": 1
+  },
+  {
+    "qrcode": "21090",
+    "name": "Marcelo Alfradique",
+    "email": "Marcelo.alfradique@epe.gov.br",
+    "phone": "55 21 3512 3172",
+    "guid": "4f4bf64e-9d40-4a99-a966-a62c307a63d6",
+    "event_id": 1
+  },
+  {
+    "qrcode": "21091",
+    "name": "Rodrigo Agostinho",
+    "email": "presidencia@ibama.gov.br",
+    "phone": "(61) 3316-1001, (61) 3316-1002 e (61) 3316-1003",
+    "guid": "80e3665b-4aff-4767-b9df-a70393c42b07",
+    "event_id": 1
+  },
+  {
+    "qrcode": "21092",
+    "name": "Claudia Jeanne da Silva Barros",
+    "email": "dilic.sede@ibama.gov.br",
+    "phone": "(61) 3316-1282/1745",
+    "guid": "034cbd9d-940a-4dee-b424-b1fc758c872e",
+    "event_id": 1
+  },
+  {
+    "qrcode": "21093",
+    "name": "Itagyba Alvarenga Neto",
+    "email": "itagyba.alvarenga-neto@ibama.gov.br",
+    "phone": "(61) 3316-1472",
+    "guid": "0a9c0c3d-3629-480d-8374-eb4bca183c82",
+    "event_id": 1
+  },
+  {
+    "qrcode": "21094",
+    "name": "Alexandre Santos da Souza",
+    "email": "coexp.rj@ibama.gov.br",
+    "phone": "(21) 3077-4267/4273",
+    "guid": "d1b4c048-dbb0-4c21-82ab-c1f44528edf5",
+    "event_id": 1
+  },
+  {
+    "qrcode": "21095",
+    "name": "Marcelo Marcelino",
+    "email": "marcelo.marcelino@icmbio.gov.br",
+    "phone": "(61) 2028-9055/9047",
+    "guid": "3557f818-9061-4b59-82d7-1cec1f0fccbe",
+    "event_id": 1
+  },
+  {
+    "qrcode": "21096",
+    "name": "Breno Herrera da Silva Coelho",
+    "email": "breno.coelho@icmbio.gov.br",
+    "phone": "ICMBIO",
+    "guid": "2d45559a-d7a8-4353-924e-772875ee3138",
+    "event_id": 1
+  },
+  {
+    "qrcode": "21097",
+    "name": "Geraldo Alckmin​",
+    "email": "vpr.gabinete@presidencia.gov.br",
+    "phone": "MDIC",
+    "guid": "1e3a451f-111a-4119-a42f-67ca397af4bc",
+    "event_id": 1
+  },
+  {
+    "qrcode": "21098",
+    "name": "Uallace Moreira Lima",
+    "email": "sdic.gabinete@mdic.gov.br",
+    "phone": "(61) 2027-7070",
+    "guid": "b3f5a643-ae6f-4ace-ae72-ab8138759fbe",
+    "event_id": 1
+  },
+  {
+    "qrcode": "21100",
+    "name": "João Francisco Paiva",
+    "email": "sev.dcarb@mdic.gov.br",
+    "phone": "(61) 2027-9875",
+    "guid": "1107e150-2749-455d-826d-37fbd2cd2f7e",
+    "event_id": 1
+  },
+  {
+    "qrcode": "21101",
+    "name": "Márcio Fernando Elias Rosa",
+    "email": "gabse@mdic.gov.br",
+    "phone": "(61) 2027-7041 / 7566 / 8058",
+    "guid": "0c66f064-797a-48b0-8046-e26856eab2c2",
+    "event_id": 1
+  },
+  {
+    "qrcode": "21102",
+    "name": "Tatiana Prazeres",
+    "email": "secex.audiencia@mdic.gov.br",
+    "phone": "(61) 2027-8185",
+    "guid": "2121f1a7-49b8-4142-8b45-74f9dfd1f0b1",
+    "event_id": 1
+  },
+  {
+    "qrcode": "21103",
+    "name": "Pedro Ivo",
+    "email": "agenda.scpr@mdic.gov.br",
+    "phone": "(61) 2027-8292 / 7717",
+    "guid": "3341e7bc-4f29-445e-8b92-e1f115e18918",
+    "event_id": 1
+  },
+  {
+    "qrcode": "21104",
+    "name": "Alexandre Messa",
+    "email": "alexandre.messa@mdic.gov.br",
+    "phone": null,
+    "guid": "6ebd4fe9-439b-4510-ba84-0bdaf5811f2c",
+    "event_id": 1
+  },
+  {
+    "qrcode": "21105",
+    "name": "Mauricio Marins Machado",
+    "email": "mauricio.machado@mdic.gov.br",
+    "phone": "61 20277724",
+    "guid": "ca300e00-d14f-4845-90ef-490f12cdd206",
+    "event_id": 1
+  },
+  {
+    "qrcode": "21106",
+    "name": "Christine Maranhão de Oliveira",
+    "email": "christiane.oliveira@mdic.gov.br",
+    "phone": "61 20277098",
+    "guid": "ff461791-8cc1-45ff-b9c1-6ec72e41456e",
+    "event_id": 1
+  },
+  {
+    "qrcode": "21107",
+    "name": "Odd Magne Ruud",
+    "email": "odd.magne.ruud@mfa.no",
+    "phone": null,
+    "guid": "98fbc252-9590-4ade-9a72-1afa6328df3e",
+    "event_id": 1
+  },
+  {
+    "qrcode": "21108",
+    "name": "Kjetil Elsebutangen",
+    "email": "ambassaden.brasilia@gov.se",
+    "phone": "61 3442 5200",
+    "guid": "71f05f20-2f10-4018-acac-8431af51c708",
+    "event_id": 1
+  },
+  {
+    "qrcode": "21109",
+    "name": "Mette Tangen",
+    "email": "mette.tangen@mfa.no",
+    "phone": "(21)965021187",
+    "guid": "af8b8685-656a-4016-b5ad-b5b8482ff3ac",
+    "event_id": 1
+  },
+  {
+    "qrcode": "21110",
+    "name": "Thomas Conradi Granli",
+    "email": "Thomas.Conradi.Granli@innovationnorway.no",
+    "phone": "(47)97775410",
+    "guid": "75a59d6e-8bcb-4f57-a186-fabc6bd60260",
+    "event_id": 1
+  },
+  {
+    "qrcode": "21111",
+    "name": "Raquel Filgueiras",
+    "email": "raquel.filgueiras@innovationnorway.no",
+    "phone": "(61) 99668595",
+    "guid": "5388d003-6cc4-4021-8d91-25f978225db5",
+    "event_id": 1
+  },
+  {
+    "qrcode": "21112",
+    "name": "Pilar Santos Neves",
+    "email": "pilar.neves@innovationnorway.no",
+    "phone": "(21) 997059449",
+    "guid": "c38cd49d-d168-4410-a882-7f9fb0e35d0d",
+    "event_id": 1
+  },
+  {
+    "qrcode": "21113",
+    "name": "Patrick Reurink",
+    "email": "patrick.reurink@innovationnorway.no",
+    "phone": "(47)97199002",
+    "guid": "5de79d60-af67-4abb-815f-f62f936b705b",
+    "event_id": 1
+  },
+  {
+    "qrcode": "21114",
+    "name": "Kjetil Solbrakke",
+    "email": "kjetil@maha-energy.com",
+    "phone": "(21)984586645",
+    "guid": "fa275349-0367-4fab-9655-795a2d3d87db",
+    "event_id": 1
+  },
+  {
+    "qrcode": "21115",
+    "name": "Therese Fuglerud",
+    "email": "therese.fuglerud@rystadenergy.com",
+    "phone": null,
+    "guid": "b3c40453-a107-495b-9dfb-bee25b134be4",
+    "event_id": 1
+  },
+  {
+    "qrcode": "21116",
+    "name": "Aleksander Skaare",
+    "email": "aleksander.skaare@scatec.com",
+    "phone": null,
+    "guid": "1ecbdbe1-9380-47d8-ab44-05baefac7473",
+    "event_id": 1
+  },
+  {
+    "qrcode": "21117",
+    "name": "Klaus Doscher",
+    "email": "klaus.doscher@hydro.com",
+    "phone": null,
+    "guid": "5d4c13cd-86dc-4391-91d4-ce55c63465c1",
+    "event_id": 1
+  },
+  {
+    "qrcode": "21118",
+    "name": "Adhemar Freire",
+    "email": "adhemar.freire@norwep.com",
+    "phone": "(21)999765388",
+    "guid": "bead7a0d-4a45-4686-8af3-be21a847890d",
+    "event_id": 1
+  },
+  {
+    "qrcode": "21119",
+    "name": "Tobias Vieira Alvarenga",
+    "email": "tobias.alvarenga@dnv.com",
+    "phone": null,
+    "guid": "c304fc9a-cb02-4ed3-9aac-67a6365a634b",
+    "event_id": 1
+  },
+  {
+    "qrcode": "21120",
+    "name": "Cristiane delamare",
+    "email": "cristiane.delamare@km.kongsberg.com",
+    "phone": null,
+    "guid": "c610c9ed-7d1f-45b1-8956-98f82d7f996b",
+    "event_id": 1
+  },
+  {
+    "qrcode": "21121",
+    "name": "Natasha Gaertner",
+    "email": "natasha.gaertner@statkraft.com",
+    "phone": null,
+    "guid": "11b07ccf-b982-477f-9266-552179f23931",
+    "event_id": 1
+  },
+  {
+    "qrcode": "21122",
+    "name": "Claudio Goulart",
+    "email": "claudio.goulart@dnb.no",
+    "phone": null,
+    "guid": "ec9e66da-c509-40c3-9ff7-881ccbcbc181",
+    "event_id": 1
+  },
+  {
+    "qrcode": "21123",
+    "name": "André Steinsett Mathiesen",
+    "email": "anmat@equinor.com",
+    "phone": null,
+    "guid": "3b2a62f4-4771-4bf2-a8a5-283bd8bcbced",
+    "event_id": 1
+  },
+  {
+    "qrcode": "21124",
+    "name": "Cauê Hess",
+    "email": "CHESS@equinor.com",
+    "phone": null,
+    "guid": "dd27b735-d99d-48f0-b35d-cb1fec06d4c1",
+    "event_id": 1
+  },
+  {
+    "qrcode": "21125",
+    "name": "Claudia Brun",
+    "email": "cbrun@equinor.com",
+    "phone": null,
+    "guid": "c8610ca3-d56d-42a5-b466-e274fac6c0ba",
+    "event_id": 1
+  },
+  {
+    "qrcode": "21126",
+    "name": "Frode Abotnes",
+    "email": "fab@equinor.com",
+    "phone": null,
+    "guid": "42bb907e-c746-4e0e-a668-305bd8596a3e",
+    "event_id": 1
+  },
+  {
+    "qrcode": "21127",
+    "name": "Håvard Stensrud",
+    "email": "hasten@equinor.com",
+    "phone": null,
+    "guid": "a1367433-cbb3-4a4c-82e2-db00c8cb8ca4",
+    "event_id": 1
+  },
+  {
+    "qrcode": "21128",
+    "name": "Ivar Norum",
+    "email": "ivnor@equinor.com",
+    "phone": null,
+    "guid": "cfa7b3b4-e92c-4dbd-832a-fd160db954f6",
+    "event_id": 1
+  },
+  {
+    "qrcode": "21129",
+    "name": "Jacopo Iorino",
+    "email": "jiori@equinor.com",
+    "phone": null,
+    "guid": "abd7acc2-4da9-4078-b745-9db32de166a9",
+    "event_id": 1
+  },
+  {
+    "qrcode": "21130",
+    "name": "Jákup Øregaard",
+    "email": "jhor@equinor.com",
+    "phone": null,
+    "guid": "9dc688a3-03eb-4c0b-85c0-381c3b4ff4fd",
+    "event_id": 1
+  },
+  {
+    "qrcode": "21131",
+    "name": "Knut-Ivar Ødegård",
+    "email": "knuod@equinor.com",
+    "phone": null,
+    "guid": "cc785820-0385-47c5-88a3-3008910eeeb2",
+    "event_id": 1
+  },
+  {
+    "qrcode": "21132",
+    "name": "Lars Jetlund Hansen",
+    "email": "ljhans@equinor.com",
+    "phone": null,
+    "guid": "846de508-f4fd-4edb-8b3c-615a6964d6aa",
+    "event_id": 1
+  },
+  {
+    "qrcode": "21133",
+    "name": "Leticia Andrade",
+    "email": "letan@equinor.com",
+    "phone": null,
+    "guid": "7c77de4c-9567-4170-811c-a8c386db33fa",
+    "event_id": 1
+  },
+  {
+    "qrcode": "21134",
+    "name": "Luciana Gomes",
+    "email": "lugom@equinor.com",
+    "phone": null,
+    "guid": "5aa7e603-3243-4beb-a989-5f4e53039834",
+    "event_id": 1
+  },
+  {
+    "qrcode": "21135",
+    "name": "Paulo Henrique Van Der Ven",
+    "email": "pdve@equinor.com",
+    "phone": null,
+    "guid": "24dac6d0-d4c9-4a36-98f8-417b5979158f",
+    "event_id": 1
+  },
+  {
+    "qrcode": "21136",
+    "name": "Sandra Madelen Dvergsnes",
+    "email": "sdv@equinor.com",
+    "phone": null,
+    "guid": "f99c0170-0dfc-4dbd-9df7-dbd1790c6b56",
+    "event_id": 1
+  },
+  {
+    "qrcode": "21137",
+    "name": "Unni Merethe Skorstad Fjær",
+    "email": "usf@equinor.com",
+    "phone": null,
+    "guid": "9b752aa4-e7f5-4fbb-a537-fbe0041e9c58",
+    "event_id": 1
+  },
+  {
+    "qrcode": "21138",
+    "name": "Veronica Rezende Coelho",
+    "email": "vco@equinor.com",
+    "phone": null,
+    "guid": "b552aa19-31c6-4186-8ba9-479fece199ec",
+    "event_id": 1
+  },
+  {
+    "qrcode": "21139",
+    "name": "Pedro Gerhard",
+    "email": "peger@equinor.com",
+    "phone": null,
+    "guid": "f8cfb1ac-038d-4737-b29f-73858883fe25",
+    "event_id": 1
+  },
+  {
+    "qrcode": "21140",
+    "name": "Rafael Tristão",
+    "email": "raft@equinor.com",
+    "phone": null,
+    "guid": "7330a422-9239-472f-b1d8-7dc7e92045c1",
+    "event_id": 1
+  },
+  {
+    "qrcode": "21141",
+    "name": "Anders Opedal",
+    "email": "andop@equinor.com",
+    "phone": null,
+    "guid": "a42c23bc-08c2-4855-bf23-4563afba4dde",
+    "event_id": 1
+  },
+  {
+    "qrcode": "21142",
+    "name": "Philippe Mathieu",
+    "email": "phima@equinor.com",
+    "phone": null,
+    "guid": "be8da0ba-faf4-4592-a351-19a2457a3d6d",
+    "event_id": 1
+  },
+  {
+    "qrcode": "21143",
+    "name": "GeierTungesvik",
+    "email": "gtu@equinor.com",
+    "phone": null,
+    "guid": "253428c1-e41c-405d-a42e-218febdcc886",
+    "event_id": 1
+  },
+  {
+    "qrcode": "21144",
+    "name": "Trond Bokn",
+    "email": "trbo@equinor.com",
+    "phone": "47 97562943",
+    "guid": "b6fc6053-a7c8-46ca-8020-3b2e5206a10b",
+    "event_id": 1
+  },
+  {
+    "qrcode": "21145",
+    "name": "Tamara Björnbekk Solaja",
+    "email": "tams@equinor.com",
+    "phone": "47 46917044",
+    "guid": "c694dd01-d2f7-47b0-b943-683539051cc0",
+    "event_id": 1
+  },
+  {
+    "qrcode": "21146",
+    "name": "Maria Gharesifard",
+    "email": "mgha@equinor.com",
+    "phone": "47 41416708",
+    "guid": "79c974c9-1965-4983-a300-68700c6526e8",
+    "event_id": 1
+  },
+  {
+    "qrcode": "21147",
+    "name": "Nicolas Fouilloud",
+    "email": "nfou@equinor.com",
+    "phone": "47 47689362",
+    "guid": "0193e7aa-f3b6-4a0b-a3fd-a379aba738ab",
+    "event_id": 1
+  },
+  {
+    "qrcode": "21148",
+    "name": "Silje Ramvik",
+    "email": "sramv@equinor.com",
+    "phone": "47 40479479",
+    "guid": "5ff293b3-ba80-43e5-9b54-ef9d87062fab",
+    "event_id": 1
+  },
+  {
+    "qrcode": "21149",
+    "name": "Eskill Eriksen",
+    "email": "eseri@equinor.com",
+    "phone": "47 95882534",
+    "guid": "6c8f3471-b718-42db-b3da-1748a47437ff",
+    "event_id": 1
+  },
+  {
+    "qrcode": "21150",
+    "name": "Caroline Imig",
+    "email": "himi@equinor.com",
+    "phone": "44 7562944206",
+    "guid": "15feb8d9-ed3d-4a71-ad70-02ae4804a1ae",
+    "event_id": 1
+  },
+  {
+    "qrcode": "21151",
+    "name": "Trude Måseide",
+    "email": "TRMAS@equinor.com",
+    "phone": "47 95726510",
+    "guid": "a99a94de-cba7-433f-8d00-f2f34e5a3e17",
+    "event_id": 1
+  },
+  {
+    "qrcode": "21152",
+    "name": "Emma White",
+    "email": "ewhi@equinor.com",
+    "phone": "44 7880187517",
+    "guid": "1686ab3a-fee6-4677-8a6e-5cd9b17080f0",
+    "event_id": 1
+  },
+  {
+    "qrcode": "21153",
+    "name": "Jannik Lindbæk",
+    "email": "jljr@equinor.com",
+    "phone": null,
+    "guid": "5516c13d-ef35-4593-9920-b203e164f68d",
+    "event_id": 1
+  },
+  {
+    "qrcode": "21154",
+    "name": "Glicia Gomes",
+    "email": "glig@equinor.com",
+    "phone": "55 21 999679357",
+    "guid": "bf5f12fc-b277-4cac-bb91-aff14383053b",
+    "event_id": 1
+  },
+  {
+    "qrcode": "21155",
+    "name": "Thiago Martins",
+    "email": "thmar@equinor.com",
+    "phone": "55 21967310136",
+    "guid": "4b82f686-00e7-4397-8398-11b783207a86",
+    "event_id": 1
+  },
+  {
+    "qrcode": "21156",
+    "name": "Jorge Sequeira",
+    "email": "jseq@equinor.com",
+    "phone": "55 21999742349",
+    "guid": "be4c61b1-2464-488a-ae8b-442dfbe61e82",
+    "event_id": 1
+  },
+  {
+    "qrcode": "21157",
+    "name": "Camila Manfredini",
+    "email": "cmanf@equinor.com",
+    "phone": "55 21993247513",
+    "guid": "cdc624a3-1315-4d81-8296-9aac12ba8c0d",
+    "event_id": 1
+  },
+  {
+    "qrcode": "21158",
+    "name": "Ana Cupelo",
+    "email": "acup@equinor.com",
+    "phone": "55 21971328094",
+    "guid": "456819ed-5a77-4622-a861-678e53d36c34",
+    "event_id": 1
+  },
+  {
+    "qrcode": "21159",
+    "name": "Kjetil Myklebust",
+    "email": "kjemy@equinor.com",
+    "phone": "47 47270657",
+    "guid": "bc2f2fd5-8b19-4e23-ac5c-3636931163f3",
+    "event_id": 1
+  },
+  {
+    "qrcode": "21160",
+    "name": "Fabricio Aquino",
+    "email": "faq@equinor.com",
+    "phone": "55 21992861999",
+    "guid": "a07761b8-1db8-46bc-90ab-81999795e205",
+    "event_id": 1
+  },
+  {
+    "qrcode": "21161",
+    "name": "Rafael Gloria",
+    "email": "rfg@equinor.com",
+    "phone": "55 21982339921",
+    "guid": "04aef633-6cec-47e2-9388-c0d9e5b7dbb7",
+    "event_id": 1
+  },
+  {
+    "qrcode": "21162",
+    "name": "Petter Danielsen",
+    "email": "petdan@equinor.com",
+    "phone": "47 90762998",
+    "guid": "cbf09a38-94db-4961-9174-b65433d03761",
+    "event_id": 1
+  },
+  {
+    "qrcode": "21163",
+    "name": "Luciana Nunes",
+    "email": "lnun@equinor.com",
+    "phone": "55 21996437058",
+    "guid": "c556da67-0d95-47d9-a4ad-f3bbbf44ccac",
+    "event_id": 1
+  },
+  {
+    "qrcode": "21164",
+    "name": "Roberto Ardenghy",
+    "email": "roberto.ardenghy@ibp.org.br",
+    "phone": null,
+    "guid": "05e2aa0c-cc79-4c5e-93e3-b189086a0c20",
+    "event_id": 1
+  },
+  {
+    "qrcode": "21165",
+    "name": "Sylvia dos Anjos",
+    "email": "sanjos@petrobras.com.br",
+    "phone": null,
+    "guid": "02a66dbe-db5e-486a-8b3c-527be0f467cd",
+    "event_id": 1
+  },
+  {
+    "qrcode": "21166",
+    "name": "Cristiano Pinto",
+    "email": "c.pintodacosta@shell.com",
+    "phone": null,
+    "guid": "16cdc8b2-0d2f-4cc9-a080-f359b9c8ffef",
+    "event_id": 1
+  },
+  {
+    "qrcode": "21167",
+    "name": "Olivier Bahabanian",
+    "email": "olivier.bahabanian@totalenergies.com",
+    "phone": null,
+    "guid": "ec21707b-db0b-4fcb-9f18-76f5e7d2340a",
+    "event_id": 1
+  },
+  {
+    "qrcode": "21168",
+    "name": "Alejandro Ponce",
+    "email": "aponceb@repsolsinopec.com",
+    "phone": null,
+    "guid": "a539e2e4-2fc6-4841-9b14-61951c9e3e30",
+    "event_id": 1
+  },
+  {
+    "qrcode": "21169",
+    "name": "Hugues Corrignan",
+    "email": "hcorrignan@trident-energy.com",
+    "phone": null,
+    "guid": "8171e03c-278b-48b6-9528-1b6abcc2cd3c",
+    "event_id": 1
+  },
+  {
+    "qrcode": "21170",
+    "name": "Luiz Felipe Coutinho",
+    "email": "lfc@origemenergia.com",
+    "phone": null,
+    "guid": "f0706587-e9e3-418b-8912-b26acac72405",
+    "event_id": 1
+  },
+  {
+    "qrcode": "21171",
+    "name": "Patricia Pradal",
+    "email": "ppbk@chevron.com",
+    "phone": null,
+    "guid": "f74c951a-712d-45a5-bbbf-61ce07b10d73",
+    "event_id": 1
+  },
+  {
+    "qrcode": "21172",
+    "name": "Clarissa Lins",
+    "email": "clarissa.lins@catavento.biz",
+    "phone": null,
+    "guid": "d56d89f5-6b45-4c43-8acb-f24eb2c2174b",
+    "event_id": 1
+  },
+  {
+    "qrcode": "21173",
+    "name": "Burna Mascotte Oliveira de Menezes",
+    "email": "bruna.mascotte@catavento.biz",
+    "phone": null,
+    "guid": "3aa9bd39-7171-4169-8b68-cbf98c39b0ad",
+    "event_id": 1
+  },
+  {
+    "qrcode": "21174",
+    "name": "Julia Dias Leite",
+    "email": "julia.diasleite@cebri.org.br",
+    "phone": null,
+    "guid": "2065d13a-e7a6-4cc2-8870-86c602b4963f",
+    "event_id": 1
+  },
+  {
+    "qrcode": "21175",
+    "name": "Marina Grossi",
+    "email": "presidencia@cebds.org",
+    "phone": null,
+    "guid": "6c8f905c-1e18-433c-9621-380103e59df1",
+    "event_id": 1
+  },
+  {
+    "qrcode": "21176",
+    "name": "Karine Fragoso",
+    "email": "kfragoso@firjan.com.br",
+    "phone": null,
+    "guid": "4906412b-c8ec-4be7-94bb-0ec3b255426e",
+    "event_id": 1
+  },
+  {
+    "qrcode": "21177",
+    "name": "Roberto Colindres",
+    "email": "roberto.colindres@rioenergy.com.br",
+    "phone": null,
+    "guid": "6d8edc80-72e8-45b6-a7b5-b8225203e9f6",
+    "event_id": 1
+  },
+  {
+    "qrcode": "21178",
+    "name": "Marina de Paula",
+    "email": "marina.depaula@patri.com.br",
+    "phone": null,
+    "guid": "347f2c44-a541-4d57-b3ef-33e2ccf6eaad",
+    "event_id": 1
+  },
+  {
+    "qrcode": "21179",
+    "name": "Marcelo Velloso",
+    "email": "marcelo.velloso@museudeartedorio.org.br",
+    "phone": null,
+    "guid": "e52e11fd-e60c-4d3a-947a-662d7b2447e7",
+    "event_id": 1
+  },
+  {
+    "qrcode": "21180",
+    "name": "Rodrigo Rossi",
+    "email": "Rodrigo.rossi@oei.int",
+    "phone": null,
+    "guid": "9d4e4328-a8ec-42b8-9230-cb86dbe74de6",
+    "event_id": 1
+  },
+  {
+    "qrcode": "21181",
+    "name": "Ricardo Alban",
+    "email": "presidente@cni.com.br/presidente@cni.com.br",
+    "phone": null,
+    "guid": "65f1eb09-4422-4855-a592-071e74128030",
+    "event_id": 1
+  },
+  {
+    "qrcode": "21182",
+    "name": "Roberto Muniz",
+    "email": "roberto.muniz@cni.com.br/aperes@cni.com.br",
+    "phone": null,
+    "guid": "72ca0fbc-65ae-4180-bfbe-1a3df921d01a",
+    "event_id": 1
+  },
+  {
+    "qrcode": "21183",
+    "name": "Havila da Nobrega",
+    "email": "havila.oliveira@cni.com.br",
+    "phone": null,
+    "guid": "5fea74dd-4b18-4215-8cb9-14ab3b26b57d",
+    "event_id": 1
+  },
+  {
+    "qrcode": "21184",
+    "name": "Wagner Cardoso",
+    "email": "wcardoso@cni.com.br",
+    "phone": null,
+    "guid": "46dde6d0-cc67-4e61-be66-dfb6e162e43e",
+    "event_id": 1
+  },
+  {
+    "qrcode": "21185",
+    "name": "Vinicius Pimenta",
+    "email": "vinicius.pimenta@triunfologistica.com.br",
+    "phone": null,
+    "guid": "ff5ec487-bfb6-4182-82cc-2cffd18644e4",
+    "event_id": 1
+  },
+  {
+    "qrcode": "21186",
+    "name": "Kilper Coutinho",
+    "email": "kilper.coutinho@triunfologistica.com.br",
+    "phone": null,
+    "guid": "46d19421-9a2f-41a2-88e5-c95b715874c3",
+    "event_id": 1
+  },
+  {
+    "qrcode": "21187",
+    "name": "Mariana Jannuzzi",
+    "email": "mariana.jannuzzi@wilsonsons.com.br",
+    "phone": null,
+    "guid": "50d06ed6-5531-46fc-9726-3be71941701a",
+    "event_id": 1
+  },
+  {
+    "qrcode": "21188",
+    "name": "Daniel Kuhl",
+    "email": "daniel.kuhl@wilsonsons.com.br",
+    "phone": null,
+    "guid": "83b1ee3e-e52c-42f7-a7a9-e0484eb40cc1",
+    "event_id": 1
+  },
+  {
+    "qrcode": "21189",
+    "name": "\"\tRenato Galli\"",
+    "email": "rgalli@cosulich.it",
+    "phone": null,
+    "guid": "d6688e24-35d3-4858-9655-efa47e1d2e5b",
+    "event_id": 1
+  },
+  {
+    "qrcode": "21190",
+    "name": "Emerson Oliveira",
+    "email": "eoliveira@fratellicosulich.com.br",
+    "phone": null,
+    "guid": "2f4f0144-587f-4419-8cba-47659316c871",
+    "event_id": 1
+  },
+  {
+    "qrcode": "21191",
+    "name": "\"\tFelipe Meira\"",
+    "email": "felipe.meira@solstad.com",
+    "phone": null,
+    "guid": "bb358308-e276-44de-9e2b-498434d64465",
+    "event_id": 1
+  },
+  {
+    "qrcode": "21192",
+    "name": "Caroline Dias",
+    "email": "caroline.dias@solstad.com",
+    "phone": null,
+    "guid": "25084859-16bd-4031-8254-798b568442e6",
+    "event_id": 1
+  },
+  {
+    "qrcode": "21193",
+    "name": "\"Marcelo Martins\t\"",
+    "email": "marcelo.martins@grupocbo.com.br",
+    "phone": null,
+    "guid": "c63f3e15-24a4-43a4-a23f-039542d4ec2b",
+    "event_id": 1
+  },
+  {
+    "qrcode": "21194",
+    "name": "Cesar Almeida",
+    "email": "Cesar.Almeida@grupocbo.com.br",
+    "phone": null,
+    "guid": "213d533b-8781-4bda-afa3-b7868225bb50",
+    "event_id": 1
+  },
+  {
+    "qrcode": "21195",
+    "name": "\"\tFelipe Otaño\"",
+    "email": "fotano@tdw.com",
+    "phone": null,
+    "guid": "480d1552-cadc-4fcc-b690-1397dacb4ca0",
+    "event_id": 1
+  },
+  {
+    "qrcode": "21196",
+    "name": "Maria Esposito",
+    "email": "mesposito@tdw.com",
+    "phone": null,
+    "guid": "1c02ab1f-e580-4d55-a8eb-3838b115a257",
+    "event_id": 1
+  },
+  {
+    "qrcode": "21197",
+    "name": "Junia Hermont",
+    "email": "junia.hermont@lideraviacao.com.br",
+    "phone": null,
+    "guid": "f68cba6b-9b4b-4ee8-89e2-0dc92c1dce4c",
+    "event_id": 1
+  },
+  {
+    "qrcode": "21198",
+    "name": "Diego Melo",
+    "email": "diego.reis@lideraviacao.com.br",
+    "phone": null,
+    "guid": "453fbdfe-263d-403a-a98d-0e352cbb16d8",
+    "event_id": 1
+  },
+  {
+    "qrcode": "21199",
+    "name": "Paulo Couto",
+    "email": "paulo.couto@omnibrasil.com.br",
+    "phone": null,
+    "guid": "9e4c37f9-c01a-43d7-9592-18f53e2c5ae3",
+    "event_id": 1
+  },
+  {
+    "qrcode": "21200",
+    "name": "Flavio Andrade",
+    "email": "flavio@oceanpact.com",
+    "phone": null,
+    "guid": "a9979a6d-5e94-4803-bfb0-7cda63e47cdd",
+    "event_id": 1
+  },
+  {
+    "qrcode": "21201",
+    "name": "Erik Cunha",
+    "email": "erik.cunha@oceanpact.com",
+    "phone": null,
+    "guid": "85120461-1391-4be0-95ab-5604013812d9",
+    "event_id": 1
+  }
+]
