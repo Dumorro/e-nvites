@@ -1,7 +1,6 @@
 'use client'
 
 import { useState } from 'react'
-import Image from 'next/image'
 
 export default function RSVPRioPage() {
   const [email, setEmail] = useState('')
@@ -43,6 +42,8 @@ export default function RSVPRioPage() {
 
       setSuccess(true)
       setGuestName(data.guest.name)
+      // Redirecionar para página de confirmação
+      window.location.href = `/confirm-rj?email=${encodeURIComponent(email.trim().toLowerCase())}`
     } catch (err) {
       console.error('Error:', err)
       setError('Erro ao conectar com o servidor. Por favor, tente novamente.')
@@ -52,148 +53,302 @@ export default function RSVPRioPage() {
   }
 
   return (
-    <div className="min-h-screen flex items-center justify-center p-4" style={{
-      background: 'linear-gradient(135deg, #243746 0%, #1a2835 100%)'
-    }}>
+    <>
       <style jsx global>{`
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
         body {
-          font-family: Arial, sans-serif;
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+            background: linear-gradient(135deg, #f5f5f5 0%, #e8e8e8 100%);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .container {
+            background: white;
+            width: 100%;
+            max-width: 500px;
+            border-top: 8px solid #1a3a4a;
+            border-bottom: 8px solid #1a3a4a;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.1);
+            overflow: hidden;
+        }
+
+        .header {
+            padding: 40px 30px;
+            text-align: right;
+            border-bottom: 1px solid #f0f0f0;
+            display: flex;
+            justify-content: flex-end;
+        }
+
+        .logo {
+            width: 100px;
+            height: auto;
+        }
+
+        .invitation-text {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        .invitation-text h2 {
+            font-size: 18px;
+            color: #333;
+            font-weight: 400;
+            margin-bottom: 15px;
+            line-height: 1.6;
+        }
+
+        .invitation-text h2 strong {
+            font-weight: 600;
+            color: #1a3a4a;
+        }
+
+        .invitation-text p {
+            font-size: 14px;
+            color: #666;
+            font-style: italic;
+            line-height: 1.6;
+        }
+
+        .event-details {
+            background: #1a3a4a;
+            color: white;
+            padding: 25px 30px;
+            margin: 30px 0;
+            font-size: 13px;
+            line-height: 1.8;
+        }
+
+        .event-details p {
+            margin-bottom: 10px;
+        }
+
+        .event-details strong {
+            font-weight: 600;
+        }
+
+        .form-section {
+            padding: 30px;
+            text-align: center;
+        }
+
+        .form-group {
+            margin-bottom: 25px;
+            display: flex;
+            align-items: center;
+        }
+
+        .form-group label {
+            display: inline-block;
+            font-size: 13px;
+            color: #999;
+            margin-right: 10px;
+            text-align: left;
+            font-weight: 500;
+        }
+
+        .form-group input {
+            display: inline-block;
+            width: auto;
+            flex: 1;
+            padding: 12px 15px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            font-size: 14px;
+            color: #333;
+            transition: border-color 0.3s ease;
+        }
+
+        .form-group input:focus {
+            outline: none;
+            border-color: #e91e63;
+            box-shadow: 0 0 0 3px rgba(233, 30, 99, 0.1);
+        }
+
+        .form-group input::placeholder {
+            color: #bbb;
+        }
+
+        .submit-btn {
+            display: inline-block;
+            padding: 14px 40px;
+            background-color: #2C3E50;
+            color: white;
+            text-decoration: none;
+            border: none;
+            border-radius: 6px;
+            font-size: 15px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: background-color 0.3s ease, transform 0.2s ease, box-shadow 0.3s ease;
+            letter-spacing: 0.5px;
+            text-align: center;
+            line-height: 1.4;
+        }
+
+        .submit-btn:hover {
+            background: #0f2633;
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(26, 58, 74, 0.3);
+        }
+
+        .submit-btn:active {
+            transform: translateY(0);
+        }
+
+        .submit-btn:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        .error-message {
+            background-color: #fee;
+            border: 1px solid #fcc;
+            color: #c33;
+            padding: 12px;
+            border-radius: 4px;
+            margin-bottom: 20px;
+            font-size: 14px;
+        }
+
+        .success-container {
+            text-align: center;
+            padding: 40px 30px;
+        }
+
+        .success-container h2 {
+            color: #1a3a4a;
+            font-size: 24px;
+            margin-bottom: 20px;
+        }
+
+        .success-container .checkmark {
+            font-size: 64px;
+            color: #4caf50;
+            margin-bottom: 20px;
+        }
+
+        .success-container p {
+            color: #666;
+            font-size: 16px;
+            line-height: 1.6;
+        }
+
+        .success-container .guest-name {
+            color: #1a3a4a;
+            font-weight: 600;
+            font-size: 18px;
+            margin: 15px 0;
+        }
+
+        @media (max-width: 600px) {
+            .container {
+                border-top-width: 6px;
+                border-bottom-width: 6px;
+            }
+
+            .header {
+                padding: 30px 20px;
+            }
+
+            .invitation-text h2 {
+                font-size: 16px;
+            }
+
+            .event-details {
+                padding: 20px;
+                font-size: 12px;
+            }
+
+            .form-section {
+                padding: 20px;
+            }
+
+            .logo {
+                width: 80px;
+            }
         }
       `}</style>
 
-      <div className="w-full max-w-2xl">
+      <div className="container">
         {success ? (
-          <div className="bg-white rounded-lg shadow-2xl overflow-hidden border-t-8" style={{ borderColor: '#FF1243' }}>
-            <div className="p-8 text-center" style={{ backgroundColor: '#243746' }}>
-              <div className="bg-white rounded-lg p-4 inline-block mb-6 shadow-md">
-                <Image
-                  src="/images/equinor-logo2.png"
-                  alt="Equinor"
-                  width={180}
-                  height={70}
-                  className="mx-auto"
-                  priority
-                />
+          <>
+            <div className="header">
+              <img src="https://imgs.search.brave.com/j-0shxIq5kA7QLTU7I5umIa9EBkFoYWfJdlwf5aEVyY/rs:fit:860:0:0:0/g:ce/aHR0cHM6Ly9sb2dv/ZGl4LmNvbS9sb2dv/Lzg3NTY4MC5wbmc" alt="Equinor Logo" className="logo" />
+            </div>
+            <div className="success-container">
+              <div className="checkmark">✓</div>
+              <h2>Presença Confirmada!<br />Presence Confirmed!</h2>
+              <p className="guest-name">{guestName}</p>
+              <p>
+                Sua presença foi confirmada para a<br />
+                <strong>Celebração do 1º Óleo de Bacalhau</strong>
+              </p>
+              <div className="event-details" style={{ marginTop: '30px' }}>
+                <p><strong>Data/Date:</strong> 10 de Dezembro de 2025 | December 10, 2025</p>
+                <p><strong>Horário/Time:</strong> 19h00 | 7 PM</p>
+                <p><strong>Local/Venue:</strong> Museu do Amanhã – Praça Mauá 1, Rio de Janeiro</p>
               </div>
             </div>
-            <div className="p-8 text-center">
-              <div className="text-6xl mb-4">✓</div>
-              <h2 className="text-3xl font-bold mb-4" style={{ color: '#243746' }}>
-                Presença Confirmada!
-              </h2>
-              <p className="text-xl mb-2" style={{ color: '#243746' }}>
-                {guestName}
-              </p>
-              <p className="text-gray-600 mb-6">
-                Sua presença foi confirmada para a 
-              </p>
-              <h3 className="text-2xl font-bold mb-6" style={{ color: '#FF1243' }}>
-                Celebração do 1º Óleo de Bacalhau
-              </h3>
-              <div className="bg-gray-50 p-6 rounded-lg">
-                <p className="text-sm" style={{ color: '#243746' }}>
-                  📍 Rio de Janeiro
-                </p>
-                <p className="text-sm text-gray-600 mt-2">
-                  Aguardamos você!
-                </p>
-              </div>
-            </div>
-          </div>
+          </>
         ) : (
-          <div className="bg-white rounded-lg shadow-2xl overflow-hidden border-t-8" style={{ borderColor: '#FF1243' }}>
-            <div className="p-8 text-center" style={{ backgroundColor: '#243746' }}>
-              <div className="bg-white rounded-lg p-4 inline-block mb-6 shadow-md">
-                <Image
-                  src="/images/equinor-logo2.png"
-                  alt="Equinor"
-                  width={180}
-                  height={70}
-                  className="mx-auto"
-                  priority
-                />
-              </div>
-              <h1 className="text-2xl font-bold text-white mb-3 leading-tight">
-                A Equinor tem a honra de convidá-lo(a)
-              </h1>
-              <h2 className="text-2xl text-white font-bold mb-2 border-t-2 border-white/30 pt-4 mt-4">
-                Celebração do 1º Óleo de Bacalhau
-              </h2>
-              <p className="text-white/90 text-lg mt-3 font-medium">
-                📍 Rio de Janeiro
-              </p>
+          <>
+            <div className="header">
+              <img src="https://imgs.search.brave.com/j-0shxIq5kA7QLTU7I5umIa9EBkFoYWfJdlwf5aEVyY/rs:fit:860:0:0:0/g:ce/aHR0cHM6Ly9sb2dv/ZGl4LmNvbS9sb2dv/Lzg3NTY4MC5wbmc" alt="Equinor Logo" className="logo" />
             </div>
 
-            <div className="p-8">
-              <div className="mb-8 text-center">
-                <p className="text-lg mb-2" style={{ color: '#243746' }}>
-                  <em>Equinor is pleased to invite you to the</em>
-                </p>
-                <p className="text-lg font-bold mb-4" style={{ color: '#243746' }}>
-                  <em>Bacalhau First Oil Celebration</em>
-                </p>
-                <p className="text-sm text-gray-600">
-                  Localizado no pré-sal da Bacia de Santos, com capacidade para produzir até 220 mil barris por dia.
-                </p>
-              </div>
+            <div className="invitation-text">
+              <h2>A Equinor tem a honra de convidá-lo para a<br /><strong>Celebração do 1º Óleo de Bacalhau</strong></h2>
+              <hr style={{ width: '50px', margin: '15px auto', border: 0, borderTop: '3px solid #e91e63' }} />
+              <h2>Equinor is pleased to invite you to the<br /><strong><em>Bacalhau Fist Oil Celebration</em></strong></h2>
+            </div>
 
-              <div className="border-4 rounded-xl p-8 mb-6 shadow-inner" style={{
-                borderColor: 'rgba(36, 55, 70, 0.2)',
-                backgroundColor: '#f9fafb'
-              }}>
-                <p className="text-center mb-6 font-bold text-lg uppercase tracking-wide" style={{ color: '#243746' }}>
-                  Confirme sua Presença
-                </p>
+            <div className="event-details">
+              <p><strong>Data/Date:</strong> 10 de Dezembro de 2025 | December 10, 2025</p>
+              <p><strong>Horário/Time:</strong> 19h00 | 7 PM</p>
+              <p><strong>Local/Venue:</strong> Museu do Amanhã – Praça Mauá 1, Rio de Janeiro</p>
+            </div>
 
-                <form onSubmit={handleSubmit}>
-                  <div className="mb-6">
-                    <label htmlFor="email" className="block text-sm font-medium mb-2" style={{ color: '#243746' }}>
-                      Email cadastrado
-                    </label>
-                    <input
-                      type="email"
-                      id="email"
-                      value={email}
-                      onChange={(e) => setEmail(e.target.value)}
-                      className="w-full px-4 py-3 border-2 rounded-lg focus:outline-none focus:ring-2 transition-all"
-                      style={{
-                        borderColor: '#243746',
-                        color: '#243746'
-                      }}
-                      placeholder="seu.email@exemplo.com"
-                      disabled={loading}
-                      required
-                    />
-                  </div>
-
-                  {error && (
-                    <div className="mb-4 p-4 bg-red-100 border-2 border-red-300 text-red-700 rounded-lg text-center">
-                      {error}
-                    </div>
-                  )}
-
-                  <button
-                    type="submit"
+            <div className="form-section">
+              <form onSubmit={handleSubmit}>
+                <div className="form-group">
+                  <label htmlFor="email">E-mail</label>
+                  <input
+                    type="email"
+                    id="email"
+                    name="email"
+                    placeholder="seu@email.com"
+                    value={email}
+                    onChange={(e) => setEmail(e.target.value)}
                     disabled={loading}
-                    className="w-full py-4 px-8 text-white text-lg font-bold rounded-xl shadow-xl transition-all duration-200 transform hover:scale-105 hover:shadow-2xl disabled:opacity-50 disabled:cursor-not-allowed disabled:transform-none border-4"
-                    style={{
-                      backgroundColor: '#FF1243',
-                      borderColor: '#d10e36'
-                    }}
-                  >
-                    {loading ? (
-                      <span>⏳ Processando...</span>
-                    ) : (
-                      <span>✓ Confirmar Presença</span>
-                    )}
-                  </button>
-                </form>
-              </div>
-
+                    required
+                  />
+                </div>
+                {error && (
+                  <div className="error-message">
+                    {error}
+                  </div>
+                )}
+                <button type="submit" className="submit-btn" disabled={loading}>
+                  {loading ? 'Processando...' : 'Confirmar'}
+                  <br />
+                  {loading ? 'Processing...' : 'Confirm'}
+                </button>
+              </form>
             </div>
-          </div>
+          </>
         )}
       </div>
-    </div>
+    </>
   )
 }

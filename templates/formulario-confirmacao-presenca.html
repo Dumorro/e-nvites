@@ -1,0 +1,239 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Confirmação de Presença - Equinor</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+            background: linear-gradient(135deg, #f5f5f5 0%, #e8e8e8 100%);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .container {
+            background: white;
+            width: 100%;
+            max-width: 500px;
+            border-top: 8px solid #1a3a4a;
+            border-bottom: 8px solid #1a3a4a;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.1);
+            overflow: hidden;
+        }
+
+        .header {
+            padding: 40px 30px;
+            text-align: right;
+            border-bottom: 1px solid #f0f0f0;
+        }
+
+        .logo {
+            width: 100px;
+            height: auto;
+            margin-bottom: 20px;
+        }
+
+        .invitation-text {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        .invitation-text h2 {
+            font-size: 18px;
+            color: #333;
+            font-weight: 400;
+            margin-bottom: 15px;
+            line-height: 1.6;
+        }
+
+        .invitation-text h2 strong {
+            font-weight: 600;
+            color: #1a3a4a;
+        }
+
+        .invitation-text p {
+            font-size: 14px;
+            color: #666;
+            font-style: italic;
+            line-height: 1.6;
+        }
+
+        .event-details {
+            background: #1a3a4a;
+            color: white;
+            padding: 25px 30px;
+            margin: 30px 0;
+            font-size: 13px;
+            line-height: 1.8;
+        }
+
+        .event-details p {
+            margin-bottom: 10px;
+        }
+
+        .event-details strong {
+            font-weight: 600;
+        }
+
+        .form-section {
+            padding: 30px;
+            text-align: center;
+        }
+
+        .form-group {
+            margin-bottom: 25px;
+            display: flex;
+            align-items: center;
+        }
+
+        .form-group label {
+            display: inline-block;
+            font-size: 13px;
+            color: #999;
+            margin-right: 10px;
+            text-align: left;
+            font-weight: 500;
+        }
+
+        .form-group input {
+            display: inline-block;
+            width: auto;
+            flex: 1;
+            padding: 12px 15px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            font-size: 14px;
+            color: #333;
+            transition: border-color 0.3s ease;
+        }
+
+        .form-group input:focus {
+            outline: none;
+            border-color: #e91e63;
+            box-shadow: 0 0 0 3px rgba(233, 30, 99, 0.1);
+        }
+
+        .form-group input::placeholder {
+            color: #bbb;
+        }
+
+        .submit-btn {
+            display: inline-block;
+            padding: 14px 40px;
+            background-color: #2C3E50;
+            color: white;
+            text-decoration: none;
+            border: none;
+            border-radius: 6px;
+            font-size: 15px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: background-color 0.3s ease, transform 0.2s ease, box-shadow 0.3s ease;
+            letter-spacing: 0.5px;
+            text-align: center;
+            line-height: 1.4;
+        }
+
+        .submit-btn:hover {
+            background: #0f2633;
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(26, 58, 74, 0.3);
+        }
+
+        .submit-btn:active {
+            transform: translateY(0);
+        }
+
+        @media (max-width: 600px) {
+            .container {
+                border-top-width: 6px;
+                border-bottom-width: 6px;
+            }
+
+            .header {
+                padding: 30px 20px;
+            }
+
+            .invitation-text h2 {
+                font-size: 16px;
+            }
+
+            .event-details {
+                padding: 20px;
+                font-size: 12px;
+            }
+
+            .form-section {
+                padding: 20px;
+            }
+
+            .logo {
+                width: 80px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <img src="https://imgs.search.brave.com/j-0shxIq5kA7QLTU7I5umIa9EBkFoYWfJdlwf5aEVyY/rs:fit:860:0:0:0/g:ce/aHR0cHM6Ly9sb2dv/ZGl4LmNvbS9sb2dv/Lzg3NTY4MC5wbmc" alt="Equinor Logo" class="logo">
+        </div>
+
+        <div class="invitation-text">
+            <h2>A Equinor tem a honra de convidá-lo para a<br><strong>Celebração do 1º Óleo de Bacalhau</strong></h2>
+            <hr style="width: 50px; margin: 15px auto; border: 0; border-top: 3px solid #e91e63;">
+            <h2>Equinor is pleased to invite you to the<br><strong><em>Bacalhau Fist Oil Celebration</em></strong></h2>
+        </div>
+
+        <div class="event-details">
+            <p><strong>Data/Date:</strong> 11 de Dezembro de 2025 | December 11, 2025</p>
+            <p><strong>Horário/Time:</strong> 19h00 | 7 PM</p>
+            <p><strong>Local/Venue:</strong> Pinacoteca – Praça da Luz 2, São Paulo</p>
+        </div>
+
+        <div class="form-section">
+            <form id="confirmationForm">
+                <div class="form-group">
+                    <label for="email">E-mail</label>
+                    <input type="email" id="email" name="email" placeholder="seu@email.com" required>
+                </div>
+                <button type="submit" class="submit-btn">Confirmar<br>Confirm</button>
+            </form>
+        </div>
+    </div>
+
+    <script>
+        document.getElementById('confirmationForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            const email = document.getElementById('email').value;
+            
+            if (email.trim()) {
+                const guest = document.getElementById('guest').value;
+                let message = `Presença confirmada para: ${email}`;
+                let messageEn = `Presence confirmed for: ${email}`;
+
+                if (guest === 'yes') {
+                    message += `\nCom acompanhante.`;
+                    messageEn += `\nWith a guest.`;
+                } else {
+                    message += `\nSem acompanhante.`;
+                    messageEn += `\nWithout a guest.`;
+                }
+
+                alert(`${message}\n${messageEn}`);
+                this.reset();
+            }
+        });
+    </script>
+</body>
+</html>
