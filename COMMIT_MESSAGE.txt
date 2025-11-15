@@ -1,0 +1,89 @@
+feat: implementa sistema de envio de email automático pós-confirmação
+
+Adiciona sistema completo de envio de email de confirmação após o convidado
+confirmar presença, replicando o mecanismo do projeto qr-gen.
+
+## Funcionalidades Implementadas
+
+### Envio Automático
+- Email enviado automaticamente após confirmação via /api/rsvp/confirm-by-email
+- Processo não-bloqueante (confirmação sempre sucede mesmo se email falhar)
+- Sistema de retry automático (1 tentativa adicional)
+- Logs detalhados de envio no console
+
+### Template de Email
+- Template React bilíngue (Português/Inglês)
+- Design responsivo com cores da marca Equinor (#FF1243)
+- QR Code gerado dinamicamente e incluído inline (base64)
+- Informações completas do evento (nome, data, hora, local)
+- Link personalizado para página de confirmação
+
+### Painel Admin
+- Botão "Reenviar Email" na lista de convidados
+- Disponível apenas para convidados confirmados com email
+- Feedback visual durante envio
+- Confirmação antes de reenviar
+
+### Sistema de Logging
+- Tabela email_logs no Supabase
+- Registra status (sent/failed/pending)
+- Mensagens de erro detalhadas
+- Timestamp de envio
+
+## Arquivos Criados
+
+- lib/email/templates/confirmation.tsx - Template React Email
+- lib/email/email-sender.ts - Serviço de envio com retry
+- app/api/email/send-confirmation/route.ts - Endpoint de reenvio manual
+
+## Arquivos Modificados
+
+- supabase-schema.sql - Tabela email_logs
+- lib/supabase.ts - Interface EmailLog
+- app/api/rsvp/confirm-by-email/route.ts - Integração de envio
+- app/admin/page.tsx - Botão de reenvio
+- .env.local - Variáveis de ambiente
+- package.json - Dependências (resend, react-email, qrcode)
+
+## Correções Aplicadas
+
+- ✅ Link de confirmação dinâmico baseado em Event ID (1=RJ, 2=SP)
+- ✅ Validação robusta de datas nulas/inválidas
+- ✅ Tratamento de erro em formatação de datas e horários
+- ✅ Type safety completo validado pelo TypeScript
+
+## Dependências Adicionadas
+
+- resend@^4.0.0 - Serviço de envio de emails
+- react-email@^3.0.0 - Framework para templates
+- @react-email/components@^0.0.0 - Componentes React Email
+- qrcode@^1.5.0 - Geração de QR codes
+- @types/qrcode@^1.5.0 - Tipagem TypeScript
+
+## Configuração Necessária
+
+Antes de usar em produção:
+1. Criar conta no Resend (resend.com)
+2. Obter API key
+3. Configurar variáveis de ambiente:
+   - RESEND_API_KEY
+   - SMTP_FROM_EMAIL
+   - SMTP_FROM_NAME
+   - NEXT_PUBLIC_SITE_URL
+4. Executar migration SQL (tabela email_logs)
+
+## Testes
+
+- ✅ Build executado com sucesso
+- ✅ TypeScript validado sem erros
+- ✅ Todas as rotas geradas corretamente
+
+## Documentação
+
+- EMAIL_IMPLEMENTATION.md - Documentação completa
+- CORREÇÕES_APLICADAS.md - Detalhes das correções
+- COMMIT_MESSAGE.txt - Esta mensagem de commit
+
+---
+
+Co-authored-by: Claude <noreply@anthropic.com>

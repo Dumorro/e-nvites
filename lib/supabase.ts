@@ -44,3 +44,15 @@ export interface Guest {
 export interface GuestWithEvent extends Guest {
   event?: Event | null
 }
+
+export interface EmailLog {
+  id: number
+  guest_id: number | null
+  recipient_email: string
+  recipient_name: string | null
+  subject: string | null
+  status: 'sent' | 'failed' | 'pending'
+  error_message: string | null
+  sent_at: string
+  created_at: string
+}

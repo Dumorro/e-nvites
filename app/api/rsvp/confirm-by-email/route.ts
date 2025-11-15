@@ -1,5 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { supabase } from '@/lib/supabase'
+import { createEmailSender } from '@/lib/email/email-sender'
 
 // POST /api/rsvp/confirm-by-email - Confirm presence by email
 export async function POST(request: NextRequest) {
@@ -68,6 +69,87 @@ export async function POST(request: NextRequest) {
         { error: 'Erro ao confirmar presença' },
         { status: 500 }
       )
+    }
+
+    // Send confirmation email
+    // NOTE: Email sending is non-blocking and failures won't affect the confirmation
+    try {
+      console.log(`📧 [RSVP] Starting post-confirmation email process`)
+      console.log(`   → Guest ID: ${updatedGuest.id}`)
+      console.log(`   → Email: ${updatedGuest.email}`)
+
+      // Extract time from event date
+      const extractTime = (dateString: string | null | undefined): string => {
+        if (!dateString) return '18:30'
+
+        try {
+          const date = new Date(dateString)
+          if (isNaN(date.getTime())) return '18:30'
+
+          return date.toLocaleTimeString('pt-BR', {
+            hour: '2-digit',
+            minute: '2-digit',
+          })
+        } catch {
+          return '18:30'
+        }
+      }
+
+      // Get full event data for email
+      const { data: fullEvent } = await supabase
+        .from('events')
+        .select('*')
+        .eq('id', eventId)
+        .single()
+
+      if (updatedGuest.email && fullEvent) {
+        const emailSender = createEmailSender()
+
+        // Determine confirmation page based on event ID
+        // Event ID 1 = Rio de Janeiro, Event ID 2 = São Paulo
+        const confirmPage = fullEvent.id === 2 ? 'confirm-sp' : 'confirm-rj'
+
+        console.log(`📤 [RSVP] Sending email asynchronously (non-blocking)`)
+        console.log(`   → Event: ${fullEvent.name}`)
+        console.log(`   → Confirmation page: ${confirmPage}`)
+
+        // Send email asynchronously (don't await to not block response)
+        emailSender.sendConfirmationEmailWithRetry(
+          {
+            to: updatedGuest.email,
+            name: updatedGuest.name,
+            qrCode: updatedGuest.qr_code || updatedGuest.guid,
+            event: {
+              name: fullEvent.name,
+              date: fullEvent.event_date || '',
+              time: extractTime(fullEvent.event_date),
+              location: fullEvent.location || '',
+            },
+            confirmationGuid: updatedGuest.guid,
+            confirmationLink: `${process.env.NEXT_PUBLIC_SITE_URL}/${confirmPage}?guid=${updatedGuest.guid}`,
+          },
+          updatedGuest.id
+        ).then((result) => {
+          if (result.success) {
+            console.log(`✅ [RSVP] Confirmation email sent successfully`)
+            console.log(`   → Recipient: ${updatedGuest.email}`)
+            console.log(`   → Message ID: ${result.messageId}`)
+          } else {
+            console.error(`❌ [RSVP] Failed to send confirmation email`)
+            console.error(`   → Recipient: ${updatedGuest.email}`)
+            console.error(`   → Error: ${result.error}`)
+          }
+        }).catch((error) => {
+          console.error(`❌ [RSVP] Exception in email sending:`, error)
+        })
+      } else {
+        console.log(`⚠️  [RSVP] Skipping email send - missing email or event`)
+        console.log(`   → Has email: ${!!updatedGuest.email}`)
+        console.log(`   → Has event: ${!!fullEvent}`)
+      }
+    } catch (emailError) {
+      // Log error but don't fail the confirmation
+      console.error('❌ [RSVP] Error in email sending process:', emailError)
     }
 
     return NextResponse.json({

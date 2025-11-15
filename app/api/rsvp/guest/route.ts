@@ -38,7 +38,7 @@ export async function GET(request: NextRequest) {
     if (guest.event_id) {
       const { data: event, error: eventError } = await supabase
         .from('events')
-        .select('id, name, location, date, time')
+        .select('id, name, location, event_date')
         .eq('id', guest.event_id)
         .single()
 

@@ -194,3 +194,40 @@ SET event_id = events.id
 FROM events
 WHERE guests.social_event = events.name
   AND guests.event_id IS NULL;
+
+-- ==============================================================
+-- 7. Create email_logs table
+-- ==============================================================
+
+CREATE TABLE IF NOT EXISTS email_logs (
+  id BIGSERIAL PRIMARY KEY,
+  guest_id BIGINT,
+  recipient_email VARCHAR(255) NOT NULL,
+  recipient_name VARCHAR(255),
+  subject VARCHAR(500),
+  status VARCHAR(20) NOT NULL CHECK (status IN ('sent', 'failed', 'pending')),
+  error_message TEXT,
+  sent_at TIMESTAMP WITH TIME ZONE DEFAULT NOW(),
+  created_at TIMESTAMP WITH TIME ZONE DEFAULT NOW(),
+
+  -- Foreign key constraint
+  CONSTRAINT fk_email_logs_guests FOREIGN KEY (guest_id)
+    REFERENCES guests(id) ON DELETE SET NULL
+);
+
+-- Create indexes on email_logs
+CREATE INDEX IF NOT EXISTS idx_email_logs_guest_id ON email_logs(guest_id);
+CREATE INDEX IF NOT EXISTS idx_email_logs_status ON email_logs(status);
+CREATE INDEX IF NOT EXISTS idx_email_logs_sent_at ON email_logs(sent_at);
+
+-- Enable RLS on email_logs table
+ALTER TABLE email_logs ENABLE ROW LEVEL SECURITY;
+
+-- Create policies for email_logs table
+CREATE POLICY "Allow admin read access on email_logs" ON email_logs
+  FOR SELECT
+  USING (true);
+
+CREATE POLICY "Allow admin insert on email_logs" ON email_logs
+  FOR INSERT
+  WITH CHECK (true);

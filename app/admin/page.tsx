@@ -22,6 +22,8 @@ interface Guest {
  created_at: string
  updated_at: string
  event?: Event | null
+ emailSent?: boolean
+ emailStatus?: 'sent' | 'failed' | 'pending' | null
 }
 
 interface Stats {
@@ -44,6 +46,7 @@ export default function AdminPage() {
  const [availableEvents, setAvailableEvents] = useState<Event[]>([])
  const [currentPage, setCurrentPage] = useState(1)
  const [itemsPerPage, setItemsPerPage] = useState(20)
+ const [sendingEmail, setSendingEmail] = useState<number | null>(null)
 
  const handleLogin = (e: React.FormEvent) => {
   e.preventDefault()
@@ -158,6 +161,44 @@ export default function AdminPage() {
    return `+${cleaned.slice(0, 2)} (${cleaned.slice(2, 4)}) ${cleaned.slice(4, 9)}-${cleaned.slice(9)}`
   }
   return phone
+ }
+
+ const handleResendEmail = async (guestId: number, guestEmail: string) => {
+  if (!guestEmail) {
+   alert('Este convidado não tem email cadastrado')
+   return
+  }
+
+  if (!confirm(`Deseja reenviar o email de confirmação para ${guestEmail}?`)) {
+   return
+  }
+
+  setSendingEmail(guestId)
+
+  try {
+   const response = await fetch('/api/email/send-confirmation', {
+    method: 'POST',
+    headers: {
+     'Content-Type': 'application/json',
+     'x-admin-password': password,
+    },
+    body: JSON.stringify({ guestId }),
+   })
+
+   const data = await response.json()
+
+   if (!response.ok) {
+    throw new Error(data.error || 'Erro ao enviar email')
+   }
+
+   alert(`Email enviado com sucesso para ${guestEmail}!`)
+   fetchGuests() // Refresh the list
+  } catch (err: any) {
+   console.error('Error sending email:', err)
+   alert(`Erro ao enviar email: ${err.message}`)
+  } finally {
+   setSendingEmail(null)
+  }
  }
 
  const exportToCSV = () => {
@@ -444,6 +485,9 @@ export default function AdminPage() {
           <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
            Última Atualização
           </th>
+          <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+           Ações
+          </th>
          </tr>
         </thead>
         <tbody className="bg-white divide-y divide-gray-200">
@@ -485,6 +529,34 @@ export default function AdminPage() {
            </td>
            <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
             {formatDate(guest.updated_at)}
+           </td>
+           <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+            {guest.status === 'confirmed' && guest.email && (
+             <button
+              onClick={() => handleResendEmail(guest.id, guest.email!)}
+              disabled={sendingEmail === guest.id}
+              className="text-blue-600 hover:text-blue-800 disabled:opacity-50 disabled:cursor-not-allowed flex items-center gap-1"
+              title="Reenviar email de confirmação"
+             >
+              {sendingEmail === guest.id ? (
+               <>
+                <span className="animate-spin">⏳</span>
+                <span>Enviando...</span>
+               </>
+              ) : (
+               <>
+                <span>📧</span>
+                <span>Reenviar Email</span>
+               </>
+              )}
+             </button>
+            )}
+            {guest.status === 'confirmed' && !guest.email && (
+             <span className="text-gray-400 text-xs">Sem email</span>
+            )}
+            {guest.status !== 'confirmed' && (
+             <span className="text-gray-400 text-xs">Não confirmado</span>
+            )}
            </td>
           </tr>
          ))}
