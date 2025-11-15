@@ -121,7 +121,7 @@ SMTP_FROM_EMAIL=noreply@seudominio.com.br   # Seu domínio verificado
 SMTP_FROM_NAME=Equinor Confirmação
 
 # Site URL
-NEXT_PUBLIC_SITE_URL=https://seu-site.vercel.app  # URL do site em produção
+NEXT_PUBLIC_SITE_URL=https://www.confirmacaoequinor.com.br  # URL do site em produção
 ```
 
 **IMPORTANTE:**

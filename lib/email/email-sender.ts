@@ -3,6 +3,8 @@ import QRCode from 'qrcode'
 import { render } from '@react-email/components'
 import ConfirmationEmail from './templates/confirmation'
 import { supabase } from '@/lib/supabase'
+import path from 'path'
+import fs from 'fs'
 
 export interface EmailSenderConfig {
   host: string
@@ -28,6 +30,9 @@ export interface ConfirmationEmailData {
   }
   confirmationGuid: string
   confirmationLink: string
+  inviteImageUrl?: string
+  inviteImagePath?: string
+  eventId?: number
 }
 
 export interface EmailResult {
@@ -161,11 +166,9 @@ export class EmailSender {
     console.log(`   → Guest Name: ${data.name}`)
     console.log(`   → Guest ID: ${guestId || 'N/A'}`)
     console.log(`   → Event: ${data.event.name}`)
+    console.log(`   → Invite Image URL: ${data.inviteImageUrl || 'N/A'}`)
 
     try {
-      // Generate QR code as base64
-      const qrCodeBase64 = await this.generateQRCodeBase64(data.qrCode)
-
       // Format date
       const formattedDate = this.formatDate(data.event.date)
 
@@ -177,11 +180,35 @@ export class EmailSender {
           eventDate: formattedDate,
           eventTime: data.event.time,
           eventLocation: data.event.location,
-          qrCodeBase64: qrCodeBase64,
+          qrCodeBase64: '', // Not used anymore, but kept for compatibility
           qrCodeText: data.qrCode,
           confirmationLink: data.confirmationLink,
+          inviteImageUrl: data.inviteImageUrl,
         })
       )
+
+      // Prepare attachments
+      const attachments: any[] = []
+
+      // Add invite image if path is provided
+      if (data.inviteImagePath && data.eventId) {
+        const eventSlug = data.eventId === 2 ? 'oil-celebration-sp' : 'oil-celebration-rj'
+        const imagePath = path.join(process.cwd(), 'public', 'events', eventSlug, `${data.qrCode}-${eventSlug}.jpg`)
+
+        console.log(`📎 [Email] Checking for invite image attachment`)
+        console.log(`   → Path: ${imagePath}`)
+
+        if (fs.existsSync(imagePath)) {
+          attachments.push({
+            filename: `convite-${data.qrCode}.jpg`,
+            path: imagePath,
+            contentType: 'image/jpeg'
+          })
+          console.log(`   → Attachment added: convite-${data.qrCode}.jpg`)
+        } else {
+          console.log(`   → Warning: Image file not found, skipping attachment`)
+        }
+      }
 
       // Send email via SMTP
       console.log(`📤 [Email] Sending email via SMTP...`)
@@ -190,6 +217,7 @@ export class EmailSender {
         to: data.to,
         subject: subject,
         html: emailHtml,
+        attachments: attachments.length > 0 ? attachments : undefined,
       })
 
       // Log success
@@ -280,6 +308,18 @@ export class EmailSender {
       error: lastError || 'Failed after retries',
     }
   }
+}
+
+/**
+ * Generate invite image URL based on event and QR code
+ */
+export function getInviteImageUrl(eventId: number, qrCode: string, siteUrl?: string): string {
+  const baseUrl = siteUrl || process.env.NEXT_PUBLIC_SITE_URL || ''
+
+  // Event ID 1 = Rio de Janeiro, Event ID 2 = São Paulo
+  const eventSlug = eventId === 2 ? 'oil-celebration-sp' : 'oil-celebration-rj'
+
+  return `${baseUrl}/events/${eventSlug}/${qrCode}-${eventSlug}.jpg`
 }
 
 /**

@@ -21,6 +21,7 @@ interface ConfirmationEmailProps {
   qrCodeBase64: string
   qrCodeText: string
   confirmationLink: string
+  inviteImageUrl?: string
 }
 
 export const ConfirmationEmail = ({
@@ -32,6 +33,7 @@ export const ConfirmationEmail = ({
   qrCodeBase64 = '',
   qrCodeText = '3000',
   confirmationLink = '#',
+  inviteImageUrl,
 }: ConfirmationEmailProps) => {
   const previewText = `Sua presença está confirmada! - ${eventName}`
 
@@ -85,15 +87,14 @@ export const ConfirmationEmail = ({
             </Text>
           </Section>
 
-          {/* QR Code Section */}
+          {/* Invite Image Section */}
           <Section style={qrSection}>
-            {qrCodeBase64 && (
+            {inviteImageUrl && (
               <Img
-                src={qrCodeBase64}
-                alt="QR Code"
-                width="300"
-                height="300"
-                style={qrImage}
+                src={inviteImageUrl}
+                alt="Convite / Invitation"
+                width="600"
+                style={inviteImage}
               />
             )}
             <Text style={qrCodeLabel}>Código de Confirmação / Confirmation Code</Text>
@@ -109,7 +110,7 @@ export const ConfirmationEmail = ({
               This is an automated email. Please do not reply.
             </Text>
             <Text style={footerText}>
-              <a href={confirmationLink} style={link}>
+              <a href={inviteImageUrl || confirmationLink} style={link}>
                 Acessar meu convite / Access my invitation
               </a>
             </Text>
@@ -180,6 +181,14 @@ const qrImage = {
   border: '2px solid #e6ebf1',
   borderRadius: '8px',
   padding: '16px',
+}
+
+const inviteImage = {
+  margin: '0 auto',
+  display: 'block',
+  width: '100%',
+  maxWidth: '600px',
+  height: 'auto',
 }
 
 const qrCodeLabel = {
