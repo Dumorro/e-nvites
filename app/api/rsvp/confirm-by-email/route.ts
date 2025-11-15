@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { supabase } from '@/lib/supabase'
-import { createEmailSender, getInviteImageUrl } from '@/lib/email/email-sender'
+import { createEmailSender, getInviteImageUrl, getEventEnglishTranslation } from '@/lib/email/email-sender'
 
 // POST /api/rsvp/confirm-by-email - Confirm presence by email
 export async function POST(request: NextRequest) {
@@ -117,8 +117,12 @@ export async function POST(request: NextRequest) {
         const qrCodeForUrl = updatedGuest.qr_code || updatedGuest.guid
         const inviteImageUrl = getInviteImageUrl(fullEvent.id, qrCodeForUrl, process.env.NEXT_PUBLIC_SITE_URL)
 
+        // Get English translations
+        const { nameEn, locationEn } = getEventEnglishTranslation(fullEvent.id, fullEvent.name, fullEvent.location || '')
+
         console.log(`   → Invite Image URL: ${inviteImageUrl}`)
         console.log(`   → Will attach invite image: Yes`)
+        console.log(`   → Event Name (EN): ${nameEn}`)
 
         // Send email asynchronously (don't await to not block response)
         emailSender.sendConfirmationEmailWithRetry(
@@ -128,9 +132,11 @@ export async function POST(request: NextRequest) {
             qrCode: qrCodeForUrl,
             event: {
               name: fullEvent.name,
+              nameEn: nameEn,
               date: fullEvent.event_date || '',
               time: extractTime(fullEvent.event_date),
               location: fullEvent.location || '',
+              locationEn: locationEn,
             },
             confirmationGuid: updatedGuest.guid,
             confirmationLink: `${process.env.NEXT_PUBLIC_SITE_URL}/${confirmPage}?guid=${updatedGuest.guid}`,

@@ -10,7 +10,7 @@ import { resolve } from 'path'
 // Load environment variables from .env.local
 config({ path: resolve(process.cwd(), '.env.local') })
 
-import { createEmailSender, getInviteImageUrl } from '../lib/email/email-sender'
+import { createEmailSender, getInviteImageUrl, getEventEnglishTranslation } from '../lib/email/email-sender'
 
 async function testSMTP() {
   console.log('🧪 Testing SMTP configuration...\n')
@@ -35,7 +35,14 @@ async function testSMTP() {
     const testEventId = 2
     const inviteImageUrl = getInviteImageUrl(testEventId, testQrCode, process.env.NEXT_PUBLIC_SITE_URL)
 
+    // Get English translations
+    const eventNamePt = 'Celebração do 1º Óleo de Bacalhau - São Paulo'
+    const locationPt = 'São Paulo'
+    const { nameEn, locationEn } = getEventEnglishTranslation(testEventId, eventNamePt, locationPt)
+
     console.log(`   → Generated invite URL: ${inviteImageUrl}`)
+    console.log(`   → Event Name (PT): ${eventNamePt}`)
+    console.log(`   → Event Name (EN): ${nameEn}`)
     console.log(`   → Will attach invite image from: public/events/oil-celebration-sp/${testQrCode}-oil-celebration-sp.jpg\n`)
 
     const result = await emailSender.sendConfirmationEmail({
@@ -43,10 +50,12 @@ async function testSMTP() {
       name: 'Teste SMTP com Anexo',
       qrCode: testQrCode,
       event: {
-        name: 'Celebração do 1º Óleo de Bacalhau - São Paulo',
+        name: eventNamePt,
+        nameEn: nameEn,
         date: '2025-12-31',
         time: '19:00',
-        location: 'Local de Teste',
+        location: locationPt,
+        locationEn: locationEn,
       },
       confirmationGuid: 'test-guid-12345',
       confirmationLink: 'https://www.confirmacaoequinor.com.br/confirm-sp?guid=test-guid-12345',

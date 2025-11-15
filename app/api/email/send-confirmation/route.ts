@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { supabase } from '@/lib/supabase'
-import { createEmailSender, getInviteImageUrl } from '@/lib/email/email-sender'
+import { createEmailSender, getInviteImageUrl, getEventEnglishTranslation } from '@/lib/email/email-sender'
 
 /**
  * POST /api/email/send-confirmation
@@ -125,8 +125,12 @@ export async function POST(request: NextRequest) {
     const qrCodeForUrl = guest.qr_code || guest.guid
     const inviteImageUrl = getInviteImageUrl(event.id, qrCodeForUrl, process.env.NEXT_PUBLIC_SITE_URL)
 
+    // Get English translations
+    const { nameEn, locationEn } = getEventEnglishTranslation(event.id, event.name, event.location || '')
+
     console.log(`   → Invite Image URL: ${inviteImageUrl}`)
     console.log(`   → Will attach invite image: Yes`)
+    console.log(`   → Event Name (EN): ${nameEn}`)
 
     // Send confirmation email
     const result = await emailSender.sendConfirmationEmailWithRetry(
@@ -136,9 +140,11 @@ export async function POST(request: NextRequest) {
         qrCode: qrCodeForUrl,
         event: {
           name: event.name,
+          nameEn: nameEn,
           date: event.event_date || '',
           time: extractTime(event.event_date),
           location: event.location || '',
+          locationEn: locationEn,
         },
         confirmationGuid: guest.guid,
         confirmationLink: `${process.env.NEXT_PUBLIC_SITE_URL}/${confirmPage}?guid=${guest.guid}`,

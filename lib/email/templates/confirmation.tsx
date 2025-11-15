@@ -15,9 +15,11 @@ import * as React from 'react'
 interface ConfirmationEmailProps {
   guestName: string
   eventName: string
+  eventNameEn?: string
   eventDate: string
   eventTime: string
   eventLocation: string
+  eventLocationEn?: string
   qrCodeBase64: string
   qrCodeText: string
   confirmationLink: string
@@ -27,9 +29,11 @@ interface ConfirmationEmailProps {
 export const ConfirmationEmail = ({
   guestName = 'Convidado',
   eventName = 'Evento',
+  eventNameEn,
   eventDate = '02/12/2024',
   eventTime = '18:30',
   eventLocation = 'Marina da Glória',
+  eventLocationEn,
   qrCodeBase64 = '',
   qrCodeText = '3000',
   confirmationLink = '#',
@@ -73,14 +77,14 @@ export const ConfirmationEmail = ({
           <Section style={section}>
             <Text style={greeting}>Hello {guestName},</Text>
             <Text style={paragraph}>
-              Your attendance is confirmed for the event <strong>{eventName}</strong>.
+              Your attendance is confirmed for the event <strong>{eventNameEn || eventName}</strong>.
             </Text>
             <Text style={paragraph}>
               <strong>📅 Date:</strong> {eventDate}
               <br />
               <strong>⏰ Time:</strong> {eventTime}
               <br />
-              <strong>📍 Location:</strong> {eventLocation}
+              <strong>📍 Location:</strong> {eventLocationEn || eventLocation}
             </Text>
             <Text style={paragraph}>
               To access the event, present the QR Code below at the entrance:

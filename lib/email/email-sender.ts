@@ -24,9 +24,11 @@ export interface ConfirmationEmailData {
   qrCode: string
   event: {
     name: string
+    nameEn?: string
     date: string
     time: string
     location: string
+    locationEn?: string
   }
   confirmationGuid: string
   confirmationLink: string
@@ -177,9 +179,11 @@ export class EmailSender {
         ConfirmationEmail({
           guestName: data.name,
           eventName: data.event.name,
+          eventNameEn: data.event.nameEn,
           eventDate: formattedDate,
           eventTime: data.event.time,
           eventLocation: data.event.location,
+          eventLocationEn: data.event.locationEn,
           qrCodeBase64: '', // Not used anymore, but kept for compatibility
           qrCodeText: data.qrCode,
           confirmationLink: data.confirmationLink,
@@ -320,6 +324,26 @@ export function getInviteImageUrl(eventId: number, qrCode: string, siteUrl?: str
   const eventSlug = eventId === 2 ? 'oil-celebration-sp' : 'oil-celebration-rj'
 
   return `${baseUrl}/events/${eventSlug}/${qrCode}-${eventSlug}.jpg`
+}
+
+/**
+ * Get event English translations based on event ID
+ */
+export function getEventEnglishTranslation(eventId: number, eventName: string, location: string) {
+  // Event ID 1 = Rio de Janeiro, Event ID 2 = São Paulo
+  // Default translations for known events
+  const translations: Record<number, { nameEn: string; locationEn: string }> = {
+    1: {
+      nameEn: 'Bacalhau First Oil Celebration',
+      locationEn: 'Marina da Glória, Rio de Janeiro',
+    },
+    2: {
+      nameEn: 'Bacalhau First Oil Celebration',
+      locationEn: 'São Paulo',
+    },
+  }
+
+  return translations[eventId] || { nameEn: eventName, locationEn: location }
 }
 
 /**
