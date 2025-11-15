@@ -36,6 +36,7 @@ export interface Guest {
   phone: string | null
   event_id: number | null
   status: 'pending' | 'confirmed' | 'declined'
+  qr_code: string | null
   created_at: string
   updated_at: string
 }

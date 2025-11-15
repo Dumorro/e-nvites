@@ -10,6 +10,7 @@ function ConfirmSaoPauloContent() {
   const [success, setSuccess] = useState(false)
   const [guestName, setGuestName] = useState<string | null>(null)
   const [guestGuid, setGuestGuid] = useState<string | null>(null)
+  const [qrCode, setQrCode] = useState<string | null>(null)
   const searchParams = useSearchParams()
 
   useEffect(() => {
@@ -49,6 +50,7 @@ function ConfirmSaoPauloContent() {
       setGuestName(data.guest.name)
       setEmail(data.guest.email)
       setGuestGuid(guid)
+      setQrCode(data.guest.qr_code)
     } catch (err) {
       console.error('[Confirm SP] Error:', err)
       setError('Erro ao conectar com o servidor. Por favor, tente novamente.')
@@ -101,9 +103,38 @@ function ConfirmSaoPauloContent() {
     await handleAutoSubmit(email)
   }
 
-  const handleAccessInvite = () => {
-    if (guestGuid) {
-      window.location.href = `/rsvp-sp?guid=${guestGuid}`
+  const handleAccessInvite = async () => {
+    if (!qrCode) {
+      setError('Código QR não disponível. Por favor, entre em contato com o suporte.')
+      return
+    }
+
+    try {
+      setLoading(true)
+      const imageUrl = `/events/oil-celebration-sp/${qrCode}-oil-celebration-sp.jpg`
+
+      // Check if file exists first
+      const checkResponse = await fetch(imageUrl, { method: 'HEAD' })
+
+      if (!checkResponse.ok) {
+        setError('Convite não encontrado. Por favor, entre em contato com o suporte.')
+        console.error('Image not found:', imageUrl)
+        return
+      }
+
+      // Download the file
+      const link = document.createElement('a')
+      link.href = imageUrl
+      link.download = `convite-${qrCode}.jpg`
+      link.target = '_blank'
+      document.body.appendChild(link)
+      link.click()
+      document.body.removeChild(link)
+    } catch (err) {
+      console.error('Error downloading image:', err)
+      setError('Erro ao baixar o convite. Por favor, tente novamente.')
+    } finally {
+      setLoading(false)
     }
   }
 
@@ -323,14 +354,14 @@ function ConfirmSaoPauloContent() {
         }
 
         .info-text {
-          font-size: 13px;
+          font-size: 16px;
           color: #666;
           line-height: 1.6;
           margin-bottom: 10px;
         }
 
         .info-text-en {
-          font-size: 13px;
+          font-size: 16px;
           color: #999;
           line-height: 1.6;
           font-style: italic;
@@ -404,7 +435,7 @@ function ConfirmSaoPauloContent() {
 
           .info-text,
           .info-text-en {
-            font-size: 12px;
+            font-size: 16px;
           }
 
           .access-text {

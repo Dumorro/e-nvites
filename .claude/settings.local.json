@@ -1,9 +1,7 @@
 {
   "permissions": {
     "allow": [
-      "Bash(npx create-next-app@latest:*)",
-      "Bash(dir:*)",
-      "Bash(findstr:*)"
+      "Bash(npm uninstall:*)"
     ],
     "deny": [],
     "ask": []

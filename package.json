@@ -6,7 +6,10 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "next lint"
+    "lint": "next lint",
+    "check-pdfs": "npx tsx scripts/check-pdf-files.ts",
+    "generate-qr-codes": "npx tsx scripts/generate-qr-codes.ts",
+    "generate-qr-codes:sequential": "npx tsx scripts/generate-qr-codes.ts --sequential"
   },
   "dependencies": {
     "@supabase/supabase-js": "^2.39.0",
