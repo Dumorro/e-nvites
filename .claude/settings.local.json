@@ -4,7 +4,12 @@
       "Bash(npm uninstall:*)",
       "Bash(mkdir:*)",
       "Bash(npm install:*)",
-      "Bash(yarn add:*)"
+      "Bash(yarn add:*)",
+      "Bash(git add:*)",
+      "Bash(git restore:*)",
+      "Bash(git commit:*)",
+      "Bash(git push)",
+      "Bash(yarn install)"
     ],
     "deny": [],
     "ask": []
