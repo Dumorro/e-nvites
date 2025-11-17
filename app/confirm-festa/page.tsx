@@ -57,14 +57,39 @@ function ConfirmFestaContent() {
     }
   }
 
-  const handleAccessInvite = () => {
-    if (!guestGuid) {
-      setError('GUID não disponível. Por favor, entre em contato com o suporte.')
+  const handleAccessInvite = async () => {
+    if (!qrCode) {
+      setError('Código QR não disponível. Por favor, entre em contato com o suporte.')
       return
     }
 
-    // Redirecionar para página de convite (pode ser implementada posteriormente)
-    window.location.href = `/invite-festa?guid=${guestGuid}`
+    try {
+      setLoading(true)
+      const imageUrl = `/events/festa-equinor/${qrCode}-festa-equinor.png`
+
+      // Check if file exists first
+      const checkResponse = await fetch(imageUrl, { method: 'HEAD' })
+
+      if (!checkResponse.ok) {
+        setError('Convite não encontrado. Por favor, entre em contato com o suporte.')
+        console.error('Image not found:', imageUrl)
+        return
+      }
+
+      // Download the file
+      const link = document.createElement('a')
+      link.href = imageUrl
+      link.download = `convite-${qrCode}.png`
+      link.target = '_blank'
+      document.body.appendChild(link)
+      link.click()
+      document.body.removeChild(link)
+    } catch (err) {
+      console.error('Error downloading image:', err)
+      setError('Erro ao baixar o convite. Por favor, tente novamente.')
+    } finally {
+      setLoading(false)
+    }
   }
 
   if (loading) {
