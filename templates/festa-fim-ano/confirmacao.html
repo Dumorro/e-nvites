@@ -1,0 +1,281 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Presença Confirmada - Festa de Final de Ano</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: Arial, sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            background-color: #f0f0f0;
+            padding: 20px;
+        }
+
+        .container {
+            position: relative;
+            width: 100%;
+            max-width: 500px;
+        }
+
+        /* Moldura usando as imagens */
+        .frame {
+            position: relative;
+            background: white;
+            padding: 40px;
+        }
+
+        .frame::before,
+        .frame::after {
+            content: '';
+            position: absolute;
+            background-size: contain;
+            background-repeat: repeat;
+        }
+
+        /* Bordas horizontais */
+        .border-top,
+        .border-bottom {
+            position: absolute;
+            left: 0;
+            right: 0;
+            height: 30px;
+            background-repeat: repeat-x;
+            background-size: auto 100%;
+        }
+
+        .border-top {
+            top: 0;
+            background-image: url('top.png');
+        }
+
+        .border-bottom {
+            bottom: 0;
+            background-image: url('botton.png');
+        }
+
+        /* Bordas verticais */
+        .border-left,
+        .border-right {
+            position: absolute;
+            top: 0;
+            bottom: 0;
+            width: 30px;
+            background-repeat: repeat-y;
+            background-size: 100% auto;
+        }
+
+        .border-left {
+            left: 0;
+            background-image: url('left.png');
+        }
+
+        .border-right {
+            right: 0;
+            background-image: url('rigth.png');
+        }
+
+        /* Conteúdo interno */
+        .content {
+            position: relative;
+            z-index: 1;
+            background: white;
+            padding: 20px;
+            text-align: center;
+        }
+
+        .logo {
+            text-align: right;
+            margin-bottom: 20px;
+        }
+
+        .logo img {
+            height: 40px;
+        }
+
+        h1 {
+            color: #1a3a52;
+            font-size: 28px;
+            font-weight: bold;
+            margin-bottom: 5px;
+            text-align: center;
+            line-height: 1.2;
+        }
+
+        .subtitle {
+            color: #1a3a52;
+            font-size: 20px;
+            font-style: italic;
+            margin-bottom: 30px;
+            text-align: center;
+        }
+
+        .confirmation-title {
+            color: #e63946;
+            font-size: 24px;
+            font-weight: bold;
+            margin-bottom: 5px;
+        }
+
+        .confirmation-subtitle {
+            color: #e63946;
+            font-size: 18px;
+            font-style: italic;
+            margin-bottom: 30px;
+        }
+
+        .guest-name {
+            color: #1a3a52;
+            font-size: 32px;
+            font-weight: bold;
+            margin-bottom: 30px;
+        }
+
+        .access-text {
+            color: #555;
+            font-size: 14px;
+            margin-bottom: 5px;
+        }
+
+        .access-subtitle {
+            color: #555;
+            font-size: 14px;
+            font-style: italic;
+            margin-bottom: 30px;
+        }
+
+        .click-button {
+            display: inline-block;
+            background-color: #1a3a52;
+            color: white;
+            padding: 20px 60px;
+            border-radius: 10px;
+            text-decoration: none;
+            font-size: 28px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: background-color 0.3s, transform 0.1s;
+            box-shadow: 0 4px 15px rgba(26, 58, 82, 0.3);
+            border: none;
+        }
+
+        .click-button:hover {
+            background-color: #0f2537;
+            transform: translateY(-2px);
+        }
+
+        .click-button:active {
+            transform: translateY(0);
+        }
+
+        .click-text {
+            display: block;
+        }
+
+        .click-text-en {
+            display: block;
+            font-style: italic;
+            font-size: 24px;
+        }
+
+        @media (max-width: 600px) {
+            .frame {
+                padding: 30px 20px;
+            }
+
+            .border-top,
+            .border-bottom {
+                height: 20px;
+            }
+
+            .border-left,
+            .border-right {
+                width: 20px;
+            }
+
+            h1 {
+                font-size: 22px;
+            }
+
+            .subtitle {
+                font-size: 16px;
+            }
+
+            .confirmation-title {
+                font-size: 20px;
+            }
+
+            .confirmation-subtitle {
+                font-size: 16px;
+            }
+
+            .guest-name {
+                font-size: 24px;
+            }
+
+            .click-button {
+                padding: 15px 40px;
+                font-size: 22px;
+            }
+
+            .click-text-en {
+                font-size: 20px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="frame">
+            <!-- Bordas da moldura -->
+            <div class="border-top"></div>
+            <div class="border-bottom"></div>
+            <div class="border-left"></div>
+            <div class="border-right"></div>
+
+            <!-- Conteúdo -->
+            <div class="content">
+                <div class="logo">
+                    <img src="logo.png" alt="Logo">
+                </div>
+
+                <h1>Festa de Final de Ano</h1>
+                <div class="subtitle">End-of-year party</div>
+
+                <div class="confirmation-title">Presença confirmada</div>
+                <div class="confirmation-subtitle">Attendance confirmed</div>
+
+                <div class="guest-name" id="guestName">Glicia Gomes</div>
+
+                <p class="access-text">Para acessar o seu convite</p>
+                <p class="access-subtitle">To access your invitation</p>
+
+                <a href="convite.html" class="click-button">
+                    <span class="click-text">Clique</span>
+                    <span class="click-text-en">click</span>
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Você pode obter o nome do convidado via URL parameters
+        // Exemplo: confirmacao.html?nome=Glicia%20Gomes
+        const urlParams = new URLSearchParams(window.location.search);
+        const guestName = urlParams.get('nome');
+
+        if (guestName) {
+            document.getElementById('guestName').textContent = guestName;
+        }
+    </script>
+</body>
+</html>
