@@ -39,8 +39,8 @@ function ConfirmFestaContent() {
 
       console.log('[Confirm Festa] Guest data received:', data.guest)
 
-      // Validate that guest belongs to event 3 (Festa de Fim de Ano)
-      if (data.guest.event_id !== 3) {
+      // Validate that guest belongs to event 7 (Festa de Fim de Ano)
+      if (data.guest.event_id !== 7) {
         setError('Este convidado não está registrado para o evento Festa de Final de Ano')
         return
       }

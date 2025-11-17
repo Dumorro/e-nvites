@@ -30,7 +30,7 @@ export default function RSVPFestaPage() {
         },
         body: JSON.stringify({
           email: email.trim().toLowerCase(),
-          eventId: 3 // ID do evento festa de fim de ano
+          eventId: 7 // ID do evento festa de fim de ano
         }),
       })
 
