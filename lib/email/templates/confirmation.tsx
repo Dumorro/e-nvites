@@ -114,7 +114,7 @@ export const ConfirmationEmail = ({
               This is an automated email. Please do not reply.
             </Text>
             <Text style={footerText}>
-              <a href={inviteImageUrl || confirmationLink} style={link}>
+              <a href={confirmationLink} style={link}>
                 Acessar meu convite / Access my invitation
               </a>
             </Text>

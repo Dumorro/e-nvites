@@ -196,19 +196,31 @@ export class EmailSender {
 
       // Add invite image if path is provided
       if (data.inviteImagePath && data.eventId) {
-        const eventSlug = data.eventId === 2 ? 'oil-celebration-sp' : 'oil-celebration-rj'
-        const imagePath = path.join(process.cwd(), 'public', 'events', eventSlug, `${data.qrCode}-${eventSlug}.jpg`)
+        let eventSlug: string
+        let fileExtension: string
+
+        // Event ID 7 = Festa de Fim de Ano (PNG files)
+        if (data.eventId === 7) {
+          eventSlug = 'festa-equinor'
+          fileExtension = 'png'
+        } else {
+          // Event ID 1 = Rio, Event ID 2 = São Paulo (JPG files)
+          eventSlug = data.eventId === 2 ? 'oil-celebration-sp' : 'oil-celebration-rj'
+          fileExtension = 'jpg'
+        }
+
+        const imagePath = path.join(process.cwd(), 'public', 'events', eventSlug, `${data.qrCode}-${eventSlug}.${fileExtension}`)
 
         console.log(`📎 [Email] Checking for invite image attachment`)
         console.log(`   → Path: ${imagePath}`)
 
         if (fs.existsSync(imagePath)) {
           attachments.push({
-            filename: `convite-${data.qrCode}.jpg`,
+            filename: `convite-${data.qrCode}.${fileExtension}`,
             path: imagePath,
-            contentType: 'image/jpeg'
+            contentType: fileExtension === 'png' ? 'image/png' : 'image/jpeg'
           })
-          console.log(`   → Attachment added: convite-${data.qrCode}.jpg`)
+          console.log(`   → Attachment added: convite-${data.qrCode}.${fileExtension}`)
         } else {
           console.log(`   → Warning: Image file not found, skipping attachment`)
         }
@@ -320,17 +332,27 @@ export class EmailSender {
 export function getInviteImageUrl(eventId: number, qrCode: string, siteUrl?: string): string {
   const baseUrl = siteUrl || process.env.NEXT_PUBLIC_SITE_URL || ''
 
-  // Event ID 1 = Rio de Janeiro, Event ID 2 = São Paulo
-  const eventSlug = eventId === 2 ? 'oil-celebration-sp' : 'oil-celebration-rj'
+  let eventSlug: string
+  let fileExtension: string
 
-  return `${baseUrl}/events/${eventSlug}/${qrCode}-${eventSlug}.jpg`
+  // Event ID 7 = Festa de Fim de Ano (PNG files)
+  if (eventId === 7) {
+    eventSlug = 'festa-equinor'
+    fileExtension = 'png'
+  } else {
+    // Event ID 1 = Rio de Janeiro, Event ID 2 = São Paulo (JPG files)
+    eventSlug = eventId === 2 ? 'oil-celebration-sp' : 'oil-celebration-rj'
+    fileExtension = 'jpg'
+  }
+
+  return `${baseUrl}/events/${eventSlug}/${qrCode}-${eventSlug}.${fileExtension}`
 }
 
 /**
  * Get event English translations based on event ID
  */
 export function getEventEnglishTranslation(eventId: number, eventName: string, location: string) {
-  // Event ID 1 = Rio de Janeiro, Event ID 2 = São Paulo
+  // Event ID 1 = Rio de Janeiro, Event ID 2 = São Paulo, Event ID 7 = Festa de Fim de Ano
   // Default translations for known events
   const translations: Record<number, { nameEn: string; locationEn: string }> = {
     1: {
@@ -340,6 +362,10 @@ export function getEventEnglishTranslation(eventId: number, eventName: string, l
     2: {
       nameEn: 'Bacalhau First Oil Celebration',
       locationEn: 'São Paulo',
+    },
+    7: {
+      nameEn: 'End-of-year party',
+      locationEn: 'Marina da Glória, Rio de Janeiro',
     },
   }
 

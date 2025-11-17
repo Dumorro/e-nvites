@@ -109,8 +109,15 @@ export async function POST(request: NextRequest) {
           const emailSender = createEmailSender()
 
           // Determine confirmation page based on event ID
-          // Event ID 1 = Rio de Janeiro, Event ID 2 = São Paulo
-          const confirmPage = fullEvent.id === 2 ? 'confirm-sp' : 'confirm-rj'
+          // Event ID 1 = Rio de Janeiro, Event ID 2 = São Paulo, Event ID 7 = Festa de Fim de Ano
+          let confirmPage: string
+          if (fullEvent.id === 2) {
+            confirmPage = 'confirm-sp'
+          } else if (fullEvent.id === 7) {
+            confirmPage = 'confirm-festa'
+          } else {
+            confirmPage = 'confirm-rj'
+          }
 
           console.log(`📤 [RSVP] Sending email (will wait for completion)`)
           console.log(`   → Event: ${fullEvent.name}`)
