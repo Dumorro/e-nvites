@@ -1,7 +1,9 @@
 {
   "permissions": {
     "allow": [
-      "Bash(npm uninstall:*)"
+      "Bash(npm uninstall:*)",
+      "Bash(mkdir:*)",
+      "Bash(npm install:*)"
     ],
     "deny": [],
     "ask": []

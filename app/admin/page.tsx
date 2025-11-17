@@ -309,12 +309,20 @@ export default function AdminPage() {
        </h1>
        <p className="text-white/90">Gerenciar confirmações de presença</p>
       </div>
-      <button
-       onClick={handleLogout}
-       className="btn bg-white text-equinor-navy hover:bg-gray-100"
-      >
-       Sair
-      </button>
+      <div className="flex gap-3">
+       <a
+        href="/admin/upload-invites"
+        className="btn bg-white/90 text-equinor-navy hover:bg-white"
+       >
+        📦 Upload de Convites
+       </a>
+       <button
+        onClick={handleLogout}
+        className="btn bg-white text-equinor-navy hover:bg-gray-100"
+       >
+        Sair
+       </button>
+      </div>
      </div>
     </div>
 
