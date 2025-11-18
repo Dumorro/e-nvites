@@ -5,9 +5,10 @@ import { useRouter } from 'next/navigation'
 
 interface UploadStats {
   total: number
-  replaced: number
-  new: number
+  updated: number
+  notFound: number
   files: string[]
+  notFoundFiles: string[]
 }
 
 export default function UploadInvitesPage() {
@@ -63,7 +64,7 @@ export default function UploadInvitesPage() {
       formData.append('eventId', selectedEvent)
 
       const password = sessionStorage.getItem('adminPassword')
-      const response = await fetch('/api/admin/upload-invites', {
+      const response = await fetch('/api/admin/upload-invites-db', {
         method: 'POST',
         headers: {
           'x-admin-password': password || '',
@@ -374,7 +375,7 @@ export default function UploadInvitesPage() {
         <div className="card">
           <div className="header">
             <h1>Upload de Convites</h1>
-            <p>Faça upload de um arquivo ZIP com os convites do evento</p>
+            <p>Faça upload de um arquivo ZIP com os convites do evento. As imagens serão salvas no banco de dados.</p>
           </div>
 
           {message && (
@@ -463,26 +464,40 @@ export default function UploadInvitesPage() {
               <div className="stats-grid">
                 <div className="stat-item">
                   <div className="stat-value">{uploadStats.total}</div>
-                  <div className="stat-label">Total</div>
+                  <div className="stat-label">Processados</div>
                 </div>
                 <div className="stat-item">
-                  <div className="stat-value">{uploadStats.replaced}</div>
-                  <div className="stat-label">Substituídos</div>
+                  <div className="stat-value">{uploadStats.updated}</div>
+                  <div className="stat-label">Atualizados</div>
                 </div>
                 <div className="stat-item">
-                  <div className="stat-value">{uploadStats.new}</div>
-                  <div className="stat-label">Novos</div>
+                  <div className="stat-value">{uploadStats.notFound}</div>
+                  <div className="stat-label">Não Encontrados</div>
                 </div>
               </div>
               {uploadStats.files.length > 0 && (
                 <>
                   <h4 style={{ fontSize: '14px', color: '#4a5568', marginBottom: '8px' }}>
-                    Arquivos processados:
+                    Arquivos processados com sucesso:
                   </h4>
                   <div className="file-list">
                     {uploadStats.files.map((file, index) => (
                       <div key={index} className="file-list-item">
-                        {file}
+                        ✅ {file}
+                      </div>
+                    ))}
+                  </div>
+                </>
+              )}
+              {uploadStats.notFoundFiles.length > 0 && (
+                <>
+                  <h4 style={{ fontSize: '14px', color: '#e53e3e', marginTop: '16px', marginBottom: '8px' }}>
+                    Arquivos não encontrados no banco:
+                  </h4>
+                  <div className="file-list">
+                    {uploadStats.notFoundFiles.map((file, index) => (
+                      <div key={index} className="file-list-item" style={{ color: '#e53e3e' }}>
+                        ⚠️ {file}
                       </div>
                     ))}
                   </div>

@@ -66,33 +66,32 @@ function ConfirmFestaContent() {
     try {
       setLoading(true)
 
-      // Try both PNG and JPG formats
-      const extensions = ['png', 'jpg']
-      let imageUrl: string | null = null
-      let extension: string | null = null
+      // Fetch image from API (checks database first, then filesystem)
+      const response = await fetch(`/api/rsvp/guest-image?qrCode=${qrCode}&eventId=7`)
+      const data = await response.json()
 
-      for (const ext of extensions) {
-        const testUrl = `/events/festa-equinor/${qrCode}-festa-equinor.${ext}`
-        const checkResponse = await fetch(testUrl, { method: 'HEAD' })
-
-        if (checkResponse.ok) {
-          imageUrl = testUrl
-          extension = ext
-          break
-        }
-      }
-
-      if (!imageUrl || !extension) {
-        setError('Convite não encontrado. Por favor, entre em contato com o suporte.')
+      if (!response.ok || !data.success) {
+        setError(data.error || 'Convite não encontrado. Por favor, entre em contato com o suporte.')
         console.error('Image not found for QR code:', qrCode)
         return
       }
 
-      // Download the file
+      console.log('[Confirm Festa] Image fetched from:', data.source)
+
+      // Extract mime type and determine extension
+      const matches = data.imageData.match(/^data:([^;]+);base64,(.+)$/)
+      if (!matches) {
+        setError('Formato de imagem inválido. Por favor, entre em contato com o suporte.')
+        return
+      }
+
+      const mimeType = matches[1]
+      const extension = mimeType === 'image/png' ? 'png' : 'jpg'
+
+      // Download the file using the base64 data URI
       const link = document.createElement('a')
-      link.href = imageUrl
+      link.href = data.imageData
       link.download = `convite-${qrCode}.${extension}`
-      link.target = '_blank'
       document.body.appendChild(link)
       link.click()
       document.body.removeChild(link)

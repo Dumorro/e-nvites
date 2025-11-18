@@ -194,43 +194,78 @@ export class EmailSender {
       // Prepare attachments
       const attachments: any[] = []
 
-      // Add invite image if path is provided
+      // Add invite image from database or filesystem
       if (data.inviteImagePath && data.eventId) {
-        let eventSlug: string
-        let extensions: string[]
-
-        // Event ID 7 = Festa de Fim de Ano (try both PNG and JPG)
-        if (data.eventId === 7) {
-          eventSlug = 'festa-equinor'
-          extensions = ['png', 'jpg'] // Try both formats
-        } else {
-          // Event ID 1 = Rio, Event ID 2 = São Paulo (JPG files)
-          eventSlug = data.eventId === 2 ? 'oil-celebration-sp' : 'oil-celebration-rj'
-          extensions = ['jpg']
-        }
-
         console.log(`📎 [Email] Checking for invite image attachment`)
 
-        // Try each extension until we find a file
-        let fileFound = false
-        for (const ext of extensions) {
-          const imagePath = path.join(process.cwd(), 'public', 'events', eventSlug, `${data.qrCode}-${eventSlug}.${ext}`)
-          console.log(`   → Checking path: ${imagePath}`)
+        // First, try to get image from database (base64)
+        const { data: guestData, error: fetchError } = await supabase
+          .from('guests')
+          .select('invite_image_base64')
+          .eq('qr_code', data.qrCode)
+          .eq('event_id', data.eventId)
+          .single()
 
-          if (fs.existsSync(imagePath)) {
+        if (!fetchError && guestData?.invite_image_base64) {
+          console.log(`   → Found image in database (base64)`)
+
+          // Extract mime type and base64 data from data URI
+          const matches = guestData.invite_image_base64.match(/^data:([^;]+);base64,(.+)$/)
+          if (matches) {
+            const mimeType = matches[1]
+            const base64Data = matches[2]
+            const buffer = Buffer.from(base64Data, 'base64')
+
+            // Determine file extension from mime type
+            const ext = mimeType === 'image/png' ? 'png' : 'jpg'
+
             attachments.push({
               filename: `convite-${data.qrCode}.${ext}`,
-              path: imagePath,
-              contentType: ext === 'png' ? 'image/png' : 'image/jpeg'
+              content: buffer,
+              contentType: mimeType
             })
-            console.log(`   → Attachment added: convite-${data.qrCode}.${ext}`)
-            fileFound = true
-            break
+            console.log(`   → Attachment added from database: convite-${data.qrCode}.${ext}`)
+          } else {
+            console.log(`   → Warning: Invalid base64 data URI format`)
           }
-        }
+        } else {
+          // Fallback to filesystem (for backward compatibility)
+          console.log(`   → Image not in database, checking filesystem`)
 
-        if (!fileFound) {
-          console.log(`   → Warning: Image file not found in any format, skipping attachment`)
+          let eventSlug: string
+          let extensions: string[]
+
+          // Event ID 7 = Festa de Fim de Ano (try both PNG and JPG)
+          if (data.eventId === 7) {
+            eventSlug = 'festa-equinor'
+            extensions = ['png', 'jpg'] // Try both formats
+          } else {
+            // Event ID 1 = Rio, Event ID 2 = São Paulo (JPG files)
+            eventSlug = data.eventId === 2 ? 'oil-celebration-sp' : 'oil-celebration-rj'
+            extensions = ['jpg']
+          }
+
+          // Try each extension until we find a file
+          let fileFound = false
+          for (const ext of extensions) {
+            const imagePath = path.join(process.cwd(), 'public', 'events', eventSlug, `${data.qrCode}-${eventSlug}.${ext}`)
+            console.log(`   → Checking path: ${imagePath}`)
+
+            if (fs.existsSync(imagePath)) {
+              attachments.push({
+                filename: `convite-${data.qrCode}.${ext}`,
+                path: imagePath,
+                contentType: ext === 'png' ? 'image/png' : 'image/jpeg'
+              })
+              console.log(`   → Attachment added from filesystem: convite-${data.qrCode}.${ext}`)
+              fileFound = true
+              break
+            }
+          }
+
+          if (!fileFound) {
+            console.log(`   → Warning: Image file not found in database or filesystem, skipping attachment`)
+          }
         }
       }
 

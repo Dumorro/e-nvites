@@ -37,6 +37,7 @@ export interface Guest {
   event_id: number | null
   status: 'pending' | 'confirmed' | 'declined'
   qr_code: string | null
+  invite_image_base64: string | null
   created_at: string
   updated_at: string
 }
