@@ -19,10 +19,30 @@ export async function GET(request: NextRequest) {
     const eventIdFilter = searchParams.get('event_id')
     const searchQuery = searchParams.get('search')
 
+    // First, get count of total records matching filters (without join)
+    let countQuery = supabase
+      .from('guests')
+      .select('id', { count: 'exact', head: true })
+
+    // Apply same filters to count query
+    if (statusFilter && ['pending', 'confirmed', 'declined'].includes(statusFilter)) {
+      countQuery = countQuery.eq('status', statusFilter)
+    }
+
+    if (eventIdFilter && eventIdFilter !== 'all') {
+      countQuery = countQuery.eq('event_id', parseInt(eventIdFilter))
+    }
+
+    if (searchQuery) {
+      countQuery = countQuery.ilike('name', `%${searchQuery}%`)
+    }
+
+    // Now fetch actual data with join
     let query = supabase
       .from('guests')
-      .select('*, event:events(*)')
+      .select('id, guid, name, email, phone, event_id, status, created_at, updated_at, qr_code, event:events(id, name, location, event_date)')
       .order('created_at', { ascending: false })
+      .limit(1000) // Safety limit to prevent massive queries
 
     // Apply status filter if provided
     if (statusFilter && ['pending', 'confirmed', 'declined'].includes(statusFilter)) {
@@ -42,7 +62,15 @@ export async function GET(request: NextRequest) {
     const { data, error } = await query
 
     if (error) {
-      throw error
+      console.error('Supabase query error:', error)
+      return NextResponse.json(
+        {
+          error: 'Erro ao buscar convidados',
+          details: error.message,
+          code: error.code
+        },
+        { status: 500 }
+      )
     }
 
     // Calculate statistics
@@ -74,7 +102,10 @@ export async function GET(request: NextRequest) {
   } catch (error) {
     console.error('Error fetching guests:', error)
     return NextResponse.json(
-      { error: 'Internal server error' },
+      {
+        error: 'Internal server error',
+        details: error instanceof Error ? error.message : 'Unknown error'
+      },
       { status: 500 }
     )
   }

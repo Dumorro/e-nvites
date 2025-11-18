@@ -121,7 +121,9 @@ export default function AdminPage() {
    const data = await response.json()
 
    if (!response.ok) {
-    throw new Error(data.error || 'Erro ao carregar convidados')
+    const errorMsg = data.details ? `${data.error}: ${data.details}` : data.error || 'Erro ao carregar convidados'
+    console.error('API Error:', data)
+    throw new Error(errorMsg)
    }
 
    setGuests(data.guests)
