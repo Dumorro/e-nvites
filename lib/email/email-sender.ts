@@ -197,32 +197,40 @@ export class EmailSender {
       // Add invite image if path is provided
       if (data.inviteImagePath && data.eventId) {
         let eventSlug: string
-        let fileExtension: string
+        let extensions: string[]
 
-        // Event ID 7 = Festa de Fim de Ano (PNG files)
+        // Event ID 7 = Festa de Fim de Ano (try both PNG and JPG)
         if (data.eventId === 7) {
           eventSlug = 'festa-equinor'
-          fileExtension = 'png'
+          extensions = ['png', 'jpg'] // Try both formats
         } else {
           // Event ID 1 = Rio, Event ID 2 = São Paulo (JPG files)
           eventSlug = data.eventId === 2 ? 'oil-celebration-sp' : 'oil-celebration-rj'
-          fileExtension = 'jpg'
+          extensions = ['jpg']
         }
 
-        const imagePath = path.join(process.cwd(), 'public', 'events', eventSlug, `${data.qrCode}-${eventSlug}.${fileExtension}`)
-
         console.log(`📎 [Email] Checking for invite image attachment`)
-        console.log(`   → Path: ${imagePath}`)
 
-        if (fs.existsSync(imagePath)) {
-          attachments.push({
-            filename: `convite-${data.qrCode}.${fileExtension}`,
-            path: imagePath,
-            contentType: fileExtension === 'png' ? 'image/png' : 'image/jpeg'
-          })
-          console.log(`   → Attachment added: convite-${data.qrCode}.${fileExtension}`)
-        } else {
-          console.log(`   → Warning: Image file not found, skipping attachment`)
+        // Try each extension until we find a file
+        let fileFound = false
+        for (const ext of extensions) {
+          const imagePath = path.join(process.cwd(), 'public', 'events', eventSlug, `${data.qrCode}-${eventSlug}.${ext}`)
+          console.log(`   → Checking path: ${imagePath}`)
+
+          if (fs.existsSync(imagePath)) {
+            attachments.push({
+              filename: `convite-${data.qrCode}.${ext}`,
+              path: imagePath,
+              contentType: ext === 'png' ? 'image/png' : 'image/jpeg'
+            })
+            console.log(`   → Attachment added: convite-${data.qrCode}.${ext}`)
+            fileFound = true
+            break
+          }
+        }
+
+        if (!fileFound) {
+          console.log(`   → Warning: Image file not found in any format, skipping attachment`)
         }
       }
 
@@ -328,6 +336,7 @@ export class EmailSender {
 
 /**
  * Generate invite image URL based on event and QR code
+ * Note: For Event ID 7, the actual file format (png or jpg) will be determined at runtime
  */
 export function getInviteImageUrl(eventId: number, qrCode: string, siteUrl?: string): string {
   const baseUrl = siteUrl || process.env.NEXT_PUBLIC_SITE_URL || ''
@@ -335,10 +344,10 @@ export function getInviteImageUrl(eventId: number, qrCode: string, siteUrl?: str
   let eventSlug: string
   let fileExtension: string
 
-  // Event ID 7 = Festa de Fim de Ano (PNG files)
+  // Event ID 7 = Festa de Fim de Ano (default to png, but will try both at runtime)
   if (eventId === 7) {
     eventSlug = 'festa-equinor'
-    fileExtension = 'png'
+    fileExtension = 'png' // Default, but both png and jpg will be tried
   } else {
     // Event ID 1 = Rio de Janeiro, Event ID 2 = São Paulo (JPG files)
     eventSlug = eventId === 2 ? 'oil-celebration-sp' : 'oil-celebration-rj'

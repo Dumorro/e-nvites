@@ -65,21 +65,33 @@ function ConfirmFestaContent() {
 
     try {
       setLoading(true)
-      const imageUrl = `/events/festa-equinor/${qrCode}-festa-equinor.png`
 
-      // Check if file exists first
-      const checkResponse = await fetch(imageUrl, { method: 'HEAD' })
+      // Try both PNG and JPG formats
+      const extensions = ['png', 'jpg']
+      let imageUrl: string | null = null
+      let extension: string | null = null
 
-      if (!checkResponse.ok) {
+      for (const ext of extensions) {
+        const testUrl = `/events/festa-equinor/${qrCode}-festa-equinor.${ext}`
+        const checkResponse = await fetch(testUrl, { method: 'HEAD' })
+
+        if (checkResponse.ok) {
+          imageUrl = testUrl
+          extension = ext
+          break
+        }
+      }
+
+      if (!imageUrl || !extension) {
         setError('Convite não encontrado. Por favor, entre em contato com o suporte.')
-        console.error('Image not found:', imageUrl)
+        console.error('Image not found for QR code:', qrCode)
         return
       }
 
       // Download the file
       const link = document.createElement('a')
       link.href = imageUrl
-      link.download = `convite-${qrCode}.png`
+      link.download = `convite-${qrCode}.${extension}`
       link.target = '_blank'
       document.body.appendChild(link)
       link.click()
