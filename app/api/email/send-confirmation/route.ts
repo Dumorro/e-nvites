@@ -101,6 +101,7 @@ export async function POST(request: NextRequest) {
         return date.toLocaleTimeString('pt-BR', {
           hour: '2-digit',
           minute: '2-digit',
+          timeZone: 'America/Sao_Paulo',
         })
       } catch {
         return '18:30'
