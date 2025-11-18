@@ -57,11 +57,8 @@ export async function POST(request: NextRequest) {
     const bytes = await file.arrayBuffer()
     const buffer = Buffer.from(bytes)
 
-    // Create temp directory for ZIP
-    const tempDir = path.join(process.cwd(), 'temp')
-    if (!existsSync(tempDir)) {
-      await mkdir(tempDir, { recursive: true })
-    }
+    // Use /tmp directory for serverless environments (Vercel)
+    const tempDir = '/tmp'
 
     // Save ZIP temporarily
     const tempZipPath = path.join(tempDir, `upload-${Date.now()}.zip`)
