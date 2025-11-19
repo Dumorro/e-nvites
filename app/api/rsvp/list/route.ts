@@ -34,7 +34,7 @@ export async function GET(request: NextRequest) {
     }
 
     if (searchQuery) {
-      countQuery = countQuery.ilike('name', `%${searchQuery}%`)
+      countQuery = countQuery.or(`name.ilike.%${searchQuery}%,email.ilike.%${searchQuery}%`)
     }
 
     // Now fetch actual data with join
@@ -54,9 +54,9 @@ export async function GET(request: NextRequest) {
       query = query.eq('event_id', parseInt(eventIdFilter))
     }
 
-    // Apply search filter if provided
+    // Apply search filter if provided (search by name OR email)
     if (searchQuery) {
-      query = query.ilike('name', `%${searchQuery}%`)
+      query = query.or(`name.ilike.%${searchQuery}%,email.ilike.%${searchQuery}%`)
     }
 
     const { data, error } = await query

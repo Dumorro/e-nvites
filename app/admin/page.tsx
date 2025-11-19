@@ -21,6 +21,7 @@ interface Guest {
  status: 'pending' | 'confirmed' | 'declined'
  created_at: string
  updated_at: string
+ qr_code: string | null
  event?: Event | null
  emailSent?: boolean
  emailStatus?: 'sent' | 'failed' | 'pending' | null
@@ -205,7 +206,7 @@ export default function AdminPage() {
 
  const exportToCSV = () => {
   // Create CSV content from filtered guests
-  const headers = ['Nome', 'Email', 'Telefone', 'Evento', 'Local', 'Status', 'Data Criação', 'Última Atualização']
+  const headers = ['QR Code', 'Nome', 'Email', 'Telefone', 'Evento', 'Local', 'Status', 'Data Criação', 'Última Atualização']
   const csvRows = [headers.join(',')]
 
   guests.forEach((guest) => {
@@ -213,6 +214,7 @@ export default function AdminPage() {
    const eventLocation = guest.event?.location || ''
 
    const row = [
+    `"${guest.qr_code || ''}"`,
     `"${guest.name}"`,
     `"${guest.email || ''}"`,
     `"${formatPhone(guest.phone)}"`,
@@ -374,14 +376,14 @@ export default function AdminPage() {
      <div className="flex flex-col sm:flex-row gap-4 mb-4">
       <div className="flex-1">
        <label htmlFor="search" className="block text-sm font-medium text-gray-700 mb-2">
-        Buscar por nome
+        Buscar por nome ou email
        </label>
        <input
         type="text"
         id="search"
         value={searchQuery}
         onChange={(e) => setSearchQuery(e.target.value)}
-        placeholder="Digite o nome do convidado..."
+        placeholder="Digite o nome ou email do convidado..."
         className="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-transparent"
        />
       </div>
@@ -478,6 +480,9 @@ export default function AdminPage() {
         <thead className="bg-gray-50">
          <tr>
           <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+           QR Code
+          </th>
+          <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
            Nome
           </th>
           <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
@@ -503,6 +508,11 @@ export default function AdminPage() {
         <tbody className="bg-white divide-y divide-gray-200">
          {paginatedGuests.map((guest) => (
           <tr key={guest.id} className="hover:bg-gray-50">
+           <td className="px-6 py-4">
+            <div className="text-xs text-gray-900 max-w-xs overflow-hidden text-ellipsis">
+             {guest.qr_code || '-'}
+            </div>
+           </td>
            <td className="px-6 py-4 whitespace-nowrap">
             <div className="text-sm font-medium text-gray-900">
              {guest.name}
