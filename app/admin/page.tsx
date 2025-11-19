@@ -166,6 +166,76 @@ export default function AdminPage() {
   return phone
  }
 
+ const handleDownloadInvite = async (guest: Guest) => {
+  if (!guest.qr_code) {
+   alert('Este convidado não possui código QR')
+   return
+  }
+
+  const eventId = guest.event_id
+  if (!eventId) {
+   alert('Este convidado não está associado a um evento')
+   return
+  }
+
+  try {
+   // Event 7 uses API to fetch from database, events 1 and 2 use direct file download
+   if (eventId === 7) {
+    // Fetch from API (database or filesystem)
+    const response = await fetch(`/api/rsvp/guest-image?qrCode=${guest.qr_code}&eventId=${eventId}`)
+    const data = await response.json()
+
+    if (!response.ok || !data.success) {
+     alert(data.error || 'Convite não encontrado')
+     return
+    }
+
+    // Extract mime type and determine extension
+    const matches = data.imageData.match(/^data:([^;]+);base64,(.+)$/)
+    if (!matches) {
+     alert('Formato de imagem inválido')
+     return
+    }
+
+    const mimeType = matches[1]
+    const extension = mimeType === 'image/png' ? 'png' : 'jpg'
+
+    // Download the file using the base64 data URI
+    const link = document.createElement('a')
+    link.href = data.imageData
+    link.download = `convite-${guest.qr_code}.${extension}`
+    document.body.appendChild(link)
+    link.click()
+    document.body.removeChild(link)
+   } else if (eventId === 1 || eventId === 2) {
+    // Direct download from public folder
+    const eventSlug = eventId === 1 ? 'oil-celebration-rj' : 'oil-celebration-sp'
+    const imageUrl = `/events/${eventSlug}/${guest.qr_code}-${eventSlug}.jpg`
+
+    // Check if file exists first
+    const checkResponse = await fetch(imageUrl, { method: 'HEAD' })
+    if (!checkResponse.ok) {
+     alert('Convite não encontrado')
+     return
+    }
+
+    // Download the file
+    const link = document.createElement('a')
+    link.href = imageUrl
+    link.download = `convite-${guest.qr_code}.jpg`
+    link.target = '_blank'
+    document.body.appendChild(link)
+    link.click()
+    document.body.removeChild(link)
+   } else {
+    alert('Evento não suportado para download de convite')
+   }
+  } catch (err: any) {
+   console.error('Error downloading invite:', err)
+   alert(`Erro ao baixar convite: ${err.message}`)
+  }
+ }
+
  const handleResendEmail = async (guestId: number, guestEmail: string) => {
   if (!guestEmail) {
    alert('Este convidado não tem email cadastrado')
@@ -551,32 +621,48 @@ export default function AdminPage() {
             {formatDate(guest.updated_at)}
            </td>
            <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
-            {guest.status === 'confirmed' && guest.email && (
-             <button
-              onClick={() => handleResendEmail(guest.id, guest.email!)}
-              disabled={sendingEmail === guest.id}
-              className="text-blue-600 hover:text-blue-800 disabled:opacity-50 disabled:cursor-not-allowed flex items-center gap-1"
-              title="Reenviar email de confirmação"
-             >
-              {sendingEmail === guest.id ? (
-               <>
-                <span className="animate-spin">⏳</span>
-                <span>Enviando...</span>
-               </>
-              ) : (
-               <>
-                <span>📧</span>
-                <span>Reenviar Email</span>
-               </>
-              )}
-             </button>
-            )}
-            {guest.status === 'confirmed' && !guest.email && (
-             <span className="text-gray-400 text-xs">Sem email</span>
-            )}
-            {guest.status !== 'confirmed' && (
-             <span className="text-gray-400 text-xs">Não confirmado</span>
-            )}
+            <div className="flex flex-col gap-2">
+             {/* Download Invite Button */}
+             {guest.qr_code && guest.event_id && [1, 2, 7].includes(guest.event_id) && (
+              <button
+               onClick={() => handleDownloadInvite(guest)}
+               className="text-green-600 hover:text-green-800 flex items-center gap-1 text-xs"
+               title="Baixar convite"
+              >
+               <span>📥</span>
+               <span>Baixar Convite</span>
+              </button>
+             )}
+
+             {/* Resend Email Button */}
+             {guest.status === 'confirmed' && guest.email && (
+              <button
+               onClick={() => handleResendEmail(guest.id, guest.email!)}
+               disabled={sendingEmail === guest.id}
+               className="text-blue-600 hover:text-blue-800 disabled:opacity-50 disabled:cursor-not-allowed flex items-center gap-1 text-xs"
+               title="Reenviar email de confirmação"
+              >
+               {sendingEmail === guest.id ? (
+                <>
+                 <span className="animate-spin">⏳</span>
+                 <span>Enviando...</span>
+                </>
+               ) : (
+                <>
+                 <span>📧</span>
+                 <span>Reenviar Email</span>
+                </>
+               )}
+              </button>
+             )}
+
+             {guest.status === 'confirmed' && !guest.email && (
+              <span className="text-gray-400 text-xs">Sem email</span>
+             )}
+             {guest.status !== 'confirmed' && (
+              <span className="text-gray-400 text-xs">Não confirmado</span>
+             )}
+            </div>
            </td>
           </tr>
          ))}
