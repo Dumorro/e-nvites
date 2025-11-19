@@ -73,12 +73,32 @@ export async function GET(request: NextRequest) {
       )
     }
 
-    // Calculate statistics
-    const stats = {
-      total: data.length,
-      confirmed: data.filter(g => g.status === 'confirmed').length,
-      declined: data.filter(g => g.status === 'declined').length,
-      pending: data.filter(g => g.status === 'pending').length,
+    // Calculate statistics based ONLY on event filter (ignore status and search filters)
+    let statsQuery = supabase
+      .from('guests')
+      .select('status')
+
+    // Only apply event filter to stats
+    if (eventIdFilter && eventIdFilter !== 'all') {
+      statsQuery = statsQuery.eq('event_id', parseInt(eventIdFilter))
+    }
+
+    const { data: statsData, error: statsError } = await statsQuery
+
+    if (statsError) {
+      console.error('Error fetching stats:', statsError)
+    }
+
+    const stats = statsData ? {
+      total: statsData.length,
+      confirmed: statsData.filter(g => g.status === 'confirmed').length,
+      declined: statsData.filter(g => g.status === 'declined').length,
+      pending: statsData.filter(g => g.status === 'pending').length,
+    } : {
+      total: 0,
+      confirmed: 0,
+      declined: 0,
+      pending: 0,
     }
 
     // Fetch all active events from database
