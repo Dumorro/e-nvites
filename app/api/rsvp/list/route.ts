@@ -37,7 +37,24 @@ export async function GET(request: NextRequest) {
       countQuery = countQuery.or(`name.ilike.%${searchQuery}%,email.ilike.%${searchQuery}%`)
     }
 
-    // Now fetch actual data with join
+    // Calculate statistics FIRST - before applying limit
+    // Statistics based ONLY on event filter (ignore status and search filters)
+    let statsQuery = supabase
+      .from('guests')
+      .select('status')
+
+    // Only apply event filter to stats
+    if (eventIdFilter && eventIdFilter !== 'all') {
+      statsQuery = statsQuery.eq('event_id', parseInt(eventIdFilter))
+    }
+
+    const { data: statsData, error: statsError } = await statsQuery
+
+    if (statsError) {
+      console.error('Error fetching stats:', statsError)
+    }
+
+    // Now fetch actual data with join (with limit for display)
     let query = supabase
       .from('guests')
       .select('id, guid, name, email, phone, event_id, status, created_at, updated_at, qr_code, event:events(id, name, location, event_date)')
@@ -73,18 +90,6 @@ export async function GET(request: NextRequest) {
       )
     }
 
-    // Calculate statistics based ONLY on event filter (ignore status and search filters)
-    let statsQuery = supabase
-      .from('guests')
-      .select('status')
-
-    // Only apply event filter to stats
-    if (eventIdFilter && eventIdFilter !== 'all') {
-      statsQuery = statsQuery.eq('event_id', parseInt(eventIdFilter))
-    }
-
-    const { data: statsData, error: statsError } = await statsQuery
-
     if (statsError) {
       console.error('Error fetching stats:', statsError)
     }
@@ -100,6 +105,10 @@ export async function GET(request: NextRequest) {
       declined: 0,
       pending: 0,
     }
+
+    console.log('📊 [Stats] Event Filter:', eventIdFilter)
+    console.log('📊 [Stats] Calculated:', stats)
+    console.log('📊 [Stats] Raw data count:', statsData?.length || 0)
 
     // Fetch all active events from database
     const { data: eventsData, error: eventsError } = await supabase
