@@ -385,6 +385,12 @@ export default function AdminPage() {
       </div>
       <div className="flex gap-3">
        <a
+        href="/admin/import-guests"
+        className="btn bg-white/90 text-equinor-navy hover:bg-white"
+       >
+        📄 Importar Convidados
+       </a>
+       <a
         href="/admin/upload-invites"
         className="btn bg-white/90 text-equinor-navy hover:bg-white"
        >
