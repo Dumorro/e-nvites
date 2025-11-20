@@ -111,22 +111,33 @@ function ConfirmRioContent() {
 
     try {
       setLoading(true)
-      const imageUrl = `/events/oil-celebration-rj/${qrCode}-oil-celebration-rj.jpg`
 
-      // Check if file exists first
-      const checkResponse = await fetch(imageUrl, { method: 'HEAD' })
+      // Fetch image from API (checks database first, then filesystem)
+      const response = await fetch(`/api/rsvp/guest-image?qrCode=${qrCode}&eventId=1`)
+      const data = await response.json()
 
-      if (!checkResponse.ok) {
-        setError('Convite não encontrado. Por favor, entre em contato com o suporte.')
-        console.error('Image not found:', imageUrl)
+      if (!response.ok || !data.success) {
+        setError(data.error || 'Convite não encontrado. Por favor, entre em contato com o suporte.')
+        console.error('Image not found for QR code:', qrCode)
         return
       }
 
-      // Download the file
+      console.log('[Confirm RJ] Image fetched from:', data.source)
+
+      // Extract mime type and determine extension
+      const matches = data.imageData.match(/^data:([^;]+);base64,(.+)$/)
+      if (!matches) {
+        setError('Formato de imagem inválido. Por favor, entre em contato com o suporte.')
+        return
+      }
+
+      const mimeType = matches[1]
+      const extension = mimeType === 'image/png' ? 'png' : 'jpg'
+
+      // Download the file using the base64 data URI
       const link = document.createElement('a')
-      link.href = imageUrl
-      link.download = `convite-${qrCode}.jpg`
-      link.target = '_blank'
+      link.href = data.imageData
+      link.download = `convite-${qrCode}.${extension}`
       document.body.appendChild(link)
       link.click()
       document.body.removeChild(link)

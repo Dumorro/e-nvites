@@ -267,6 +267,10 @@ export default function UploadInvitesPage() {
           font-weight: 600;
           cursor: pointer;
           transition: transform 0.2s, box-shadow 0.2s;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          gap: 10px;
         }
 
         .upload-button:hover:not(:disabled) {
@@ -277,6 +281,21 @@ export default function UploadInvitesPage() {
         .upload-button:disabled {
           opacity: 0.6;
           cursor: not-allowed;
+        }
+
+        .spinner {
+          width: 18px;
+          height: 18px;
+          border: 3px solid rgba(255, 255, 255, 0.3);
+          border-top-color: white;
+          border-radius: 50%;
+          animation: spin 0.8s linear infinite;
+        }
+
+        @keyframes spin {
+          to {
+            transform: rotate(360deg);
+          }
         }
 
         .message {
@@ -454,6 +473,7 @@ export default function UploadInvitesPage() {
               className="upload-button"
               disabled={!selectedFile || uploading}
             >
+              {uploading && <div className="spinner"></div>}
               {uploading ? 'Fazendo upload...' : 'Fazer Upload'}
             </button>
           </form>
