@@ -37,21 +37,50 @@ export async function GET(request: NextRequest) {
       countQuery = countQuery.or(`name.ilike.%${searchQuery}%,email.ilike.%${searchQuery}%`)
     }
 
-    // Calculate statistics FIRST - before applying limit
+    // Calculate statistics FIRST - using count queries (no data fetch, just counts)
     // Statistics based ONLY on event filter (ignore status and search filters)
-    let statsQuery = supabase
-      .from('guests')
-      .select('status')
+    console.log('📊 [Stats Query] Starting stats calculation...')
+    console.log('📊 [Stats Query] Event Filter:', eventIdFilter)
 
-    // Only apply event filter to stats
-    if (eventIdFilter && eventIdFilter !== 'all') {
-      statsQuery = statsQuery.eq('event_id', parseInt(eventIdFilter))
+    // Build base query for stats (only with event filter)
+    const buildStatsQuery = (status?: string) => {
+      let query = supabase
+        .from('guests')
+        .select('*', { count: 'exact', head: true })
+
+      // Apply event filter if needed
+      if (eventIdFilter && eventIdFilter !== 'all') {
+        query = query.eq('event_id', parseInt(eventIdFilter))
+      }
+
+      // Apply status filter if provided
+      if (status) {
+        query = query.eq('status', status)
+      }
+
+      return query
     }
 
-    const { data: statsData, error: statsError } = await statsQuery
+    // Execute all count queries in parallel
+    const [
+      { count: totalCount, error: totalError },
+      { count: confirmedCount, error: confirmedError },
+      { count: declinedCount, error: declinedError },
+      { count: pendingCount, error: pendingError }
+    ] = await Promise.all([
+      buildStatsQuery(),
+      buildStatsQuery('confirmed'),
+      buildStatsQuery('declined'),
+      buildStatsQuery('pending')
+    ])
 
-    if (statsError) {
-      console.error('Error fetching stats:', statsError)
+    console.log('📊 [Stats Query] Total:', totalCount)
+    console.log('📊 [Stats Query] Confirmed:', confirmedCount)
+    console.log('📊 [Stats Query] Declined:', declinedCount)
+    console.log('📊 [Stats Query] Pending:', pendingCount)
+
+    if (totalError || confirmedError || declinedError || pendingError) {
+      console.error('❌ [Stats Query] Errors:', { totalError, confirmedError, declinedError, pendingError })
     }
 
     // Now fetch actual data with join (with limit for display)
@@ -90,25 +119,15 @@ export async function GET(request: NextRequest) {
       )
     }
 
-    if (statsError) {
-      console.error('Error fetching stats:', statsError)
+    // Build stats object from count queries
+    const stats = {
+      total: totalCount || 0,
+      confirmed: confirmedCount || 0,
+      declined: declinedCount || 0,
+      pending: pendingCount || 0,
     }
 
-    const stats = statsData ? {
-      total: statsData.length,
-      confirmed: statsData.filter(g => g.status === 'confirmed').length,
-      declined: statsData.filter(g => g.status === 'declined').length,
-      pending: statsData.filter(g => g.status === 'pending').length,
-    } : {
-      total: 0,
-      confirmed: 0,
-      declined: 0,
-      pending: 0,
-    }
-
-    console.log('📊 [Stats] Event Filter:', eventIdFilter)
-    console.log('📊 [Stats] Calculated:', stats)
-    console.log('📊 [Stats] Raw data count:', statsData?.length || 0)
+    console.log('📊 [Stats] Final stats:', stats)
 
     // Fetch all active events from database
     const { data: eventsData, error: eventsError } = await supabase
