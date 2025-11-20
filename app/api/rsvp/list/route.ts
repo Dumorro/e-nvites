@@ -42,15 +42,18 @@ export async function GET(request: NextRequest) {
     console.log('📊 [Stats Query] Starting stats calculation...')
     console.log('📊 [Stats Query] Event Filter:', eventIdFilter)
 
-    // Build base query for stats (only with event filter)
-    const buildStatsQuery = (status?: string) => {
+    // Build and execute count query for stats (only with event filter)
+    const executeStatsQuery = async (status?: string) => {
       let query = supabase
         .from('guests')
-        .select('*', { count: 'exact', head: true })
+        .select('id', { count: 'exact', head: true })
 
       // Apply event filter if needed
       if (eventIdFilter && eventIdFilter !== 'all') {
         query = query.eq('event_id', parseInt(eventIdFilter))
+        console.log(`  🔍 Executing count query for event_id=${eventIdFilter}, status=${status || 'all'}`)
+      } else {
+        console.log(`  🔍 Executing count query for ALL events, status=${status || 'all'}`)
       }
 
       // Apply status filter if provided
@@ -58,7 +61,9 @@ export async function GET(request: NextRequest) {
         query = query.eq('status', status)
       }
 
-      return query
+      const result = await query
+      console.log(`  ✅ Result: count=${result.count}, error=${result.error?.message || 'none'}, data length=${result.data?.length || 0}`)
+      return result
     }
 
     // Execute all count queries in parallel
@@ -68,19 +73,25 @@ export async function GET(request: NextRequest) {
       { count: declinedCount, error: declinedError },
       { count: pendingCount, error: pendingError }
     ] = await Promise.all([
-      buildStatsQuery(),
-      buildStatsQuery('confirmed'),
-      buildStatsQuery('declined'),
-      buildStatsQuery('pending')
+      executeStatsQuery(),
+      executeStatsQuery('confirmed'),
+      executeStatsQuery('declined'),
+      executeStatsQuery('pending')
     ])
 
-    console.log('📊 [Stats Query] Total:', totalCount)
-    console.log('📊 [Stats Query] Confirmed:', confirmedCount)
-    console.log('📊 [Stats Query] Declined:', declinedCount)
-    console.log('📊 [Stats Query] Pending:', pendingCount)
+    console.log('📊 [Stats Query Results]:')
+    console.log('  - Total:', totalCount, '(error:', totalError?.message || 'none', ')')
+    console.log('  - Confirmed:', confirmedCount, '(error:', confirmedError?.message || 'none', ')')
+    console.log('  - Declined:', declinedCount, '(error:', declinedError?.message || 'none', ')')
+    console.log('  - Pending:', pendingCount, '(error:', pendingError?.message || 'none', ')')
 
     if (totalError || confirmedError || declinedError || pendingError) {
-      console.error('❌ [Stats Query] Errors:', { totalError, confirmedError, declinedError, pendingError })
+      console.error('❌ [Stats Query] Full Errors:', {
+        totalError: totalError ? JSON.stringify(totalError) : null,
+        confirmedError: confirmedError ? JSON.stringify(confirmedError) : null,
+        declinedError: declinedError ? JSON.stringify(declinedError) : null,
+        pendingError: pendingError ? JSON.stringify(pendingError) : null
+      })
     }
 
     // Now fetch actual data with join (with limit for display)
