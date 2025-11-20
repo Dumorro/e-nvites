@@ -191,18 +191,38 @@ INSERT INTO guests (qr_code, name, email, phone, guid, event_id, status) VALUES
 
       if (insertErr) {
         console.error('❌ [Import Guests] Insert error:', insertErr)
+
+        // Check if error is duplicate qr_code + event_id
+        let errorMessage = insertErr.message
+        if (insertErr.code === '23505' || insertErr.message.includes('idx_guests_qr_code_event_unique')) {
+          errorMessage = 'QR Code duplicado encontrado para este evento. Cada QR Code deve ser único dentro do mesmo evento.'
+        }
+
+        // Save failed import log to database
+        const allErrors = [
+          ...errorDetails,
+          { row: 0, error: `Erro no banco: ${errorMessage}` }
+        ]
+        await supabase.from('import_logs').insert({
+          event_id: eventIdNum,
+          filename: file.name,
+          total_rows: lines.length - 1,
+          inserted: 0,
+          errors: allErrors.length,
+          error_details: allErrors,
+          status: 'failed',
+          imported_by: 'admin'
+        })
+
         return NextResponse.json(
           {
             error: 'Erro ao inserir convidados',
-            details: insertErr.message,
+            details: errorMessage,
             stats: {
               totalRows: lines.length - 1,
               inserted: 0,
-              errors: errorDetails.length + 1,
-              errorDetails: [
-                ...errorDetails,
-                { row: 0, error: `Erro no banco: ${insertErr.message}` }
-              ]
+              errors: allErrors.length,
+              errorDetails: allErrors
             }
           },
           { status: 500 }
@@ -210,6 +230,19 @@ INSERT INTO guests (qr_code, name, email, phone, guid, event_id, status) VALUES
       }
 
       console.log(`✅ [Import Guests] Successfully inserted ${guestsToInsert.length} guests`)
+
+      // Save import log to database
+      const importStatus = errorDetails.length > 0 ? 'partial' : 'completed'
+      await supabase.from('import_logs').insert({
+        event_id: eventIdNum,
+        filename: file.name,
+        total_rows: lines.length - 1,
+        inserted: guestsToInsert.length,
+        errors: errorDetails.length,
+        error_details: errorDetails.length > 0 ? errorDetails : null,
+        status: importStatus,
+        imported_by: 'admin'
+      })
 
       return NextResponse.json({
         success: true,
@@ -225,18 +258,38 @@ INSERT INTO guests (qr_code, name, email, phone, guid, event_id, status) VALUES
 
     if (insertError) {
       console.error('❌ [Import Guests] Insert error:', insertError)
+
+      // Check if error is duplicate qr_code + event_id
+      let errorMessage = insertError.message
+      if (insertError.code === '23505' || insertError.message.includes('idx_guests_qr_code_event_unique')) {
+        errorMessage = 'QR Code duplicado encontrado para este evento. Cada QR Code deve ser único dentro do mesmo evento.'
+      }
+
+      // Save failed import log to database
+      const allErrors = [
+        ...errorDetails,
+        { row: 0, error: `Erro no banco: ${errorMessage}` }
+      ]
+      await supabase.from('import_logs').insert({
+        event_id: eventIdNum,
+        filename: file.name,
+        total_rows: lines.length - 1,
+        inserted: 0,
+        errors: allErrors.length,
+        error_details: allErrors,
+        status: 'failed',
+        imported_by: 'admin'
+      })
+
       return NextResponse.json(
         {
           error: 'Erro ao inserir convidados',
-          details: insertError.message,
+          details: errorMessage,
           stats: {
             totalRows: lines.length - 1,
             inserted: 0,
-            errors: errorDetails.length + 1,
-            errorDetails: [
-              ...errorDetails,
-              { row: 0, error: `Erro no banco: ${insertError.message}` }
-            ]
+            errors: allErrors.length,
+            errorDetails: allErrors
           }
         },
         { status: 500 }
@@ -244,6 +297,19 @@ INSERT INTO guests (qr_code, name, email, phone, guid, event_id, status) VALUES
     }
 
     console.log(`✅ [Import Guests] Successfully inserted ${guests.length} guests`)
+
+    // Save import log to database
+    const importStatus = errorDetails.length > 0 ? 'partial' : 'completed'
+    await supabase.from('import_logs').insert({
+      event_id: eventIdNum,
+      filename: file.name,
+      total_rows: lines.length - 1,
+      inserted: guests.length,
+      errors: errorDetails.length,
+      error_details: errorDetails.length > 0 ? errorDetails : null,
+      status: importStatus,
+      imported_by: 'admin'
+    })
 
     return NextResponse.json({
       success: true,

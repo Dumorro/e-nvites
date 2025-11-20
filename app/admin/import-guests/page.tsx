@@ -73,6 +73,7 @@ export default function ImportGuestsPage() {
     }
   }
 
+
   const handleImport = async () => {
     if (!selectedFile) {
       setMessage({ type: 'error', text: 'Selecione um arquivo CSV primeiro' })
@@ -625,15 +626,43 @@ export default function ImportGuestsPage() {
               </div>
               {importStats.errorDetails.length > 0 && (
                 <>
-                  <h4 style={{ fontSize: '14px', color: '#e53e3e', marginBottom: '8px' }}>
-                    Erros encontrados:
-                  </h4>
+                  <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '8px' }}>
+                    <h4 style={{ fontSize: '14px', color: '#e53e3e', margin: 0 }}>
+                      Erros encontrados:
+                    </h4>
+                    <a
+                      href="/admin/import-logs"
+                      style={{
+                        padding: '6px 12px',
+                        backgroundColor: '#667eea',
+                        color: 'white',
+                        border: 'none',
+                        borderRadius: '6px',
+                        fontSize: '12px',
+                        fontWeight: '600',
+                        textDecoration: 'none',
+                        display: 'flex',
+                        alignItems: 'center',
+                        gap: '6px'
+                      }}
+                    >
+                      📋 Ver Histórico Completo
+                    </a>
+                  </div>
                   <div className="error-list">
-                    {importStats.errorDetails.map((error, index) => (
+                    {importStats.errorDetails.slice(0, 10).map((error, index) => (
                       <div key={index} className="error-item">
                         Linha {error.row}: {error.error}
                       </div>
                     ))}
+                    {importStats.errorDetails.length > 10 && (
+                      <div style={{ textAlign: 'center', padding: '12px', color: '#718096', fontSize: '13px' }}>
+                        ... e mais {importStats.errorDetails.length - 10} erro(s).
+                        <a href="/admin/import-logs" style={{ color: '#667eea', marginLeft: '4px' }}>
+                          Ver todos no histórico
+                        </a>
+                      </div>
+                    )}
                   </div>
                 </>
               )}

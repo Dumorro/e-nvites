@@ -396,6 +396,12 @@ export default function AdminPage() {
        >
         📦 Upload de Convites
        </a>
+       <a
+        href="/admin/import-logs"
+        className="btn bg-white/90 text-equinor-navy hover:bg-white"
+       >
+        📋 Histórico de Importações
+       </a>
        <button
         onClick={handleLogout}
         className="btn bg-white text-equinor-navy hover:bg-gray-100"

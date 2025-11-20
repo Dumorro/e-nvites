@@ -34,6 +34,53 @@ Creates performance indexes for the most frequent queries in the application.
 
 For detailed explanation of each index, see [`GUIA_INDICES.md`](../GUIA_INDICES.md).
 
+### 3. add_unique_qr_code_event.sql
+
+Adds a unique constraint on the combination of `qr_code` and `event_id` to prevent duplicate QR codes within the same event.
+
+**Why:** Ensures data integrity by preventing duplicate QR codes from being created for the same event. This is critical for the guest check-in system and invitation distribution.
+
+**Benefits:**
+- Prevents accidental duplicate entries during CSV imports
+- Ensures each QR code is unique per event
+- Allows the same QR code to exist across different events (if needed)
+- Improves query performance for QR code lookups
+
+**Rollback:**
+```sql
+DROP INDEX IF EXISTS idx_guests_qr_code_event_unique;
+```
+
+### 4. create_import_logs_table.sql
+
+Creates the `import_logs` table to store logs of guest CSV import operations.
+
+**Why:** Since the application is hosted on Supabase (serverless environment with no file write permissions), we need to store import logs in the database instead of generating downloadable files.
+
+**Benefits:**
+- Persistent storage of all import operations
+- Detailed error tracking with JSON storage
+- Audit trail of who imported what and when
+- Easy filtering and searching of import history
+- No need for file system access
+
+**Table Structure:**
+- `id`: Auto-incrementing primary key
+- `event_id`: Reference to the event
+- `filename`: Original CSV filename
+- `total_rows`: Number of rows processed
+- `inserted`: Number of successfully inserted guests
+- `errors`: Number of errors encountered
+- `error_details`: JSONB array with error details
+- `status`: Import status (completed, partial, failed)
+- `imported_by`: Admin who performed the import
+- `created_at`, `updated_at`: Timestamps
+
+**Rollback:**
+```sql
+DROP TABLE IF EXISTS import_logs CASCADE;
+```
+
 ---
 
 ## Migration Details

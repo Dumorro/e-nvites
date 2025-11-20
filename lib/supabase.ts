@@ -57,3 +57,17 @@ export interface EmailLog {
   sent_at: string
   created_at: string
 }
+
+export interface ImportLog {
+  id: number
+  event_id: number | null
+  filename: string | null
+  total_rows: number
+  inserted: number
+  errors: number
+  error_details: Array<{ row: number; error: string }> | null
+  status: 'completed' | 'partial' | 'failed'
+  imported_by: string | null
+  created_at: string
+  updated_at: string
+}

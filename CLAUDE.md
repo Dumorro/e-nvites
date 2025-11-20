@@ -103,10 +103,22 @@ To add a new event:
 4. Add guests to `guests` table with corresponding `event_id`
 
 To add guests for an event:
+- **Recommended:** Use `/admin/import-guests` page for CSV bulk import (includes validation and error logging)
 - Insert directly in Supabase Table Editor, or
-- Use SQL in Supabase SQL Editor with bulk INSERT, or
-- Import CSV via Supabase (guests table has CSV import feature)
+- Use SQL in Supabase SQL Editor with bulk INSERT
 - System auto-generates GUID for each guest
+
+### Bulk Import via Admin Panel
+
+Access `/admin/import-guests` to import guests in bulk:
+- Upload CSV file with format: `qrcode,nome,email,celular`
+- Preview data before importing
+- Automatic validation of required fields (qrcode, nome)
+- **Logs saved to database** (serverless-compatible)
+- View import history at `/admin/import-logs`
+- See [`exemplo-importacao-convidados.csv`](public/exemplo-importacao-convidados.csv) for CSV format
+
+**Import Logs**: All import operations are logged to the `import_logs` table in the database, including error details stored as JSONB. View complete history with filtering at `/admin/import-logs`.
 
 ## Phone Number Format
 
