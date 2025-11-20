@@ -383,38 +383,18 @@ export default function AdminPage() {
        </h1>
        <p className="text-white/90">Gerenciar confirmações de presença</p>
       </div>
-      <div className="flex gap-3">
-       <a
-        href="/admin/import-guests"
-        className="btn bg-white/90 text-equinor-navy hover:bg-white"
-       >
-        📄 Importar Convidados
-       </a>
-       <a
-        href="/admin/upload-invites"
-        className="btn bg-white/90 text-equinor-navy hover:bg-white"
-       >
-        📦 Upload de Convites
-       </a>
-       <a
-        href="/admin/import-logs"
-        className="btn bg-white/90 text-equinor-navy hover:bg-white"
-       >
-        📋 Histórico de Importações
-       </a>
-       <button
-        onClick={handleLogout}
-        className="btn bg-white text-equinor-navy hover:bg-gray-100"
-       >
-        Sair
-       </button>
-      </div>
+      <button
+       onClick={handleLogout}
+       className="btn bg-white text-equinor-navy hover:bg-gray-100"
+      >
+       Sair
+      </button>
      </div>
     </div>
 
-    {/* Stats Cards */}
+    {/* Stats Cards and Action Buttons */}
     {stats && (
-     <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 mb-6">
+     <div className="grid grid-cols-1 lg:grid-cols-4 gap-4 mb-6">
       <div className="bg-white rounded-md shadow-sm p-6 border-l-4 border-equinor-navy">
        <div className="flex items-center justify-between">
         <div>
@@ -448,6 +428,41 @@ export default function AdminPage() {
         <div className="w-12 h-12 bg-yellow-400 flex items-center justify-center rounded-md">
          <span className="text-2xl">⏳</span>
         </div>
+       </div>
+      </div>
+
+      <div className="bg-white rounded-md shadow-sm p-6 border-l-4 border-equinor-navy">
+       <div className="flex flex-row gap-3 items-center justify-center h-full">
+        <a
+         href="/admin/import-guests"
+         className="btn bg-equinor-navy text-white hover:bg-equinor-navy/90 w-14 h-14 flex items-center justify-center rounded-lg text-2xl relative group"
+         title="Importar Convidados"
+        >
+         📄
+         <span className="absolute -top-10 left-1/2 transform -translate-x-1/2 bg-gray-900 text-white text-xs rounded py-1 px-2 opacity-0 group-hover:opacity-100 transition-opacity whitespace-nowrap z-10">
+          Importar Convidados
+         </span>
+        </a>
+        <a
+         href="/admin/upload-invites"
+         className="btn bg-equinor-navy text-white hover:bg-equinor-navy/90 w-14 h-14 flex items-center justify-center rounded-lg text-2xl relative group"
+         title="Upload de Convites"
+        >
+         📦
+         <span className="absolute -top-10 left-1/2 transform -translate-x-1/2 bg-gray-900 text-white text-xs rounded py-1 px-2 opacity-0 group-hover:opacity-100 transition-opacity whitespace-nowrap z-10">
+          Upload de Convites
+         </span>
+        </a>
+        <a
+         href="/admin/import-logs"
+         className="btn bg-equinor-navy text-white hover:bg-equinor-navy/90 w-14 h-14 flex items-center justify-center rounded-lg text-2xl relative group"
+         title="Histórico de Importações"
+        >
+         📋
+         <span className="absolute -top-10 left-1/2 transform -translate-x-1/2 bg-gray-900 text-white text-xs rounded py-1 px-2 opacity-0 group-hover:opacity-100 transition-opacity whitespace-nowrap z-10">
+          Histórico de Importações
+         </span>
+        </a>
        </div>
       </div>
      </div>
