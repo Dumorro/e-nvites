@@ -48,6 +48,7 @@ export default function AdminPage() {
  const [currentPage, setCurrentPage] = useState(1)
  const [itemsPerPage, setItemsPerPage] = useState(20)
  const [sendingEmail, setSendingEmail] = useState<number | null>(null)
+ const [totalCount, setTotalCount] = useState(0) // Total count matching all filters
 
  const handleLogin = (e: React.FormEvent) => {
   e.preventDefault()
@@ -75,7 +76,7 @@ export default function AdminPage() {
  }, [statusFilter, eventIdFilter, searchQuery, authenticated])
 
  // Calculate pagination
- const totalPages = Math.ceil(guests.length / itemsPerPage)
+ const totalPages = Math.ceil(totalCount / itemsPerPage)
  const startIndex = (currentPage - 1) * itemsPerPage
  const endIndex = startIndex + itemsPerPage
  const paginatedGuests = guests.slice(startIndex, endIndex)
@@ -129,6 +130,7 @@ export default function AdminPage() {
 
    setGuests(data.guests)
    setStats(data.stats)
+   setTotalCount(data.totalCount || data.guests.length) // Use totalCount from API or fallback to guests length
    if (data.events) {
     setAvailableEvents(data.events)
    }
@@ -523,7 +525,7 @@ export default function AdminPage() {
      <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 pt-4 border-t border-gray-200">
       <div className="flex items-center gap-4">
        <p className="text-sm text-gray-600">
-        {guests.length} {guests.length === 1 ? 'convidado encontrado' : 'convidados encontrados'}
+        {totalCount} {totalCount === 1 ? 'convidado encontrado' : 'convidados encontrados'}
        </p>
        <div className="flex items-center gap-2">
         <label htmlFor="itemsPerPage" className="text-sm text-gray-600">

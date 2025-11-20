@@ -19,24 +19,6 @@ export async function GET(request: NextRequest) {
     const eventIdFilter = searchParams.get('event_id')
     const searchQuery = searchParams.get('search')
 
-    // First, get count of total records matching filters (without join)
-    let countQuery = supabase
-      .from('guests')
-      .select('id', { count: 'exact', head: true })
-
-    // Apply same filters to count query
-    if (statusFilter && ['pending', 'confirmed', 'declined'].includes(statusFilter)) {
-      countQuery = countQuery.eq('status', statusFilter)
-    }
-
-    if (eventIdFilter && eventIdFilter !== 'all') {
-      countQuery = countQuery.eq('event_id', parseInt(eventIdFilter))
-    }
-
-    if (searchQuery) {
-      countQuery = countQuery.or(`name.ilike.%${searchQuery}%,email.ilike.%${searchQuery}%`)
-    }
-
     // Calculate statistics FIRST - using count queries (no data fetch, just counts)
     // Statistics based ONLY on event filter (ignore status and search filters)
     console.log('📊 [Stats Query] Starting stats calculation...')
@@ -130,6 +112,28 @@ export async function GET(request: NextRequest) {
       )
     }
 
+    // Get count of records matching ALL filters (for pagination display)
+    let filteredCountQuery = supabase
+      .from('guests')
+      .select('id', { count: 'exact', head: true })
+
+    // Apply same filters as main query
+    if (statusFilter && ['pending', 'confirmed', 'declined'].includes(statusFilter)) {
+      filteredCountQuery = filteredCountQuery.eq('status', statusFilter)
+    }
+
+    if (eventIdFilter && eventIdFilter !== 'all') {
+      filteredCountQuery = filteredCountQuery.eq('event_id', parseInt(eventIdFilter))
+    }
+
+    if (searchQuery) {
+      filteredCountQuery = filteredCountQuery.or(`name.ilike.%${searchQuery}%,email.ilike.%${searchQuery}%`)
+    }
+
+    const { count: filteredCount } = await filteredCountQuery
+
+    console.log('📊 [Filtered Count] Total matching all filters:', filteredCount)
+
     // Build stats object from count queries
     const stats = {
       total: totalCount || 0,
@@ -156,7 +160,8 @@ export async function GET(request: NextRequest) {
     return NextResponse.json({
       guests: data,
       stats,
-      events
+      events,
+      totalCount: filteredCount || 0  // Total count matching all applied filters
     })
   } catch (error) {
     console.error('Error fetching guests:', error)
