@@ -49,6 +49,8 @@ export default function AdminPage() {
  const [itemsPerPage, setItemsPerPage] = useState(20)
  const [sendingEmail, setSendingEmail] = useState<number | null>(null)
  const [totalCount, setTotalCount] = useState(0) // Total count matching all filters
+ const [sortField, setSortField] = useState<'qr_code' | 'name' | null>(null)
+ const [sortDirection, setSortDirection] = useState<'asc' | 'desc'>('asc')
 
  const handleLogin = (e: React.FormEvent) => {
   e.preventDefault()
@@ -75,11 +77,27 @@ export default function AdminPage() {
   }
  }, [statusFilter, eventIdFilter, searchQuery, authenticated])
 
+ // Sort guests
+ const sortedGuests = [...guests].sort((a, b) => {
+  if (!sortField) return 0
+
+  let aValue = sortField === 'qr_code' ? (a.qr_code || '') : a.name
+  let bValue = sortField === 'qr_code' ? (b.qr_code || '') : b.name
+
+  // Convert to lowercase for case-insensitive sorting
+  aValue = aValue.toLowerCase()
+  bValue = bValue.toLowerCase()
+
+  if (aValue < bValue) return sortDirection === 'asc' ? -1 : 1
+  if (aValue > bValue) return sortDirection === 'asc' ? 1 : -1
+  return 0
+ })
+
  // Calculate pagination
  const totalPages = Math.ceil(totalCount / itemsPerPage)
  const startIndex = (currentPage - 1) * itemsPerPage
  const endIndex = startIndex + itemsPerPage
- const paginatedGuests = guests.slice(startIndex, endIndex)
+ const paginatedGuests = sortedGuests.slice(startIndex, endIndex)
 
  const handlePageChange = (page: number) => {
   setCurrentPage(page)
@@ -89,6 +107,18 @@ export default function AdminPage() {
  const handleItemsPerPageChange = (value: number) => {
   setItemsPerPage(value)
   setCurrentPage(1) // Reset to first page
+ }
+
+ const handleSort = (field: 'qr_code' | 'name') => {
+  if (sortField === field) {
+   // Toggle direction if clicking the same field
+   setSortDirection(sortDirection === 'asc' ? 'desc' : 'asc')
+  } else {
+   // Set new field and default to ascending
+   setSortField(field)
+   setSortDirection('asc')
+  }
+  setCurrentPage(1) // Reset to first page when sorting changes
  }
 
  const fetchGuests = async () => {
@@ -578,11 +608,37 @@ export default function AdminPage() {
        <table className="min-w-full divide-y divide-gray-200">
         <thead className="bg-gray-50">
          <tr>
-          <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-           QR Code
+          <th
+           className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider cursor-pointer hover:bg-gray-100 select-none transition-colors"
+           onClick={() => handleSort('qr_code')}
+           title="Clique para ordenar por QR Code"
+          >
+           <div className="flex items-center gap-2">
+            <span>QR Code</span>
+            {sortField === 'qr_code' ? (
+             <span className="text-equinor-navy font-bold text-base">
+              {sortDirection === 'asc' ? '↑' : '↓'}
+             </span>
+            ) : (
+             <span className="text-gray-400 text-xs">⇅</span>
+            )}
+           </div>
           </th>
-          <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-           Nome
+          <th
+           className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider cursor-pointer hover:bg-gray-100 select-none transition-colors"
+           onClick={() => handleSort('name')}
+           title="Clique para ordenar por Nome"
+          >
+           <div className="flex items-center gap-2">
+            <span>Nome</span>
+            {sortField === 'name' ? (
+             <span className="text-equinor-navy font-bold text-base">
+              {sortDirection === 'asc' ? '↑' : '↓'}
+             </span>
+            ) : (
+             <span className="text-gray-400 text-xs">⇅</span>
+            )}
+           </div>
           </th>
           <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
            Email
@@ -705,7 +761,7 @@ export default function AdminPage() {
       <div className="px-6 py-4 border-t border-gray-200 bg-gray-50">
        <div className="flex flex-col sm:flex-row justify-between items-center gap-4">
         <div className="text-sm text-gray-600">
-         Mostrando {startIndex + 1} a {Math.min(endIndex, guests.length)} de {guests.length} registros
+         Mostrando {startIndex + 1} a {Math.min(endIndex, sortedGuests.length)} de {sortedGuests.length} registros
         </div>
         <div className="flex items-center gap-2">
          <button
