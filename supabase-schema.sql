@@ -84,6 +84,12 @@ CREATE INDEX IF NOT EXISTS idx_guests_status ON guests(status);
 CREATE INDEX IF NOT EXISTS idx_guests_social_event ON guests(social_event);
 CREATE INDEX IF NOT EXISTS idx_guests_event_id ON guests(event_id);
 
+-- Create unique constraint to prevent duplicate email within same event
+-- Note: This allows NULL emails and same email across different events
+CREATE UNIQUE INDEX IF NOT EXISTS idx_guests_unique_email_per_event
+  ON guests(email, event_id)
+  WHERE email IS NOT NULL;
+
 -- Trigger to update updated_at on guests table
 DROP TRIGGER IF EXISTS update_guests_updated_at ON guests;
 CREATE TRIGGER update_guests_updated_at 

@@ -3,6 +3,30 @@
 import { useState, useEffect } from 'react'
 import { useRouter } from 'next/navigation'
 
+interface ValidationError {
+  row: number
+  qrCode?: string
+  name?: string
+  type: 'validation' | 'parsing' | 'duplicate'
+  error: string
+}
+
+interface ImportSummary {
+  success: number
+  skipped: number
+  duplicates: number
+  validationErrors: number
+  parseErrors: number
+}
+
+interface ErrorDetails {
+  errors: ValidationError[]
+  summary?: ImportSummary
+  duration_ms?: number
+  avg_time_per_guest?: number
+  stack?: string
+}
+
 interface ImportLog {
   id: number
   event_id: number | null
@@ -10,7 +34,7 @@ interface ImportLog {
   total_rows: number
   inserted: number
   errors: number
-  error_details: Array<{ row: number; error: string }> | null
+  error_details: ErrorDetails | ValidationError[] | null
   status: 'completed' | 'partial' | 'failed'
   imported_by: string | null
   created_at: string
@@ -435,22 +459,119 @@ export default function ImportLogsPage() {
                 <div className="detail-value">{selectedLog.imported_by || 'N/A'}</div>
               </div>
 
-              {selectedLog.error_details && selectedLog.error_details.length > 0 && (
-                <>
-                  <div style={{ marginTop: '24px', marginBottom: '8px' }}>
-                    <h3 style={{ fontSize: '16px', color: '#2d3748' }}>
-                      Detalhes dos Erros ({selectedLog.error_details.length})
-                    </h3>
-                  </div>
-                  <div className="error-list">
-                    {selectedLog.error_details.map((error, index) => (
-                      <div key={index} className="error-item">
-                        <strong>Linha {error.row}:</strong> {error.error}
+              {(() => {
+                const details = selectedLog.error_details
+                if (!details) return null
+
+                // Check if it's the new format with summary
+                const isNewFormat = details && typeof details === 'object' && 'errors' in details
+                const errorList = isNewFormat ? (details as ErrorDetails).errors : (details as ValidationError[])
+                const summary = isNewFormat ? (details as ErrorDetails).summary : undefined
+                const duration = isNewFormat ? (details as ErrorDetails).duration_ms : undefined
+                const avgTime = isNewFormat ? (details as ErrorDetails).avg_time_per_guest : undefined
+
+                return (
+                  <>
+                    {/* Performance metrics */}
+                    {duration && (
+                      <>
+                        <div className="detail-row">
+                          <div className="detail-label">Duração:</div>
+                          <div className="detail-value">
+                            {duration < 1000 ? `${duration}ms` : `${(duration / 1000).toFixed(2)}s`}
+                          </div>
+                        </div>
+                        {avgTime && selectedLog.inserted > 0 && (
+                          <div className="detail-row">
+                            <div className="detail-label">Tempo médio/guest:</div>
+                            <div className="detail-value">{avgTime}ms</div>
+                          </div>
+                        )}
+                      </>
+                    )}
+
+                    {/* Summary breakdown */}
+                    {summary && (
+                      <div style={{ marginTop: '24px', marginBottom: '16px' }}>
+                        <h3 style={{ fontSize: '16px', color: '#2d3748', marginBottom: '12px' }}>
+                          Resumo Detalhado
+                        </h3>
+                        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(2, 1fr)', gap: '12px' }}>
+                          <div style={{ padding: '12px', backgroundColor: '#f0fff4', borderRadius: '8px', border: '1px solid #9ae6b4' }}>
+                            <div style={{ fontSize: '24px', fontWeight: 'bold', color: '#22543d' }}>{summary.success}</div>
+                            <div style={{ fontSize: '12px', color: '#2f855a' }}>Sucesso</div>
+                          </div>
+                          <div style={{ padding: '12px', backgroundColor: '#fff5f7', borderRadius: '8px', border: '1px solid #feb2b2' }}>
+                            <div style={{ fontSize: '24px', fontWeight: 'bold', color: '#742a2a' }}>{summary.skipped}</div>
+                            <div style={{ fontSize: '12px', color: '#c53030' }}>Ignorados</div>
+                          </div>
+                          {summary.duplicates > 0 && (
+                            <div style={{ padding: '12px', backgroundColor: '#fffaf0', borderRadius: '8px', border: '1px solid #fbd38d' }}>
+                              <div style={{ fontSize: '24px', fontWeight: 'bold', color: '#7c2d12' }}>{summary.duplicates}</div>
+                              <div style={{ fontSize: '12px', color: '#c05621' }}>Duplicados</div>
+                            </div>
+                          )}
+                          {summary.validationErrors > 0 && (
+                            <div style={{ padding: '12px', backgroundColor: '#fff5f7', borderRadius: '8px', border: '1px solid #fc8181' }}>
+                              <div style={{ fontSize: '24px', fontWeight: 'bold', color: '#742a2a' }}>{summary.validationErrors}</div>
+                              <div style={{ fontSize: '12px', color: '#e53e3e' }}>Erros de Validação</div>
+                            </div>
+                          )}
+                          {summary.parseErrors > 0 && (
+                            <div style={{ padding: '12px', backgroundColor: '#fef5e7', borderRadius: '8px', border: '1px solid #f6ad55' }}>
+                              <div style={{ fontSize: '24px', fontWeight: 'bold', color: '#7c2d12' }}>{summary.parseErrors}</div>
+                              <div style={{ fontSize: '12px', color: '#dd6b20' }}>Erros de Parsing</div>
+                            </div>
+                          )}
+                        </div>
                       </div>
-                    ))}
-                  </div>
-                </>
-              )}
+                    )}
+
+                    {/* Error details */}
+                    {errorList && errorList.length > 0 && (
+                      <>
+                        <div style={{ marginTop: '24px', marginBottom: '8px' }}>
+                          <h3 style={{ fontSize: '16px', color: '#2d3748' }}>
+                            Detalhes dos Erros ({errorList.length})
+                          </h3>
+                        </div>
+                        <div className="error-list">
+                          {errorList.map((error, index) => {
+                            const typeBadge = error.type ? (
+                              <span style={{
+                                display: 'inline-block',
+                                padding: '2px 8px',
+                                borderRadius: '4px',
+                                fontSize: '11px',
+                                fontWeight: 'bold',
+                                marginRight: '8px',
+                                backgroundColor: error.type === 'duplicate' ? '#fbd38d' : error.type === 'validation' ? '#fc8181' : '#f6ad55',
+                                color: error.type === 'duplicate' ? '#7c2d12' : error.type === 'validation' ? '#742a2a' : '#7c2d12'
+                              }}>
+                                {error.type === 'duplicate' ? 'DUPLICADO' : error.type === 'validation' ? 'VALIDAÇÃO' : 'PARSING'}
+                              </span>
+                            ) : null
+
+                            return (
+                              <div key={index} className="error-item">
+                                <div>
+                                  {typeBadge}
+                                  <strong>Linha {error.row}:</strong> {error.error}
+                                </div>
+                                {error.qrCode && (
+                                  <div style={{ marginTop: '4px', fontSize: '12px', color: '#718096' }}>
+                                    QR Code: {error.qrCode} {error.name && `| Nome: ${error.name}`}
+                                  </div>
+                                )}
+                              </div>
+                            )
+                          })}
+                        </div>
+                      </>
+                    )}
+                  </>
+                )
+              })()}
             </div>
           </div>
         </div>

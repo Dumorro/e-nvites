@@ -11,6 +11,22 @@ interface GuestRow {
   phone: string
 }
 
+interface ValidationError {
+  row: number
+  qrCode?: string
+  name?: string
+  type: 'validation' | 'parsing' | 'duplicate'
+  error: string
+}
+
+interface ImportSummary {
+  success: number
+  skipped: number
+  duplicates: number
+  validationErrors: number
+  parseErrors: number
+}
+
 export async function POST(request: NextRequest) {
   try {
     // Verify admin password
@@ -67,11 +83,20 @@ export async function POST(request: NextRequest) {
       )
     }
 
+    const startTime = Date.now()
     console.log(`📊 [Import Guests] Processing ${lines.length - 1} rows for event ${eventIdNum}`)
+    console.log(`   File: ${file.name} (${(file.size / 1024).toFixed(2)} KB)`)
 
     // Parse CSV (skip header)
     const guests: GuestRow[] = []
-    const errorDetails: Array<{ row: number; error: string }> = []
+    const errorDetails: ValidationError[] = []
+    const summary: ImportSummary = {
+      success: 0,
+      skipped: 0,
+      duplicates: 0,
+      validationErrors: 0,
+      parseErrors: 0
+    }
 
     for (let i = 1; i < lines.length; i++) {
       const line = lines[i].trim()
@@ -98,8 +123,10 @@ export async function POST(request: NextRequest) {
 
         // Validate row has 4 columns
         if (values.length < 4) {
+          summary.parseErrors++
           errorDetails.push({
             row: i + 1,
+            type: 'parsing',
             error: `Linha com menos de 4 colunas (encontradas: ${values.length})`
           })
           continue
@@ -109,11 +136,31 @@ export async function POST(request: NextRequest) {
 
         // Validate required fields
         if (!qrCode || !name) {
+          summary.validationErrors++
           errorDetails.push({
             row: i + 1,
+            qrCode: qrCode || '(vazio)',
+            name: name || '(vazio)',
+            type: 'validation',
             error: 'QR Code e Nome são obrigatórios'
           })
           continue
+        }
+
+        // Validate email format if provided
+        if (email && email.trim()) {
+          const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
+          if (!emailRegex.test(email.trim())) {
+            summary.validationErrors++
+            errorDetails.push({
+              row: i + 1,
+              qrCode: qrCode,
+              name: name,
+              type: 'validation',
+              error: `Email inválido: ${email}`
+            })
+            continue
+          }
         }
 
         guests.push({
@@ -123,12 +170,18 @@ export async function POST(request: NextRequest) {
           phone: phone ? phone.replace(/"/g, '').replace(/\D/g, '') : '', // Remove non-digits
         })
       } catch (err) {
+        summary.parseErrors++
         errorDetails.push({
           row: i + 1,
+          type: 'parsing',
           error: `Erro ao processar linha: ${err instanceof Error ? err.message : 'Erro desconhecido'}`
         })
       }
     }
+
+    summary.skipped = errorDetails.length
+    console.log(`   → Parsed: ${guests.length} valid, ${errorDetails.length} errors`)
+    console.log(`   → Breakdown: ${summary.validationErrors} validation, ${summary.parseErrors} parsing`)
 
     if (guests.length === 0) {
       return NextResponse.json(
@@ -190,26 +243,46 @@ INSERT INTO guests (qr_code, name, email, phone, guid, event_id, status) VALUES
         .select()
 
       if (insertErr) {
+        const duration = Date.now() - startTime
         console.error('❌ [Import Guests] Insert error:', insertErr)
+        console.error(`   Duration: ${duration}ms`)
 
-        // Check if error is duplicate qr_code + event_id
+        // Check if error is duplicate qr_code + event_id or email + event_id
         let errorMessage = insertErr.message
-        if (insertErr.code === '23505' || insertErr.message.includes('idx_guests_qr_code_event_unique')) {
-          errorMessage = 'QR Code duplicado encontrado para este evento. Cada QR Code deve ser único dentro do mesmo evento.'
+        let errorType: 'duplicate' | 'validation' | 'parsing' = 'validation'
+
+        if (insertErr.code === '23505') {
+          errorType = 'duplicate'
+          if (insertErr.message.includes('idx_guests_qr_code_event_unique')) {
+            errorMessage = 'QR Code duplicado encontrado para este evento. Cada QR Code deve ser único dentro do mesmo evento.'
+          } else if (insertErr.message.includes('idx_guests_unique_email_per_event')) {
+            errorMessage = 'Email duplicado encontrado para este evento. Cada email deve ser único dentro do mesmo evento.'
+          } else {
+            errorMessage = 'Registro duplicado encontrado. Verifique QR Codes e emails.'
+          }
+          summary.duplicates++
         }
 
         // Save failed import log to database
-        const allErrors = [
+        const allErrors: ValidationError[] = [
           ...errorDetails,
-          { row: 0, error: `Erro no banco: ${errorMessage}` }
+          { row: 0, type: errorType, error: `Erro no banco: ${errorMessage}` }
         ]
+
         await supabase.from('import_logs').insert({
           event_id: eventIdNum,
           filename: file.name,
           total_rows: lines.length - 1,
           inserted: 0,
           errors: allErrors.length,
-          error_details: allErrors,
+          error_details: {
+            errors: allErrors,
+            summary: {
+              ...summary,
+              success: 0
+            },
+            duration_ms: duration
+          },
           status: 'failed',
           imported_by: 'admin'
         })
@@ -229,7 +302,12 @@ INSERT INTO guests (qr_code, name, email, phone, guid, event_id, status) VALUES
         )
       }
 
+      const duration = Date.now() - startTime
+      summary.success = guestsToInsert.length
+
       console.log(`✅ [Import Guests] Successfully inserted ${guestsToInsert.length} guests`)
+      console.log(`   Duration: ${duration}ms (${(duration / guestsToInsert.length).toFixed(2)}ms per guest)`)
+      console.log(`   Summary: ${summary.success} success, ${summary.skipped} skipped`)
 
       // Save import log to database
       const importStatus = errorDetails.length > 0 ? 'partial' : 'completed'
@@ -239,7 +317,12 @@ INSERT INTO guests (qr_code, name, email, phone, guid, event_id, status) VALUES
         total_rows: lines.length - 1,
         inserted: guestsToInsert.length,
         errors: errorDetails.length,
-        error_details: errorDetails.length > 0 ? errorDetails : null,
+        error_details: errorDetails.length > 0 ? {
+          errors: errorDetails,
+          summary,
+          duration_ms: duration,
+          avg_time_per_guest: Number((duration / guestsToInsert.length).toFixed(2))
+        } : null,
         status: importStatus,
         imported_by: 'admin'
       })
@@ -257,26 +340,46 @@ INSERT INTO guests (qr_code, name, email, phone, guid, event_id, status) VALUES
     }
 
     if (insertError) {
+      const duration = Date.now() - startTime
       console.error('❌ [Import Guests] Insert error:', insertError)
+      console.error(`   Duration: ${duration}ms`)
 
-      // Check if error is duplicate qr_code + event_id
+      // Check if error is duplicate qr_code + event_id or email + event_id
       let errorMessage = insertError.message
-      if (insertError.code === '23505' || insertError.message.includes('idx_guests_qr_code_event_unique')) {
-        errorMessage = 'QR Code duplicado encontrado para este evento. Cada QR Code deve ser único dentro do mesmo evento.'
+      let errorType: 'duplicate' | 'validation' | 'parsing' = 'validation'
+
+      if (insertError.code === '23505') {
+        errorType = 'duplicate'
+        if (insertError.message.includes('idx_guests_qr_code_event_unique')) {
+          errorMessage = 'QR Code duplicado encontrado para este evento. Cada QR Code deve ser único dentro do mesmo evento.'
+        } else if (insertError.message.includes('idx_guests_unique_email_per_event')) {
+          errorMessage = 'Email duplicado encontrado para este evento. Cada email deve ser único dentro do mesmo evento.'
+        } else {
+          errorMessage = 'Registro duplicado encontrado. Verifique QR Codes e emails.'
+        }
+        summary.duplicates++
       }
 
       // Save failed import log to database
-      const allErrors = [
+      const allErrors: ValidationError[] = [
         ...errorDetails,
-        { row: 0, error: `Erro no banco: ${errorMessage}` }
+        { row: 0, type: errorType, error: `Erro no banco: ${errorMessage}` }
       ]
+
       await supabase.from('import_logs').insert({
         event_id: eventIdNum,
         filename: file.name,
         total_rows: lines.length - 1,
         inserted: 0,
         errors: allErrors.length,
-        error_details: allErrors,
+        error_details: {
+          errors: allErrors,
+          summary: {
+            ...summary,
+            success: 0
+          },
+          duration_ms: duration
+        },
         status: 'failed',
         imported_by: 'admin'
       })
@@ -296,7 +399,12 @@ INSERT INTO guests (qr_code, name, email, phone, guid, event_id, status) VALUES
       )
     }
 
+    const duration = Date.now() - startTime
+    summary.success = guests.length
+
     console.log(`✅ [Import Guests] Successfully inserted ${guests.length} guests`)
+    console.log(`   Duration: ${duration}ms (${(duration / guests.length).toFixed(2)}ms per guest)`)
+    console.log(`   Summary: ${summary.success} success, ${summary.skipped} skipped`)
 
     // Save import log to database
     const importStatus = errorDetails.length > 0 ? 'partial' : 'completed'
@@ -306,7 +414,12 @@ INSERT INTO guests (qr_code, name, email, phone, guid, event_id, status) VALUES
       total_rows: lines.length - 1,
       inserted: guests.length,
       errors: errorDetails.length,
-      error_details: errorDetails.length > 0 ? errorDetails : null,
+      error_details: errorDetails.length > 0 ? {
+        errors: errorDetails,
+        summary,
+        duration_ms: duration,
+        avg_time_per_guest: Number((duration / guests.length).toFixed(2))
+      } : null,
       status: importStatus,
       imported_by: 'admin'
     })
@@ -318,11 +431,38 @@ INSERT INTO guests (qr_code, name, email, phone, guid, event_id, status) VALUES
         totalRows: lines.length - 1,
         inserted: guests.length,
         errors: errorDetails.length,
-        errorDetails
+        errorDetails,
+        summary,
+        duration: duration
       }
     })
   } catch (error) {
-    console.error('❌ [Import Guests] Error:', error)
+    console.error('❌ [Import Guests] Critical Error:', error)
+    console.error('   Stack:', error instanceof Error ? error.stack : 'No stack trace')
+
+    // Try to log the error to database
+    try {
+      await supabase.from('import_logs').insert({
+        event_id: null,
+        filename: 'unknown',
+        total_rows: 0,
+        inserted: 0,
+        errors: 1,
+        error_details: {
+          errors: [{
+            row: 0,
+            type: 'parsing',
+            error: `Erro crítico: ${error instanceof Error ? error.message : 'Erro desconhecido'}`
+          }],
+          stack: error instanceof Error ? error.stack : undefined
+        },
+        status: 'failed',
+        imported_by: 'admin'
+      })
+    } catch (logError) {
+      console.error('❌ Failed to log error to database:', logError)
+    }
+
     return NextResponse.json(
       {
         error: 'Erro ao processar importação',
