@@ -18,6 +18,7 @@ export async function GET(request: NextRequest) {
     const statusFilter = searchParams.get('status')
     const eventIdFilter = searchParams.get('event_id')
     const searchQuery = searchParams.get('search')
+    const exportMode = searchParams.get('export') === 'true' // For CSV export (no limit)
 
     // Calculate statistics FIRST - using count queries (no data fetch, just counts)
     // Statistics based ONLY on event filter (ignore status and search filters)
@@ -76,12 +77,19 @@ export async function GET(request: NextRequest) {
       })
     }
 
-    // Now fetch actual data with join (with limit for display)
+    // Now fetch actual data with join
     let query = supabase
       .from('guests')
       .select('id, guid, name, email, phone, event_id, status, created_at, updated_at, qr_code, event:events(id, name, location, event_date)')
       .order('created_at', { ascending: false })
-      .limit(1000) // Safety limit to prevent massive queries
+
+    // Apply limit only if NOT in export mode
+    if (!exportMode) {
+      query = query.limit(1000) // Safety limit to prevent massive queries in regular mode
+      console.log('📋 [Query Mode] Regular mode - applying 1000 limit')
+    } else {
+      console.log('📋 [Query Mode] Export mode - no limit applied')
+    }
 
     // Apply status filter if provided
     if (statusFilter && ['pending', 'confirmed', 'declined'].includes(statusFilter)) {

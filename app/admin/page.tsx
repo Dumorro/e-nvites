@@ -40,6 +40,7 @@ export default function AdminPage() {
  const [guests, setGuests] = useState<Guest[]>([])
  const [stats, setStats] = useState<Stats | null>(null)
  const [loading, setLoading] = useState(false)
+ const [exporting, setExporting] = useState(false)
  const [statusFilter, setStatusFilter] = useState<string>('all')
  const [eventIdFilter, setEventIdFilter] = useState<string>('all')
  const [searchQuery, setSearchQuery] = useState('')
@@ -306,53 +307,93 @@ export default function AdminPage() {
   }
  }
 
- const exportToCSV = () => {
-  // Create CSV content from filtered guests
-  const headers = ['QR Code', 'Nome', 'Email', 'Telefone', 'Evento', 'Local', 'Status', 'Data Criação', 'Última Atualização']
-  const csvRows = [headers.join(',')]
+ const exportToCSV = async () => {
+  try {
+   setExporting(true)
 
-  guests.forEach((guest) => {
-   const eventName = guest.event?.name || ''
-   const eventLocation = guest.event?.location || ''
+   // Fetch ALL guests matching filters (no limit) for export
+   const params = new URLSearchParams()
+   params.append('export', 'true') // Enable export mode (removes limit)
 
-   const row = [
-    `"${guest.qr_code || ''}"`,
-    `"${guest.name}"`,
-    `"${guest.email || ''}"`,
-    `"${formatPhone(guest.phone)}"`,
-    `"${eventName}"`,
-    `"${eventLocation}"`,
-    guest.status === 'confirmed' ? 'Confirmado' : guest.status === 'declined' ? 'Recusado' : 'Pendente',
-    `"${formatDate(guest.created_at)}"`,
-    `"${formatDate(guest.updated_at)}"`
-   ]
-   csvRows.push(row.join(','))
-  })
-
-  const csvContent = csvRows.join('\n')
-  const blob = new Blob(['\uFEFF' + csvContent], { type: 'text/csv;charset=utf-8;' })
-  const link = document.createElement('a')
-  const url = URL.createObjectURL(blob)
-
-  // Generate filename with current date and filters
-  const date = new Date().toISOString().split('T')[0]
-  let filename = `convidados_${date}`
-  if (statusFilter !== 'all') filename += `_${statusFilter}`
-  if (eventIdFilter !== 'all') {
-   const selectedEvent = availableEvents.find(e => e.id.toString() === eventIdFilter)
-   if (selectedEvent) {
-    filename += `_${selectedEvent.slug}`
+   if (statusFilter !== 'all') {
+    params.append('status', statusFilter)
    }
-  }
-  if (searchQuery) filename += `_busca`
-  filename += '.csv'
+   if (eventIdFilter !== 'all') {
+    params.append('event_id', eventIdFilter)
+   }
+   if (searchQuery) {
+    params.append('search', searchQuery)
+   }
 
-  link.setAttribute('href', url)
-  link.setAttribute('download', filename)
-  link.style.visibility = 'hidden'
-  document.body.appendChild(link)
-  link.click()
-  document.body.removeChild(link)
+   console.log('📥 [Export] Fetching all guests for CSV export...')
+   const response = await fetch(`/api/rsvp/list?${params}`, {
+    headers: {
+     'x-admin-password': password,
+    },
+   })
+
+   if (!response.ok) {
+    throw new Error('Erro ao buscar dados para exportação')
+   }
+
+   const data = await response.json()
+   const allGuests = data.guests
+   console.log(`📥 [Export] Fetched ${allGuests.length} guests for export`)
+
+   // Create CSV content from ALL filtered guests
+   const headers = ['QR Code', 'Nome', 'Email', 'Telefone', 'Evento', 'Local', 'Status', 'Data Criação', 'Última Atualização']
+   const csvRows = [headers.join(',')]
+
+   allGuests.forEach((guest: Guest) => {
+    const eventName = guest.event?.name || ''
+    const eventLocation = guest.event?.location || ''
+
+    const row = [
+     `"${guest.qr_code || ''}"`,
+     `"${guest.name}"`,
+     `"${guest.email || ''}"`,
+     `"${formatPhone(guest.phone)}"`,
+     `"${eventName}"`,
+     `"${eventLocation}"`,
+     guest.status === 'confirmed' ? 'Confirmado' : guest.status === 'declined' ? 'Recusado' : 'Pendente',
+     `"${formatDate(guest.created_at)}"`,
+     `"${formatDate(guest.updated_at)}"`
+    ]
+    csvRows.push(row.join(','))
+   })
+
+   const csvContent = csvRows.join('\n')
+   const blob = new Blob(['\uFEFF' + csvContent], { type: 'text/csv;charset=utf-8;' })
+   const link = document.createElement('a')
+   const url = URL.createObjectURL(blob)
+
+   // Generate filename with current date and filters
+   const date = new Date().toISOString().split('T')[0]
+   let filename = `convidados_${date}`
+   if (statusFilter !== 'all') filename += `_${statusFilter}`
+   if (eventIdFilter !== 'all') {
+    const selectedEvent = availableEvents.find(e => e.id.toString() === eventIdFilter)
+    if (selectedEvent) {
+     filename += `_${selectedEvent.slug}`
+    }
+   }
+   if (searchQuery) filename += `_busca`
+   filename += '.csv'
+
+   link.setAttribute('href', url)
+   link.setAttribute('download', filename)
+   link.style.visibility = 'hidden'
+   document.body.appendChild(link)
+   link.click()
+   document.body.removeChild(link)
+
+   console.log(`✅ [Export] CSV generated successfully: ${filename}`)
+  } catch (error) {
+   console.error('❌ [Export] Error:', error)
+   alert('Erro ao exportar CSV. Por favor, tente novamente.')
+  } finally {
+   setExporting(false)
+  }
  }
 
  // Login Screen
@@ -576,11 +617,20 @@ export default function AdminPage() {
       </div>
       <button
        onClick={exportToCSV}
-       disabled={guests.length === 0}
+       disabled={guests.length === 0 || exporting}
        className="btn bg-green-600 text-white hover:bg-green-700 disabled:opacity-50 disabled:cursor-not-allowed flex items-center gap-2"
       >
-       <span>📥</span>
-       <span>Exportar CSV</span>
+       {exporting ? (
+        <>
+         <span className="animate-spin">⏳</span>
+         <span>Exportando...</span>
+        </>
+       ) : (
+        <>
+         <span>📥</span>
+         <span>Exportar CSV</span>
+        </>
+       )}
       </button>
      </div>
     </div>
