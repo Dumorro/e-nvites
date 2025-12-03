@@ -200,12 +200,21 @@ export class EmailSender {
         console.log(`📎 [Email] Checking for invite image attachment`)
 
         // First, try to get image from database (base64)
-        const { data: guestData, error: fetchError } = await supabase
+        // Use guestId if available (most reliable), otherwise use confirmationGuid
+        let query = supabase
           .from('guests')
           .select('invite_image_base64')
-          .eq('qr_code', data.qrCode)
           .eq('event_id', data.eventId)
-          .single()
+
+        if (guestId) {
+          query = query.eq('id', guestId)
+          console.log(`   → Searching by guest ID: ${guestId}`)
+        } else {
+          query = query.eq('guid', data.confirmationGuid)
+          console.log(`   → Searching by GUID: ${data.confirmationGuid}`)
+        }
+
+        const { data: guestData, error: fetchError } = await query.single()
 
         if (!fetchError && guestData?.invite_image_base64) {
           console.log(`   → Found image in database (base64)`)

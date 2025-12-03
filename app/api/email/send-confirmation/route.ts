@@ -112,8 +112,15 @@ export async function POST(request: NextRequest) {
     const emailSender = createEmailSender()
 
     // Determine confirmation page based on event ID
-    // Event ID 1 = Rio de Janeiro, Event ID 2 = São Paulo
-    const confirmPage = event.id === 2 ? 'confirm-sp' : 'confirm-rj'
+    // Event ID 1 = Rio de Janeiro, Event ID 2 = São Paulo, Event ID 7 = Festa de Fim de Ano
+    let confirmPage: string
+    if (event.id === 2) {
+      confirmPage = 'confirm-sp'
+    } else if (event.id === 7) {
+      confirmPage = 'confirm-festa'
+    } else {
+      confirmPage = 'confirm-rj'
+    }
 
     console.log(`📬 [API] Initiating email send/resend via API endpoint`)
     console.log(`   → Guest ID: ${guest.id}`)
