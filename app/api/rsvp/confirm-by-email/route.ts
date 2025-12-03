@@ -53,11 +53,11 @@ export async function POST(request: NextRequest) {
     }
 
     // Update guest status to confirmed
+    // Note: updated_at is automatically updated by database trigger
     const { data: updatedGuest, error: updateError } = await supabase
       .from('guests')
       .update({
-        status: 'confirmed',
-        updated_at: new Date().toISOString()
+        status: 'confirmed'
       })
       .eq('id', guest.id)
       .select('*')
