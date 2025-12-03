@@ -212,59 +212,38 @@ export default function AdminPage() {
   }
 
   try {
-   // Event 7 uses API to fetch from database, events 1 and 2 use direct file download
-   if (eventId === 7) {
-    // Fetch from API (database or filesystem)
-    const response = await fetch(`/api/rsvp/guest-image?qrCode=${guest.qr_code}&eventId=${eventId}`)
-    const data = await response.json()
+   // Use API for all events - it checks database first, then filesystem
+   console.log(`[Admin] Downloading invite for guest: ${guest.name} (QR: ${guest.qr_code}, Event: ${eventId})`)
+   const response = await fetch(`/api/rsvp/guest-image?qrCode=${guest.qr_code}&eventId=${eventId}`)
+   const data = await response.json()
 
-    if (!response.ok || !data.success) {
-     alert(data.error || 'Convite não encontrado')
-     return
-    }
-
-    // Extract mime type and determine extension
-    const matches = data.imageData.match(/^data:([^;]+);base64,(.+)$/)
-    if (!matches) {
-     alert('Formato de imagem inválido')
-     return
-    }
-
-    const mimeType = matches[1]
-    const extension = mimeType === 'image/png' ? 'png' : 'jpg'
-
-    // Download the file using the base64 data URI
-    const link = document.createElement('a')
-    link.href = data.imageData
-    link.download = `convite-${guest.qr_code}.${extension}`
-    document.body.appendChild(link)
-    link.click()
-    document.body.removeChild(link)
-   } else if (eventId === 1 || eventId === 2) {
-    // Direct download from public folder
-    const eventSlug = eventId === 1 ? 'oil-celebration-rj' : 'oil-celebration-sp'
-    const imageUrl = `/events/${eventSlug}/${guest.qr_code}-${eventSlug}.jpg`
-
-    // Check if file exists first
-    const checkResponse = await fetch(imageUrl, { method: 'HEAD' })
-    if (!checkResponse.ok) {
-     alert('Convite não encontrado')
-     return
-    }
-
-    // Download the file
-    const link = document.createElement('a')
-    link.href = imageUrl
-    link.download = `convite-${guest.qr_code}.jpg`
-    link.target = '_blank'
-    document.body.appendChild(link)
-    link.click()
-    document.body.removeChild(link)
-   } else {
-    alert('Evento não suportado para download de convite')
+   if (!response.ok || !data.success) {
+    console.error('[Admin] Failed to fetch invite:', data.error)
+    alert(data.error || 'Convite não encontrado')
+    return
    }
+
+   console.log(`[Admin] Download successful - Source: ${data.source}`)
+
+   // Extract mime type and determine extension
+   const matches = data.imageData.match(/^data:([^;]+);base64,(.+)$/)
+   if (!matches) {
+    alert('Formato de imagem inválido')
+    return
+   }
+
+   const mimeType = matches[1]
+   const extension = mimeType === 'image/png' ? 'png' : 'jpg'
+
+   // Download the file using the base64 data URI
+   const link = document.createElement('a')
+   link.href = data.imageData
+   link.download = `convite-${guest.qr_code}.${extension}`
+   document.body.appendChild(link)
+   link.click()
+   document.body.removeChild(link)
   } catch (err: any) {
-   console.error('Error downloading invite:', err)
+   console.error('[Admin] Error downloading invite:', err)
    alert(`Erro ao baixar convite: ${err.message}`)
   }
  }
