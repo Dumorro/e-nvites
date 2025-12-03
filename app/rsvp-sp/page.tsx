@@ -295,7 +295,7 @@ export default function RSVPSaoPauloPage() {
               <div className="event-details" style={{ marginTop: '30px' }}>
                 <p><strong>Data/Date:</strong> 11 de Dezembro de 2025 | December 11, 2025</p>
                 <p><strong>Horário/Time:</strong> 19h00 | 7 PM</p>
-                <p><strong>Local/Venue:</strong> Pinacoteca – Praça da Luz 2, São Paulo</p>
+                <p><strong>Local/Venue:</strong> Pinacoteca, Praça da Luz, 2, São Paulo</p>
               </div>
             </div>
           </>
@@ -314,7 +314,7 @@ export default function RSVPSaoPauloPage() {
             <div className="event-details">
               <p><strong>Data/Date:</strong> 11 de Dezembro de 2025 | December 11, 2025</p>
               <p><strong>Horário/Time:</strong> 19h00 | 7 PM</p>
-              <p><strong>Local/Venue:</strong> Pinacoteca – Praça da Luz 2, São Paulo</p>
+              <p><strong>Local/Venue:</strong> Pinacoteca, Praça da Luz, 2, São Paulo</p>
             </div>
 
             <div className="form-section">

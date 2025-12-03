@@ -411,11 +411,11 @@ export function getEventEnglishTranslation(eventId: number, eventName: string, l
   const translations: Record<number, { nameEn: string; locationEn: string }> = {
     1: {
       nameEn: 'Bacalhau First Oil Celebration',
-      locationEn: 'Marina da Glória, Rio de Janeiro',
+      locationEn: 'MAR | Rio Art Museum, Praça Mauá, 5 | Centro, Rio de Janeiro',
     },
     2: {
       nameEn: 'Bacalhau First Oil Celebration',
-      locationEn: 'São Paulo',
+      locationEn: 'Pinacoteca, Praça da Luz, 2, São Paulo',
     },
     7: {
       nameEn: 'End-of-year party',
